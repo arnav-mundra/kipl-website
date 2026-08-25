@@ -40,6 +40,16 @@ from bolting a backend onto a folder that was never structured for one.
 Whatever stack it ends up using (Node/Express, Python, etc.) should serve
 `frontend/` as its static assets rather than the two being merged together.
 
+## Deployment (Vercel)
+
+The site is a plain static build with no build command, but the actual
+files live in `frontend/`, not the repo root — so `vercel.json` sets
+`outputDirectory: "frontend"` to tell Vercel where to serve from. Without
+this, Vercel serves the repo root by default, finds no `index.html` there,
+and every route 404s. `.vercelignore` excludes `docs/` (~50MB of
+full-resolution source images that are reference material, never meant to
+be deployed) to keep uploads fast.
+
 ## Local preview
 
 No build step — just serve `frontend/` as static files:
