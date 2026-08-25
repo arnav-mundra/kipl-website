@@ -192,37 +192,36 @@
   margin-top: var(--space-lg);
 }
 
-/* Soft-blue card against the section's off-white background (was plain
-   white, then a plain border before that — neither read as a distinct
-   "box" clearly enough). Same shade .mission-card uses, so the page's two
-   card types read as one family. Photo sits flush at the top (no card
-   padding around it — see .team-card__body below for where the padding
-   actually lives) so it can run edge-to-edge and "almost full sized"
-   rather than a small inset thumbnail. overflow: hidden clips the photo's
-   square corners to the card's own border-radius. */
+/* Soft-blue card against the section's off-white background — same shade
+   .mission-card uses, so the page's two card types read as one family. */
 .team-card {
+  padding: var(--space-md);
   border-radius: var(--radius-md);
   background: var(--color-blue-100);
   box-shadow: 0 10px 24px -16px rgba(20, 33, 61, 0.22);
-  overflow: hidden;
   text-align: center;
 }
 
-/* position: relative + overflow: hidden are required by the mosaic-reveal
-   host contract — see .md-desk__portrait's comment above, same deal here.
-   Large and rectangular now, not the earlier 96px circular crop. */
+/* Inset within the card's own padding (was edge-to-edge/flush before,
+   which read as sitting adjacent to the card rather than inside it) —
+   its own border-radius on all four corners now, not just the top two,
+   since it's no longer relying on a parent overflow:hidden crop to look
+   rounded. position: relative + overflow: hidden are required by the
+   mosaic-reveal host contract — see .md-desk__portrait's comment above,
+   same deal here. */
 .team-card__photo {
   position: relative;
   overflow: hidden;
   width: 100%;
   aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
   background-size: cover;
   background-position: center top;
   background-color: var(--color-blue-300);
 }
 
 .team-card__body {
-  padding: var(--space-lg);
+  padding-top: var(--space-md);
 }
 
 /* Inter 600 (already loaded — see index.html's Google Fonts link), not

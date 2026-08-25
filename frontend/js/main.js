@@ -111,12 +111,56 @@
   }
 
   /**
-   * Intercepts same-site link clicks and grows the top-edge progress bar
+   * Explicitly scrolls to the element matching location.hash, instead of
+   * trusting the browser to do it natively. Browsers are inconsistent
+   * about honoring a URL fragment on a *fresh* page load when html has
+   * scroll-behavior: smooth (base.css sets that sitewide, for the nicer
+   * in-page jump feel) — confirmed here as a real gap: landing on
+   * about.html#our-team from a dropdown link left window.scrollY at 0
+   * with the hash still correctly in the URL. A same-page anchor click
+   * (already on about.html, clicking a dropdown link) isn't affected —
+   * that goes through the browser's separate, reliable in-page anchor-
+   * navigation path, not this "fragment present at initial load" one.
+   *
+   * Deliberately waits for the window `load` event, not DOMContentLoaded
+   * (when every other init function here runs) or a same-tick
+   * requestAnimationFrame/setTimeout(0) — tested all three directly and
+   * only `load` reliably produces a working scroll here. Images/fonts
+   * are still loading at DOMContentLoaded, and scrollIntoView silently
+   * no-ops rather than erroring when called before the browser's layout
+   * has fully settled from those, instead of scrolling to a since-shifted
+   * position — worth the extra wait since a hash link that lands you at
+   * the top of the page instead of the right section is a broken link in
+   * effect, even though it "worked" by every other measure.
+   */
+  function initHashScroll() {
+    if (!window.location.hash) return;
+    var target;
+    try {
+      target = document.querySelector(window.location.hash);
+    } catch (e) {
+      return;
+    }
+    if (!target) return;
+
+    function scrollToTarget() {
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+
+    if (document.readyState === "complete") {
+      scrollToTarget();
+    } else {
+      window.addEventListener("load", scrollToTarget);
+    }
+  }
+
+  /**
+   * Intercepts same-site link clicks and fades in the full-viewport flash
    * (css/components.css .page-transition) before actually navigating, so
    * moving between pages feels like one continuous site instead of a flash
    * of a blank new document. The reveal on the *arriving* page is pure CSS
-   * (see components.css) — this function only owns the "grow the bar, then
-   * go" half, which unavoidably needs JS to delay the navigation.
+   * (see components.css) — this function only owns the "fade in, then go"
+   * half, which unavoidably needs JS to delay the navigation.
    *
    * Navigation is timed with a plain setTimeout matched to the CSS
    * transition duration, not a transitionend listener — that event can
@@ -131,7 +175,7 @@
     var prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    var COVER_MS = prefersReducedMotion ? 60 : 400;
+    var COVER_MS = prefersReducedMotion ? 40 : 170;
 
     document.addEventListener("click", function (e) {
       if (e.defaultPrevented || e.button !== 0) return;
@@ -167,6 +211,7 @@
     initMobileMenu();
     initNavDropdowns();
     initFooterYear();
+    initHashScroll();
     initPageTransitions();
 
     if (window.KIPL && window.KIPL.animations) {

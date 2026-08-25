@@ -117,64 +117,60 @@ html.intro-seen .preloader {
 }
 
 /* ---------- Page transition ----------
-   A slim progress bar along the top edge for in-site navigation, shared
-   by every page (markup is identical everywhere — see index.html/
-   services.html). Was a full-viewport curtain that slid down over the
-   whole page before — deliberately replaced after feedback that a
-   full-screen wipe was "too big and noticeable"; a thin top-edge bar
-   (the same pattern as GitHub/YouTube's page-load indicator) registers as
-   "something is happening" without taking over the screen or blocking
-   content underneath, and — being a fixed height rather than inset: 0 —
-   there's no risk of it ever revealing an unstyled page through a
-   translucent veil the way a see-through curtain would.
+   A quick full-viewport fade-to-brand-navy-and-back for in-site
+   navigation, shared by every page (markup is identical everywhere — see
+   index.html/services.html). Third design for this component: a sliding
+   curtain drew "too big and noticeable" feedback, the top-edge progress
+   bar that replaced it swung too far the other way ("looks almost gone")
+   — this splits the difference. It's brief (well under half a second
+   total) and doesn't slide or move, just a plain opacity fade, but it's
+   full-viewport so it still visibly registers rather than being an easy-
+   to-miss detail in one corner. Solid color (not translucent) so the
+   inevitable blank frame between two separate document loads on a static
+   site reads as an intentional brand-colored flash rather than an
+   accidental flash of white.
 
-   Default state is width: 0 (invisible) so a page that loads with no JS,
-   or before JS runs, is never blocked by it — same "never trust JS alone
-   to unblock a full-page overlay" reasoning as the preloader above, even
-   though this component is small enough that the stakes of it sticking
-   around are much lower than the preloader's.
+   Default state is opacity: 0 (invisible) so a page that loads with no
+   JS, or before JS runs, is never blocked by it — same "never trust JS
+   alone to unblock a full-page overlay" reasoning as the preloader above.
 
    Exit (js/main.js#initPageTransitions intercepts a same-site link click):
-   .page-transition--cover grows the bar via a plain CSS transition; JS
+   .page-transition--cover fades it in via a plain CSS transition; JS
    waits out a matching setTimeout (not a transitionend/animationend
    listener — those can fail to fire) and only then navigates.
 
    Entry: the arriving page's inline <head> script (synchronous, before
    first paint) adds html.nav-transition-cover if it detects it just got
-   here via that same click — which instantly paints the bar already at
-   its "loading" width (no transition, no flash of a zero-width bar), then
-   the rule below runs a pure @keyframes animation, with no JS involvement
-   at all, finishing the bar and fading it out. Because it's a self-running
-   CSS animation (like the preloader) rather than something JS has to
-   remove, it's guaranteed to clear on its own even if a later script
-   fails. */
+   here via that same click — which instantly paints it already fully
+   opaque (no transition, no flash of the new page underneath before the
+   fade starts), then the rule below runs a pure @keyframes animation, with
+   no JS involvement at all, fading it back out. Because it's a
+   self-running CSS animation (like the preloader) rather than something
+   JS has to remove, it's guaranteed to clear on its own even if a later
+   script fails. */
 
 .page-transition {
   position: fixed;
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  inset: 0;
   z-index: 1100;
-  height: 3px;
-  width: 0;
-  background: var(--color-accent);
+  background: var(--color-blue-900);
   opacity: 0;
   pointer-events: none;
 }
 
 .page-transition--cover {
-  width: 70%;
   opacity: 1;
-  transition: width 0.4s var(--ease-out), opacity 0.15s var(--ease-out);
+  pointer-events: auto;
+  transition: opacity 0.16s ease-out;
 }
 
 html.nav-transition-cover .page-transition {
-  animation: page-transition-reveal 0.45s var(--ease-out) both;
+  animation: page-transition-reveal 0.3s ease-in both;
 }
 
 @keyframes page-transition-reveal {
-  0% { width: 70%; opacity: 1; }
-  60% { width: 100%; opacity: 1; }
-  100% { width: 100%; opacity: 0; }
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 /* ---------- Nav ---------- */
