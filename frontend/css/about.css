@@ -1,0 +1,167 @@
+/* About page layout: company story, Mission & Vision (+ condensed values
+   restate), MD's Desk spotlight, Our Team grid. Component-level styling
+   (buttons, nav, hero slideshow, mosaic reveal, footer, CTA band) lives in
+   components.css — this file is purely about-page arrangement. */
+
+/* Anchor targets for the nav's About dropdown (js/main.js#initNavDropdowns
+   links to these ids) — offset so the fixed nav doesn't cover a section's
+   heading when a dropdown link jumps straight to it. */
+#mission-vision,
+#md-desk,
+#our-team {
+  scroll-margin-top: calc(var(--nav-height) + var(--space-md));
+}
+
+/* ---------- Company story ---------- */
+
+.story {
+  max-width: 72ch;
+}
+
+.story p + p {
+  margin-top: var(--space-sm);
+}
+
+/* ---------- Mission & Vision ---------- */
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.mission-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--color-blue-100);
+}
+
+.mission-card h3 {
+  color: var(--color-blue-700);
+}
+
+.mission-card p {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-soft);
+}
+
+/* Condensed restate of Home's full Core Values mosaic rows — same four
+   values, one line each, no mosaic-reveal treatment. Repeating Home's
+   full-bleed pixel-dissolve version here would be redundant; this page
+   just needs enough for "About" to feel complete on its own. */
+.values-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-line);
+}
+
+.values-strip__index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+}
+
+.values-strip__item h4 {
+  margin-top: var(--space-2xs);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-h3);
+}
+
+.values-strip__item p {
+  margin-top: var(--space-3xs);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+/* ---------- MD's Desk ---------- */
+
+.md-desk {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+/* No portrait photo yet — same fallback-gradient placeholder rationale as
+   .service-block__panel until real photography exists. */
+.md-desk__portrait {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+}
+
+.md-desk__name {
+  margin-top: var(--space-md);
+}
+
+.md-desk__title {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+}
+
+.md-desk__bio {
+  margin-top: var(--space-md);
+  /* .section--dark's own color (--color-text-inverse, solid white) is a bit
+     stark for a multi-line bio paragraph — same softened-white treatment
+     .hero__lead uses on the equally-dark hero card. */
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.md-desk__bio p + p {
+  margin-top: var(--space-sm);
+}
+
+/* ---------- Our team ---------- */
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.team-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-line);
+}
+
+.team-card__name {
+  margin-top: 0;
+}
+
+.team-card__title {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+}
+
+.team-card__bio {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 860px) {
+  .mission-grid,
+  .values-strip,
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .md-desk {
+    grid-template-columns: 1fr;
+  }
+
+  .md-desk__portrait {
+    max-width: 320px;
+  }
+}

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- See index.html's <head> comment for why this is inline and first.
+       No intro-seen flag here — the preloader is Home-only, this page only
+       needs scroll-restoration and the nav-transition-cover handoff. -->
+  <script>
+    (function () {
+      if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
+      try {
+        if (sessionStorage.getItem("kiplNavigating")) {
+          sessionStorage.removeItem("kiplNavigating");
+          document.documentElement.classList.add("nav-transition-cover");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — KIPL | Mission &amp; Vision, MD's Desk, Our Team</title>
+  <meta name="description" content="KIPL is the flagship company of Kainsara Group — founded 2009 by Somnath Naik. Our mission, vision, and the leadership team behind engineering services for Odisha's aluminum, steel, coal, and power sectors." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/about.css" />
+</head>
+<body>
+
+  <!-- ============ PAGE TRANSITION ============
+       Shared curtain-wipe overlay for in-site navigation (see
+       css/components.css .page-transition and js/main.js
+       #initPageTransitions). Present on every page, identical markup. -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <!-- No preloader here on purpose — it's Home-only. See services.html. -->
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/kipl-logo.jpeg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">KIPL</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="services.html" class="nav__link">Services</a>
+        <a href="projects.html" class="nav__link">Projects</a>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="about.html" class="nav__link is-active">About</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown" aria-label="Show About sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="aboutDropdown">
+            <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
+            <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
+            <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+          </div>
+        </div>
+        <a href="contact.html" class="nav__link">Contact</a>
+      </nav>
+
+      <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============
+         Same component as Home/Services: full-bleed photo slideshow, same
+         six photos, same mosaic-cell dissolve
+         (js/animations.js#initHeroSlideshow). -->
+    <section class="hero">
+      <div
+        class="hero__stage"
+        data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg"
+      >
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="container hero__stage-inner">
+          <div class="hero__card">
+            <p class="eyebrow" data-reveal-hero>Who we are</p>
+            <h1 data-reveal-hero>Built on people, processes &amp; performance since 2009.</h1>
+            <p class="hero__lead" data-reveal-hero>
+              KIPL is the flagship company of Kainsara Group, offering engineering
+              support solutions to Odisha's aluminum, steel, coal, and power sectors
+              — from mechanical maintenance to workforce and asset management.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPANY STORY ============ -->
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow" data-reveal>Our story</p>
+        <div class="story" data-reveal>
+          <p>
+            Kainsara Infraprojects Pvt Ltd (KIPL) was founded in 2009 by Somnath
+            Naik with a vision to contribute to Odisha's industrial growth. Today
+            KIPL is the flagship company of Kainsara Group, a multi-discipline
+            engineering services company serving the aluminum, steel, coal, and
+            power sectors.
+          </p>
+          <p>
+            Our work spans mechanical maintenance, operational assistance,
+            workforce management, and operating asset management — backed by our
+            own fabrication workshop in Jharsuguda.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MISSION & VISION ============ -->
+    <section class="section section--tight" id="mission-vision">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>What drives us</p>
+          <h2 class="section-head__title" data-reveal>Mission &amp; Vision</h2>
+        </div>
+
+        <div class="mission-grid">
+          <div class="mission-card" data-reveal>
+            <h3>Vision</h3>
+            <p>
+              Be the most admired Engineering Services company in Odisha by
+              achieving extraordinary results for our customers and building
+              satisfying careers for our people.
+            </p>
+          </div>
+          <div class="mission-card" data-reveal>
+            <h3>Mission</h3>
+            <p>
+              Achieve service leadership by building a customer-centric
+              environment and generate a sense of belonging and respect in the
+              mind of every customer.
+            </p>
+          </div>
+        </div>
+
+        <!-- Condensed restate of Home's full Core Values section — see
+             css/about.css .values-strip comment. -->
+        <ul class="values-strip">
+          <li class="values-strip__item" data-reveal>
+            <span class="values-strip__index">01</span>
+            <h4>Ethics</h4>
+            <p>Integrity first.</p>
+          </li>
+          <li class="values-strip__item" data-reveal>
+            <span class="values-strip__index">02</span>
+            <h4>Health &amp; Safety</h4>
+            <p>People before output.</p>
+          </li>
+          <li class="values-strip__item" data-reveal>
+            <span class="values-strip__index">03</span>
+            <h4>Quality</h4>
+            <p>Right, the first time.</p>
+          </li>
+          <li class="values-strip__item" data-reveal>
+            <span class="values-strip__index">04</span>
+            <h4>Sustainability</h4>
+            <p>Built to last.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ MD'S DESK ============ -->
+    <section class="section section--dark" id="md-desk">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>From the top</p>
+          <h2 class="section-head__title" data-reveal>MD's Desk</h2>
+        </div>
+
+        <div class="md-desk">
+          <div class="md-desk__portrait" data-reveal aria-hidden="true"></div>
+          <div data-reveal>
+            <h3 class="md-desk__name">Somnath Naik</h3>
+            <p class="md-desk__title">Managing Director</p>
+            <div class="md-desk__bio">
+              <p>
+                Somnath Naik founded Kainsara Infraprojects in 2009 with a vision
+                to contribute to Odisha's industrial growth — starting the company
+                that would go on to become the flagship of Kainsara Group.
+              </p>
+              <p>
+                Under his leadership, KIPL has grown from a single-site operation
+                into a multi-discipline engineering services partner across six
+                domains, built on the same founding principle: people, processes,
+                and performance, in that order.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ OUR TEAM ============ -->
+    <section class="section" id="our-team">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>Leadership</p>
+          <h2 class="section-head__title" data-reveal>Our Team</h2>
+        </div>
+
+        <div class="team-grid">
+          <div class="team-card" data-reveal>
+            <h3 class="team-card__name">Somnath Naik</h3>
+            <p class="team-card__title">Managing Director</p>
+            <p class="team-card__bio">
+              Founded the organization in 2009 with a vision to contribute to
+              Odisha's industrial growth.
+            </p>
+          </div>
+          <div class="team-card" data-reveal>
+            <h3 class="team-card__name">Sushil Mundra</h3>
+            <p class="team-card__title">Chief Executive Officer</p>
+            <p class="team-card__bio">
+              25+ years in operations, finance, and MIS; MBA in Finance.
+            </p>
+          </div>
+          <div class="team-card" data-reveal>
+            <h3 class="team-card__name">Jyotirmoy Patel</h3>
+            <p class="team-card__title">Chief Financial Officer</p>
+            <p class="team-card__bio">
+              25+ years of industry experience; MBA.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta section--tight">
+      <div class="container">
+        <div class="cta__inner" data-reveal>
+          <h2>Want to know more about how we work? Let's talk.</h2>
+          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo">
+          <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
+          KIPL
+        </a>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Site</h4>
+        <ul class="footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul class="footer__contact">
+          <li>Plot No. 100, Boxi Chowk,<br />Beherapat, Jharsuguda,<br />Odisha – 768202</li>
+          <li><a href="tel:+9106645291044">06645-291044</a></li>
+          <li><a href="tel:+919178470789">+91 91784 70789</a></li>
+          <li><a href="mailto:info@kipl.co">info@kipl.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Kainsara Infraprojects Pvt Ltd. All rights reserved.</span>
+      <span>CIN: U63000OR2009PTC011167 · MSME: UDYAM-OD-14-0000152</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger (CDN, no build step) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>
