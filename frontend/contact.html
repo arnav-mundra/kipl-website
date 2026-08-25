@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- See index.html's <head> comment for why this is inline and first.
+       No intro-seen flag here — the preloader is Home-only, this page only
+       needs scroll-restoration and the nav-transition-cover handoff. -->
+  <script>
+    (function () {
+      if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
+      try {
+        if (sessionStorage.getItem("kiplNavigating")) {
+          sessionStorage.removeItem("kiplNavigating");
+          document.documentElement.classList.add("nav-transition-cover");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — KIPL | Kainsara Infraprojects Pvt Ltd, Jharsuguda</title>
+  <meta name="description" content="Get in touch with KIPL — Plot No. 100, Boxi Chowk, Beherapat, Jharsuguda, Odisha. Call, email, or send a message about your next shutdown, project, or plant upgrade." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+</head>
+<body>
+
+  <!-- ============ PAGE TRANSITION ============
+       Shared full-viewport fade flash for in-site navigation (see
+       css/components.css .page-transition and js/main.js
+       #initPageTransitions). Present on every page, identical markup. -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <!-- No preloader here on purpose — it's Home-only. See services.html. -->
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/kipl-logo.jpeg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">KIPL</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="services.html" class="nav__link">Services</a>
+        <a href="projects.html" class="nav__link">Projects</a>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="about.html" class="nav__link">About</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown" aria-label="Show About sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="aboutDropdown">
+            <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
+            <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
+            <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+          </div>
+        </div>
+        <a href="contact.html" class="nav__link is-active">Contact</a>
+      </nav>
+
+      <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============
+         Same component as Home/Services/About: full-bleed photo slideshow,
+         same six photos, same mosaic-cell dissolve
+         (js/animations.js#initHeroSlideshow). -->
+    <section class="hero">
+      <div
+        class="hero__stage"
+        data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg"
+      >
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="container hero__stage-inner">
+          <div class="hero__card">
+            <p class="eyebrow" data-reveal-hero>Get in touch</p>
+            <h1 data-reveal-hero>Let's discuss your next shutdown, project, or plant upgrade.</h1>
+            <p class="hero__lead" data-reveal-hero>
+              Whether it's a quick question or a full scope of work, our team
+              responds directly — no call centers, no ticket queues.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FORM + INFO ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+
+          <!-- Submitting builds a mailto: link from the field values and
+               hands off to the visitor's own email client (js/main.js
+               #initContactForm) — there's no backend yet to receive a real
+               submission (see README), so this is deliberately honest about
+               what actually happens rather than looking like a silent
+               server-side send. -->
+          <form id="contactForm" novalidate>
+            <div class="form-field">
+              <label for="ctName">Name</label>
+              <input type="text" id="ctName" name="name" autocomplete="name" required />
+            </div>
+            <div class="form-field">
+              <label for="ctPhone">Phone (optional)</label>
+              <input type="tel" id="ctPhone" name="phone" autocomplete="tel" />
+            </div>
+            <div class="form-field">
+              <label for="ctEmail">Email</label>
+              <input type="email" id="ctEmail" name="email" autocomplete="email" required />
+            </div>
+            <div class="form-field">
+              <label for="ctMessage">Message</label>
+              <textarea id="ctMessage" name="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary">Send message</button>
+            <p class="form-note">Opens your email app with this pre-filled — hit send there to reach us.</p>
+          </form>
+
+          <div>
+            <div class="contact-info" data-reveal>
+              <div class="contact-info__item">
+                <p class="contact-info__label">Office</p>
+                <p class="contact-info__value">
+                  Plot No. 100, Boxi Chowk,<br />
+                  Beherapat, Jharsuguda,<br />
+                  Odisha – 768202
+                </p>
+              </div>
+              <div class="contact-info__item">
+                <p class="contact-info__label">Phone</p>
+                <p class="contact-info__value">
+                  <a href="tel:+9106645291044">06645-291044</a><br />
+                  <a href="tel:+919178470789">+91 91784 70789</a>
+                </p>
+              </div>
+              <div class="contact-info__item">
+                <p class="contact-info__label">Email</p>
+                <p class="contact-info__value"><a href="mailto:info@kipl.co">info@kipl.co</a></p>
+              </div>
+              <div class="contact-info__item">
+                <p class="contact-info__label">Office hours</p>
+                <p class="contact-info__value">
+                  Mon–Sat: 9am – 7pm<br />
+                  2nd &amp; 4th Sat: 9am – 2pm
+                </p>
+              </div>
+            </div>
+
+            <!-- Keyless Google Maps embed (google.com/maps?...&output=embed)
+                 — no API key/account needed, searches by the address text
+                 directly rather than needing a lat/long or place id. -->
+            <div class="contact-map">
+              <iframe
+                src="https://maps.google.com/maps?q=Plot+No.+100%2C+Boxi+Chowk%2C+Beherapat%2C+Jharsuguda%2C+Odisha+768202%2C+India&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="KIPL office location — Jharsuguda, Odisha"
+              ></iframe>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo">
+          <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
+          KIPL
+        </a>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Site</h4>
+        <ul class="footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul class="footer__contact">
+          <li>Plot No. 100, Boxi Chowk,<br />Beherapat, Jharsuguda,<br />Odisha – 768202</li>
+          <li><a href="tel:+9106645291044">06645-291044</a></li>
+          <li><a href="tel:+919178470789">+91 91784 70789</a></li>
+          <li><a href="mailto:info@kipl.co">info@kipl.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Kainsara Infraprojects Pvt Ltd. All rights reserved.</span>
+      <span>CIN: U63000OR2009PTC011167 · MSME: UDYAM-OD-14-0000152</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger (CDN, no build step) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

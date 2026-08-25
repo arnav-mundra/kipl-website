@@ -1,0 +1,109 @@
+/* Contact page layout: form + info/map two-column split. Component-level
+   styling (buttons, nav, hero slideshow, footer, CTA band) lives in
+   components.css — this file is purely contact-page arrangement, plus the
+   form-field styling that doesn't exist anywhere else on the site yet. */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+/* ---------- Form ---------- */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin-bottom: var(--space-md);
+}
+
+.form-field label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.form-field input,
+.form-field textarea {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--color-ink);
+  background: var(--color-white);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.form-field textarea {
+  min-height: 140px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Submitting opens the visitor's own email client rather than sending
+   silently (no backend exists to receive a real POST — see README) — this
+   sets that expectation up front instead of surprising them after the
+   click. */
+.form-note {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+/* ---------- Info + map ---------- */
+
+.contact-info {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--color-blue-100);
+}
+
+.contact-info__item + .contact-info__item {
+  margin-top: var(--space-md);
+}
+
+.contact-info__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.contact-info__value {
+  margin-top: var(--space-3xs);
+  color: var(--color-ink);
+}
+
+.contact-info__value a:hover {
+  color: var(--color-accent);
+}
+
+.contact-map {
+  margin-top: var(--space-md);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+}
+
+.contact-map iframe {
+  display: block;
+  width: 100%;
+  height: 280px;
+  border: 0;
+}
+
+@media (max-width: 860px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}

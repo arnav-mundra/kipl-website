@@ -111,6 +111,42 @@
   }
 
   /**
+   * Contact page only ([contactForm] doesn't exist elsewhere, so this is a
+   * no-op on every other page). There's no backend yet to receive a real
+   * submission (see README) — rather than have the form silently do
+   * nothing (or worse, look like it sent when it didn't), this builds a
+   * mailto: link from the field values and hands off to the visitor's own
+   * email client, which is upfront in the UI via .form-note.
+   */
+  function initContactForm() {
+    var form = document.getElementById("contactForm");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var name = form.elements.name.value.trim();
+      var phone = form.elements.phone.value.trim();
+      var email = form.elements.email.value.trim();
+      var message = form.elements.message.value.trim();
+
+      var subject = "Enquiry from " + (name || "KIPL website");
+      var body = [
+        "Name: " + name,
+        "Phone: " + (phone || "-"),
+        "Email: " + email,
+        "",
+        message,
+      ].join("\n");
+
+      window.location.href =
+        "mailto:info@kipl.co" +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+  }
+
+  /**
    * Explicitly scrolls to the element matching location.hash, instead of
    * trusting the browser to do it natively. Browsers are inconsistent
    * about honoring a URL fragment on a *fresh* page load when html has
@@ -213,6 +249,7 @@
     initFooterYear();
     initHashScroll();
     initPageTransitions();
+    initContactForm();
 
     if (window.KIPL && window.KIPL.animations) {
       window.KIPL.animations.initMosaicReveal();
