@@ -1,34 +1,7 @@
-/* Services page layout: page header, quick-nav strip, six alternating
-   domain blocks. Component-level styling (buttons, nav, mosaic reveal,
+/* Services page layout: quick-nav strip, six alternating domain blocks.
+   Component-level styling (buttons, nav, hero slideshow, mosaic reveal,
    footer, CTA band) lives in components.css — this file is purely
    services-page arrangement. */
-
-/* ---------- Page header ----------
-   Dark solid section (no photography for this page) doubling as the nav's
-   backdrop, so the fixed nav's white text/logo reads correctly before the
-   visitor has scrolled — same requirement the hero photo fills on Home. */
-
-.page-header {
-  padding-block: calc(var(--nav-height) + var(--space-2xl)) var(--space-2xl);
-  background: var(--color-bg-dark);
-  color: var(--color-text-inverse);
-}
-
-.page-header .eyebrow {
-  color: var(--color-orange-100);
-}
-
-.page-header__title {
-  margin-top: var(--space-sm);
-  max-width: 18ch;
-}
-
-.page-header__lead {
-  margin-top: var(--space-md);
-  max-width: 60ch;
-  font-size: var(--fs-body-lg);
-  color: rgba(255, 255, 255, 0.82);
-}
 
 /* ---------- Quick-nav strip ----------
    Jump links to each domain below — six full sections is enough content

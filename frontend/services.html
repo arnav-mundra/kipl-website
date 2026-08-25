@@ -49,19 +49,31 @@
 
   <main>
 
-    <!-- ============ PAGE HEADER ============
-         Solid dark section standing in for a hero photo — gives the fixed
-         nav's white text a readable backdrop before scroll, same role the
-         hero slideshow plays on Home. -->
-    <section class="page-header">
-      <div class="container">
-        <p class="eyebrow" data-reveal-hero>What we do</p>
-        <h1 class="page-header__title" data-reveal-hero>Six domains, one accountable partner across the plant lifecycle.</h1>
-        <p class="page-header__lead" data-reveal-hero>
-          From day-one operations to major capital projects, KIPL brings mechanical
-          fabrication, logistics, and engineering design under one roof — so you
-          coordinate with one partner, not six.
-        </p>
+    <!-- ============ HERO ============
+         Same component as Home: full-bleed photo slideshow, same six photos,
+         same mosaic-cell dissolve (js/animations.js#initHeroSlideshow). See
+         css/components.css .hero for why this now lives there, not
+         css/home.css. -->
+    <section class="hero">
+      <div
+        class="hero__stage"
+        data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg"
+      >
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="container hero__stage-inner">
+          <div class="hero__card">
+            <p class="eyebrow" data-reveal-hero>What we do</p>
+            <h1 data-reveal-hero>Six domains, one accountable partner across the plant lifecycle.</h1>
+            <p class="hero__lead" data-reveal-hero>
+              From day-one operations to major capital projects, KIPL brings mechanical
+              fabrication, logistics, and engineering design under one roof — so you
+              coordinate with one partner, not six.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
