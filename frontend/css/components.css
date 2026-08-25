@@ -108,6 +108,77 @@
   }
 }
 
+/* Set on <html> by index.html's inline <head> script when sessionStorage
+   already has the "seen it this session" flag — skips the preloader
+   outright (not just a faster animation) on repeat Home visits/refreshes
+   within the same browser session. New tab/session clears the flag. */
+html.intro-seen .preloader {
+  display: none;
+}
+
+/* ---------- Page transition ----------
+   Curtain-wipe overlay for in-site navigation, shared by every page
+   (markup is identical everywhere — see index.html/services.html). Default
+   state is off-screen (translateY(-100%)) so a page that loads with no JS,
+   or before JS runs, is never blocked by it — same "never trust JS alone to
+   unblock a full-page overlay" reasoning as the preloader above.
+
+   Exit (js/main.js#initPageTransitions intercepts a same-site link click):
+   .page-transition--cover is added, sliding the panel down over the
+   viewport via a plain CSS transition; JS waits out a matching setTimeout
+   (not a transitionend/animationend listener — those can fail to fire) and
+   only then navigates.
+
+   Entry: the arriving page's inline <head> script (synchronous, before
+   first paint) adds html.nav-transition-cover if it detects it just got
+   here via that same click — which instantly paints the panel already
+   covering (no transition, no flash of the new page underneath), then the
+   rule below runs a pure @keyframes animation, with no JS involvement at
+   all, back up off-screen. Because it's a self-running CSS animation
+   (like the preloader) rather than something JS has to remove, the panel
+   is guaranteed to lift on its own even if a later script fails. */
+
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  overflow: hidden;
+  background: var(--color-blue-900);
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.page-transition::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 3px;
+  background: var(--color-accent);
+  transform: translate(-50%, -50%) scaleX(0);
+  transition: transform 0.25s var(--ease-out) 0.12s;
+}
+
+.page-transition--cover {
+  transform: translateY(0);
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  pointer-events: auto;
+}
+
+.page-transition--cover::after {
+  transform: translate(-50%, -50%) scaleX(1);
+}
+
+html.nav-transition-cover .page-transition {
+  animation: page-transition-reveal 0.55s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes page-transition-reveal {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
 /* ---------- Nav ---------- */
 
 .nav {
@@ -191,6 +262,100 @@
 .nav__link:hover::after,
 .nav__link.is-active::after {
   right: 0;
+}
+
+/* ---------- Nav dropdown (About) ----------
+   The "About" label stays a plain link to about.html (top of page); a
+   separate caret button toggles a flyout to the page's three sections
+   (Mission & Vision / MD's Desk / Our Team) so a visitor can jump straight
+   to one from anywhere on the site, not just from within the About page
+   itself. Kept as two elements (<a> + <button>), not one, since an <a>
+   can't validly contain a <button>.
+
+   Opens on :hover for real pointer devices (gated behind (hover: hover) so
+   touchscreens don't get stuck-hover glitches) OR via .is-open, which
+   js/main.js#initNavDropdowns toggles on click/tap — the same .is-open
+   class drives both the desktop flyout and the mobile accordion below,
+   just interpreted by different rules per breakpoint. */
+
+.nav__item--dropdown {
+  position: relative;
+}
+
+.nav__item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+}
+
+.nav__dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: inherit;
+}
+
+.nav__caret {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.nav__item--dropdown.is-open .nav__caret {
+  transform: rotate(180deg);
+}
+
+.nav__dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  min-width: 190px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2xs);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  box-shadow: 0 20px 40px -16px rgba(20, 33, 61, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -6px);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility var(--dur-fast) var(--ease-out);
+}
+
+.nav__dropdown-link {
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-ink);
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.nav__dropdown-link:hover {
+  background: var(--color-blue-100);
+  color: var(--color-blue-700);
+}
+
+.nav__item--dropdown.is-open .nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav__item--dropdown:hover .nav__caret {
+    transform: rotate(180deg);
+  }
+
+  .nav__item--dropdown:hover .nav__dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
 }
 
 .nav__cta {
@@ -611,6 +776,57 @@
     width: 100%;
     padding-block: var(--space-sm);
     border-bottom: 1px solid var(--color-line);
+  }
+
+  /* About's dropdown becomes an inline accordion here — a flyout menu
+     doesn't make sense inside the already-vertical slide-down mobile
+     menu. The label + caret row keeps the same border used by every other
+     .nav__link above; the sub-links no longer need their own, or every
+     open accordion would show a double line under its header row. */
+  .nav__item--dropdown {
+    width: 100%;
+  }
+
+  .nav__item-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav__item-row .nav__link {
+    border-bottom: none;
+  }
+
+  .nav__dropdown-toggle {
+    color: var(--color-ink);
+    margin-inline-end: var(--space-2xs);
+  }
+
+  .nav__dropdown {
+    position: static;
+    transform: none;
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    margin-inline-start: var(--space-sm);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: max-height var(--dur-base) var(--ease-out);
+  }
+
+  .nav__item--dropdown.is-open .nav__dropdown {
+    max-height: 220px;
+    padding-block-end: var(--space-2xs);
+  }
+
+  .nav__dropdown-link {
+    display: block;
+    padding: var(--space-2xs) 0;
+    color: var(--color-ink-soft);
   }
 
   .nav__cta {
