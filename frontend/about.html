@@ -106,23 +106,39 @@
       </div>
     </section>
 
-    <!-- ============ COMPANY STORY ============ -->
-    <section class="section">
+    <!-- ============ COMPANY STORY ============
+         section--dark on purpose, same background as MD's Desk below (see
+         css/about.css .story-grid comment) — was a plain light two-line
+         block before; expanded with the full "About Us" copy from the old
+         site (kipl.co/missionvision/) plus a pull-quote from the company
+         profile PDF, in a two-column layout that gives it real visual
+         weight instead of reading as filler above Mission & Vision. -->
+    <section class="section section--dark" id="our-story">
       <div class="container">
         <p class="eyebrow" data-reveal>Our story</p>
-        <div class="story" data-reveal>
-          <p>
-            Kainsara Infraprojects Pvt Ltd (KIPL) was founded in 2009 by Somnath
-            Naik with a vision to contribute to Odisha's industrial growth. Today
-            KIPL is the flagship company of Kainsara Group, a multi-discipline
-            engineering services company serving the aluminum, steel, coal, and
-            power sectors.
-          </p>
-          <p>
-            Our work spans mechanical maintenance, operational assistance,
-            workforce management, and operating asset management — backed by our
-            own fabrication workshop in Jharsuguda.
-          </p>
+        <div class="story-grid">
+          <blockquote class="story__quote" data-reveal>
+            It barely matters what you are; what truly matters is how the
+            world perceives you. And that perception is shaped by you — by
+            the values you project and the excellence you deliver.
+          </blockquote>
+          <div data-reveal>
+            <p class="story__body">
+              Kainsara Infraprojects Pvt Ltd (KIPL) is the flagship company
+              of Kainsara Group, a multi-discipline engineering services
+              company. Founded in 2009 by Somnath Naik, we deliver
+              high-quality engineering support solutions to Odisha's
+              aluminum, steel, coal, and power sectors — backed by our own
+              fabrication workshop in Jharsuguda.
+            </p>
+            <ul class="story__services">
+              <li>Mechanical Maintenance</li>
+              <li>Operational Assistance</li>
+              <li>Workforce Management</li>
+              <li>Operating Asset Management</li>
+              <li>Global Technology Solutions</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -148,8 +164,9 @@
             <h3>Mission</h3>
             <p>
               Achieve service leadership by building a customer-centric
-              environment and generate a sense of belonging and respect in the
-              mind of every customer.
+              environment and generate a sense of belonging and respect in
+              the mind of the customer by providing an unbelievable service
+              experience.
             </p>
           </div>
         </div>
@@ -190,22 +207,45 @@
         </div>
 
         <div class="md-desk">
-          <div class="md-desk__portrait" data-reveal aria-hidden="true"></div>
+          <img
+            class="md-desk__portrait"
+            src="assets/images/team/somnath-naik.jpg"
+            alt="Somnath Naik, Managing Director"
+            data-reveal
+          />
           <div data-reveal>
             <h3 class="md-desk__name">Somnath Naik</h3>
             <p class="md-desk__title">Managing Director</p>
+            <!-- Full message from kipl.co/mds-desk/ (matches the company
+                 profile PDF's "Managing Director's Desk" page verbatim). -->
             <div class="md-desk__bio">
               <p>
-                Somnath Naik founded Kainsara Infraprojects in 2009 with a vision
-                to contribute to Odisha's industrial growth — starting the company
-                that would go on to become the flagship of Kainsara Group.
+                Workmen are an integral part of this company. They work day
+                in and day out to make sure that their company remains in
+                good shape and they themselves sustain and grow along with
+                the company. Hence, it becomes my duty to appreciate these
+                workmen and encourage them. Nothing is more important than
+                a human life, and I, as the Managing Director of the
+                company, ensure it by implementation of best HSE practices.
+                At the same time, we ensure our workmen give 100% of their
+                efforts at the workplace.
               </p>
               <p>
-                Under his leadership, KIPL has grown from a single-site operation
-                into a multi-discipline engineering services partner across six
-                domains, built on the same founding principle: people, processes,
-                and performance, in that order.
+                We are committed to our responsibility towards society
+                through Corporate Social Responsibility (CSR). "Healthy
+                Workforce builds Healthy Work Environment in Company" — we
+                implement the best practice in the areas of health &amp;
+                safety for all our employees.
               </p>
+              <p>
+                The employees, being the most valuable assets of the
+                Company, are continuously trained to keep pace with the
+                fast-changing technological advancements. We would like to
+                establish ourselves in the market as a Quality Service
+                Organisation, for which each one of you — who is associated
+                or gets associated with us — plays a vital role.
+              </p>
+              <p class="md-desk__signoff">— Somnath Naik, Managing Director</p>
             </div>
           </div>
         </div>
@@ -220,27 +260,49 @@
           <h2 class="section-head__title" data-reveal>Our Team</h2>
         </div>
 
+        <!-- Full bios from kipl.co/our-team/ — the old site's fourth
+             profile (an HR-professional bio duplicated under Naik's name
+             and title) is dropped, see docs/about-page-content-plan.md. -->
         <div class="team-grid">
           <div class="team-card" data-reveal>
+            <img class="team-card__photo" src="assets/images/team/somnath-naik.jpg" alt="" />
             <h3 class="team-card__name">Somnath Naik</h3>
             <p class="team-card__title">Managing Director</p>
             <p class="team-card__bio">
-              Founded the organization in 2009 with a vision to contribute to
-              Odisha's industrial growth.
+              Founded the organization in 2009 with a vision to contribute
+              to Odisha's industrial growth. Guided by strong values and a
+              people-first philosophy, he has built a culture of trust,
+              collaboration, and long-term relationships. His commitment to
+              zero-harm principles ensures the highest standards of Health,
+              Safety, and Environment, driving sustainable growth while
+              fostering inclusivity and respect across the organization.
             </p>
           </div>
           <div class="team-card" data-reveal>
+            <img class="team-card__photo" src="assets/images/team/sushil-mundra.jpg" alt="" />
             <h3 class="team-card__name">Sushil Mundra</h3>
             <p class="team-card__title">Chief Executive Officer</p>
             <p class="team-card__bio">
-              25+ years in operations, finance, and MIS; MBA in Finance.
+              A dynamic leader with over 25 years of experience in
+              operations, finance, and MIS. An MBA in Finance, he has served
+              Grasim Industries, UltraTech Cement, and Value Labs. Known for
+              driving operational and financial excellence, he leads
+              high-performing teams, optimizes performance, and strengthens
+              governance — delivering results with strong business acumen
+              and innovative thinking.
             </p>
           </div>
           <div class="team-card" data-reveal>
+            <img class="team-card__photo" src="assets/images/team/jyotirmoy-patel.jpg" alt="" />
             <h3 class="team-card__name">Jyotirmoy Patel</h3>
             <p class="team-card__title">Chief Financial Officer</p>
             <p class="team-card__bio">
-              25+ years of industry experience; MBA.
+              An accomplished business leader with over 25 years of industry
+              experience, he holds an MBA and has served in senior roles at
+              Pidilite, Wipro, and UltraTech Cement. Known for strategic
+              leadership, stakeholder trust, and sustainable growth, he
+              drives organizational success through collaboration, sound
+              decision-making, and long-term value creation.
             </p>
           </div>
         </div>

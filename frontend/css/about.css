@@ -12,14 +12,51 @@
   scroll-margin-top: calc(var(--nav-height) + var(--space-md));
 }
 
-/* ---------- Company story ---------- */
+/* ---------- Company story ----------
+   section--dark (set in about.html) puts this on the same background as
+   MD's Desk further down — the two dark sections bookend the light
+   Mission & Vision section between them. Two-column pull-quote + prose
+   layout gives it real visual weight; it used to be two short paragraphs
+   on a plain light background and read as filler. */
 
-.story {
-  max-width: 72ch;
+.story-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+  margin-top: var(--space-lg);
 }
 
-.story p + p {
-  margin-top: var(--space-sm);
+.story__quote {
+  margin: 0;
+  padding-inline-start: var(--space-md);
+  border-inline-start: 2px solid var(--color-accent);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+  color: var(--color-white);
+}
+
+.story__body {
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 60ch;
+}
+
+.story__services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-top: var(--space-md);
+}
+
+.story__services li {
+  padding: var(--space-3xs) var(--space-sm);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ---------- Mission & Vision ---------- */
@@ -87,12 +124,13 @@
   gap: var(--space-2xl);
 }
 
-/* No portrait photo yet — same fallback-gradient placeholder rationale as
-   .service-block__panel until real photography exists. */
 .md-desk__portrait {
+  width: 100%;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-lg);
-  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  object-fit: cover;
+  /* Tint shows briefly while the photo loads rather than a blank box. */
+  background: var(--color-blue-900);
 }
 
 .md-desk__name {
@@ -118,6 +156,13 @@
   margin-top: var(--space-sm);
 }
 
+.md-desk__signoff {
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.6);
+}
+
 /* ---------- Our team ---------- */
 
 .team-grid {
@@ -127,14 +172,38 @@
   margin-top: var(--space-lg);
 }
 
+/* White card against the section's off-white background — was a plain
+   border with no fill before, which didn't read as a distinct "box" on a
+   page background that's nearly the same tone. */
 .team-card {
   padding: var(--space-lg);
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-line);
+  background: var(--color-white);
+  box-shadow: 0 10px 24px -16px rgba(20, 33, 61, 0.22);
+  text-align: center;
 }
 
+.team-card__photo {
+  width: 96px;
+  height: 96px;
+  margin-inline: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--color-blue-100);
+}
+
+/* Inter 600 (already loaded — see index.html's Google Fonts link), not
+   --font-display: Forum only ships weight 400, so a bold heading here
+   would force the browser to synthesize a fake-bold, which the rest of
+   the site deliberately avoids (see variables.css --font-display comment). */
 .team-card__name {
-  margin-top: 0;
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-ink);
 }
 
 .team-card__title {
@@ -148,13 +217,19 @@
   margin-top: var(--space-sm);
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
+  text-align: left;
 }
 
 @media (max-width: 860px) {
+  .story-grid,
   .mission-grid,
   .values-strip,
   .team-grid {
     grid-template-columns: 1fr;
+  }
+
+  .story__quote {
+    font-size: var(--fs-body-lg);
   }
 
   .md-desk {

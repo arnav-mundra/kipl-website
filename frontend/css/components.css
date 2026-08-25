@@ -276,25 +276,56 @@ html.nav-transition-cover .page-transition {
    touchscreens don't get stuck-hover glitches) OR via .is-open, which
    js/main.js#initNavDropdowns toggles on click/tap — the same .is-open
    class drives both the desktop flyout and the mobile accordion below,
-   just interpreted by different rules per breakpoint. */
+   just interpreted by different rules per breakpoint.
+
+   .nav__dropdown sits flush against the row (top: 100%, no gap) on
+   purpose — an earlier version had a 12px gap for visual breathing room,
+   but that gap is dead space belonging to neither element, so moving the
+   mouse from "About" down into the flyout crossed empty space, broke the
+   :hover chain, and closed the menu before a click could land on a link.
+   Padding-top on the panel itself gives the same breathing room without
+   that dead zone, since padding is still inside the hoverable box. */
 
 .nav__item--dropdown {
   position: relative;
 }
 
+/* position: relative anchors the caret button below, which is taken out
+   of flex flow entirely (position: absolute) rather than sized inline —
+   .nav__links' flex `gap` measures between each item's own layout box, so
+   if the caret contributed real width here, .nav__item--dropdown would be
+   wider than a plain .nav__link and the gap before "Contact" would end up
+   visibly bigger than every other gap in the nav (this is also why a
+   naive negative margin-inline-end doesn't fix it — margin shifts the
+   *gap* itself, not the box width, so it just shrinks the visual gap
+   instead of removing the extra width that caused the problem). With the
+   caret out of flow, this item's flex-layout width is just the "About"
+   link's own width, same as any other .nav__link. */
 .nav__item-row {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-3xs);
 }
 
 .nav__dropdown-toggle {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-inline-start: var(--space-3xs);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   color: inherit;
+  opacity: 0.75;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.nav__item--dropdown:hover .nav__dropdown-toggle,
+.nav__item--dropdown.is-open .nav__dropdown-toggle {
+  opacity: 1;
 }
 
 .nav__caret {
@@ -305,22 +336,31 @@ html.nav-transition-cover .page-transition {
   transform: rotate(180deg);
 }
 
+/* Dark + translucent, matching .hero__card rather than a plain white
+   card — reads as part of the site's own brand chrome instead of a
+   generic browser-default dropdown, and stays legible over both the photo
+   hero and the blurred/light nav.is-scrolled state. Motion and shadow are
+   both deliberately understated (a few px of movement, a soft near-field
+   shadow, no heavy drop shadow) — present enough to register as
+   intentional, not so much that opening it competes for attention. */
 .nav__dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: 100%;
   left: 50%;
   min-width: 190px;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: var(--space-2xs);
+  padding: var(--space-sm) var(--space-2xs) var(--space-2xs);
   border-radius: var(--radius-md);
-  background: var(--color-white);
-  box-shadow: 0 20px 40px -16px rgba(20, 33, 61, 0.35);
+  background: rgba(20, 33, 61, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px -12px rgba(20, 33, 61, 0.4);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -6px);
+  transform: translate(-50%, -3px);
   transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility var(--dur-fast) var(--ease-out);
 }
 
@@ -329,13 +369,13 @@ html.nav-transition-cover .page-transition {
   border-radius: var(--radius-sm);
   font-size: var(--fs-small);
   font-weight: 500;
-  color: var(--color-ink);
+  color: rgba(255, 255, 255, 0.88);
   transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
 .nav__dropdown-link:hover {
-  background: var(--color-blue-100);
-  color: var(--color-blue-700);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-white);
 }
 
 .nav__item--dropdown.is-open .nav__dropdown {
@@ -796,9 +836,18 @@ html.nav-transition-cover .page-transition {
     border-bottom: none;
   }
 
+  /* Back into normal flow here — the desktop rule takes it out of flow
+     (position: absolute) to avoid widening the flex item and throwing off
+     nav spacing (see the desktop comment above), but that's irrelevant to
+     this already-vertical mobile layout, which instead needs the caret
+     pinned to the row's far end via .nav__item-row's justify-content:
+     space-between above. */
   .nav__dropdown-toggle {
+    position: static;
+    transform: none;
+    margin-inline-start: 0;
     color: var(--color-ink);
-    margin-inline-end: var(--space-2xs);
+    opacity: 1;
   }
 
   .nav__dropdown {
