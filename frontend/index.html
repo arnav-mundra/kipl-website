@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <!-- Must run before the browser's own scroll-restoration kicks in, hence
+       inline + first thing in <head> rather than in js/main.js (which is
+       deferred and only runs after the whole document has parsed — too
+       late). Without this, a plain refresh reopens the page at whatever
+       scroll position the visitor left it at instead of the top. -->
+  <script>if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KIPL — Kainsara Infraprojects Pvt Ltd | Industrial Engineering Services, Odisha</title>
   <meta name="description" content="KIPL partners with the aluminum, steel, coal, and power sectors across Odisha on operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Poppins:700 is only for the preloader letters (see components.css
+       .preloader__letter) — kept as the original intro typeface on request,
+       decoupled from --font-display (Forum) which now covers everything
+       else on the page. -->
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/base.css" />

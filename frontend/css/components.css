@@ -41,8 +41,11 @@
 
 .preloader__letter {
   display: inline-block;
-  font-family: var(--font-display);
-  font-weight: 400;
+  /* Deliberately hardcoded, not var(--font-display) (Forum, everywhere
+     else on the page) — the intro keeps its original Poppins Bold on
+     request, decoupled from the rest of the site's typeface. */
+  font-family: "Poppins", "Arial Narrow", sans-serif;
+  font-weight: 700;
   font-size: clamp(4rem, 15vw, 10rem);
   line-height: 1;
   color: var(--color-white);
