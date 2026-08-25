@@ -42,7 +42,7 @@
 .preloader__letter {
   display: inline-block;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   font-size: clamp(4rem, 15vw, 10rem);
   line-height: 1;
   color: var(--color-white);
@@ -146,7 +146,7 @@
   align-items: center;
   gap: var(--space-2xs);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1.15rem;
   color: var(--color-white);
   transition: color var(--dur-base) var(--ease-out);
@@ -395,7 +395,7 @@
   gap: var(--space-2xs);
   color: var(--color-white);
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1.15rem;
 }
 

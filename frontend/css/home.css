@@ -111,7 +111,7 @@
 .stat__value {
   display: block;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   font-size: clamp(2.25rem, 3vw, 3.25rem);
   color: var(--color-white);
   line-height: 1;

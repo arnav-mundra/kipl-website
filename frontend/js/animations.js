@@ -22,8 +22,8 @@
     window.gsap.registerPlugin(window.ScrollTrigger);
   }
 
-  // Shared by initMosaicReveal's cell tween and initTextScramble's text
-  // decode — both live on the same .mosaic-row, so they need the identical
+  // Shared by initMosaicReveal's cell tween and initMosaicRowFade's detail
+  // fade — both live on the same .mosaic-row, so they need the identical
   // scroll range to resolve in sync rather than drifting apart if one gets
   // tuned later and not the other.
   var MOSAIC_SCROLL_RANGE = { start: "top 88%", end: "top 45%", scrub: 0.4 };
@@ -133,12 +133,17 @@
    * duplicated once so a 50% translate is seamless). Runs continuously,
    * including under the cursor — deliberately no pause-on-hover.
    *
-   * The track's logos are `loading="lazy"` and normally sit below the fold,
-   * so at DOMContentLoaded they're still zero-width — starting the tween
-   * off track.scrollWidth immediately would measure a near-collapsed track
-   * (just the flex gaps) and produce a tween that jumps once the real
-   * images pop in. Waits for every logo in the track to finish loading (or
-   * error out) before measuring and starting.
+   * Logos load eagerly on purpose (no loading="lazy") — the track is a
+   * `width: max-content` row far wider than the viewport, and the browser's
+   * lazy-load heuristic judges an image's proximity to the viewport by its
+   * actual layout position, oblivious to the `overflow: hidden` wrapper
+   * clipping most of that row from view. Most logos sat well outside its
+   * trigger margin and would load inconsistently — sometimes not at all —
+   * which is exactly what made the marquee stall. Still waits for every
+   * logo to finish loading (or error out) before measuring and starting,
+   * since even eager images take a moment: starting off track.scrollWidth
+   * before they arrive would measure a near-collapsed track (just the flex
+   * gaps) and produce a tween that jumps once the real images pop in.
    */
   function initMarquee() {
     var track = document.getElementById("marqueeTrack");
@@ -402,50 +407,54 @@
     });
   }
 
-  var SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#";
-
   /**
-   * Scroll-scrubbed character decode for [data-scramble] text (the
-   * mosaic-row description copy) — uses the exact same MOSAIC_SCROLL_RANGE
-   * as that row's mosaic-cell tween so the text resolves in lockstep with
-   * the pixel reveal beside it, not on its own separate timing. Characters
-   * lock in left-to-right as scroll progress increases; everything past the
-   * reveal point keeps re-randomizing each tick (a live glitch, not a
-   * single scramble-then-settle), and scrolling back up unscrambles in
-   * reverse since it's driven directly by scroll position, not a fixed
-   * duration.
+   * Scroll-scrubbed fade for each mosaic row's detail column (eyebrow +
+   * description + link) — uses the exact same MOSAIC_SCROLL_RANGE as that
+   * row's mosaic-cell tween so the copy resolves in lockstep with the
+   * pixel reveal beside it, not on its own separate timing.
    *
-   * Only ever touches a target's own text — see index.html/components.css
-   * for why a bold "lead-in" phrase sits in a sibling <strong>, not inside
-   * the [data-scramble] span: this rewrites .textContent wholesale on every
-   * tick, which would silently swallow any child markup inside the target.
+   * This replaced an earlier character-scramble version that rewrote each
+   * paragraph's .textContent on every scroll tick. Two problems: it read as
+   * a glitchy distraction rather than a polish, and — worse — every tick
+   * could change the text's line-wrap and therefore its rendered height,
+   * reflowing the page and shifting every row below it. ScrollTrigger
+   * caches each row's start/end scroll position at setup time, so that
+   * live reflow silently desynced them, which is why the pixel effect
+   * looked like it only ever "worked once" instead of repeating on every
+   * scroll pass. A pure opacity/transform fade never touches layout, so it
+   * can't cause that.
    */
-  function initTextScramble() {
-    var targets = document.querySelectorAll("[data-scramble]");
+  function initMosaicRowFade() {
+    var targets = document.querySelectorAll(".mosaic-row__detail");
     if (!targets.length) return;
-    if (!hasGsap || !window.ScrollTrigger || prefersReducedMotion) return;
+
+    if (!hasGsap || !window.ScrollTrigger || prefersReducedMotion) {
+      targets.forEach(function (el) {
+        el.style.opacity = 1;
+        el.style.transform = "none";
+      });
+      return;
+    }
 
     targets.forEach(function (el) {
-      var original = el.textContent;
-      var len = original.length;
       var row = el.closest(".mosaic-row");
       if (!row) return;
 
-      window.ScrollTrigger.create({
-        trigger: row,
-        start: MOSAIC_SCROLL_RANGE.start,
-        end: MOSAIC_SCROLL_RANGE.end,
-        scrub: MOSAIC_SCROLL_RANGE.scrub,
-        onUpdate: function (self) {
-          var revealCount = Math.round(len * self.progress);
-          var out = "";
-          for (var i = 0; i < len; i++) {
-            var ch = original[i];
-            out += i < revealCount || ch === " " ? ch : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0];
-          }
-          el.textContent = out;
-        },
-      });
+      window.gsap.fromTo(
+        el,
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: row,
+            start: MOSAIC_SCROLL_RANGE.start,
+            end: MOSAIC_SCROLL_RANGE.end,
+            scrub: MOSAIC_SCROLL_RANGE.scrub,
+          },
+        }
+      );
     });
   }
 
@@ -544,7 +553,7 @@
     initCounters: initCounters,
     initMarquee: initMarquee,
     initMosaicReveal: initMosaicReveal,
-    initTextScramble: initTextScramble,
+    initMosaicRowFade: initMosaicRowFade,
     initHeroSlideshow: initHeroSlideshow,
     prefersReducedMotion: prefersReducedMotion,
   };

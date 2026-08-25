@@ -69,7 +69,7 @@
 
     if (window.KIPL && window.KIPL.animations) {
       window.KIPL.animations.initMosaicReveal();
-      window.KIPL.animations.initTextScramble();
+      window.KIPL.animations.initMosaicRowFade();
       window.KIPL.animations.initHeroSlideshow();
       window.KIPL.animations.initHeroIntro();
       window.KIPL.animations.initReveals();

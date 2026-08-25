@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/base.css" />
@@ -130,11 +130,12 @@
            below (no data-mosaic-fill — see components.css .mosaic-row-list)
            so both sections share one look, tied directly to scroll position
            (scrub, not once) so they reassemble/undo as you scroll down/up.
-           Each desc's lead phrase sits in a plain <strong> sibling, with the
-           rest in a [data-scramble] span — animations.js#initTextScramble
-           rewrites that span's text wholesale on every scroll tick, which
-           would silently eat any nested markup, so the bold lead-in has to
-           stay outside it, not inside. -->
+           .mosaic-row__detail (the whole eyebrow+desc+link column) fades in
+           in lockstep with the panel's pixel reveal — see animations.js
+           #initMosaicRowFade. Each desc's lead phrase sits in a <strong>
+           purely for typographic emphasis now (a leftover of an earlier
+           per-character scramble effect that needed the split; the fade
+           doesn't). -->
       <ol class="mosaic-row-list">
         <li class="mosaic-row">
           <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
@@ -143,7 +144,7 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">Integrity first</p>
-            <p class="mosaic-row__desc"><strong>We believe</strong> <span data-scramble>ethics is the backbone of an establishment. We are uncompromising in our integrity, honesty, and fairness.</span></p>
+            <p class="mosaic-row__desc"><strong>We believe</strong> ethics is the backbone of an establishment. We are uncompromising in our integrity, honesty, and fairness.</p>
           </div>
         </li>
         <li class="mosaic-row">
@@ -153,7 +154,7 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">People before output</p>
-            <p class="mosaic-row__desc"><strong>Health is wealth</strong> <span data-scramble>and life is invaluable. We are relentless in keeping people safe from harm and providing a healthy work environment.</span></p>
+            <p class="mosaic-row__desc"><strong>Health is wealth</strong> and life is invaluable. We are relentless in keeping people safe from harm and providing a healthy work environment.</p>
           </div>
         </li>
         <li class="mosaic-row">
@@ -163,7 +164,7 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">Right, the first time</p>
-            <p class="mosaic-row__desc"><strong>We are passionate</strong> <span data-scramble>about excellence and doing our work right the first time. Our reputation depends on the value we deliver, in the eyes of every customer and community.</span></p>
+            <p class="mosaic-row__desc"><strong>We are passionate</strong> about excellence and doing our work right the first time. Our reputation depends on the value we deliver, in the eyes of every customer and community.</p>
           </div>
         </li>
         <li class="mosaic-row">
@@ -173,7 +174,7 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">Built to last</p>
-            <p class="mosaic-row__desc"><strong>We improve</strong> <span data-scramble>the quality of life in the communities where we work by respecting local cultures, engaging local people, and protecting the environment.</span></p>
+            <p class="mosaic-row__desc"><strong>We improve</strong> the quality of life in the communities where we work by respecting local cultures, engaging local people, and protecting the environment.</p>
           </div>
         </li>
       </ol>
@@ -191,9 +192,7 @@
       <!-- Same full-bleed row component as Core Values (see css/components.css
            .mosaic-row-list), generated-texture mode, cycling data-mosaic-tone
            0-3 across the six rows since there are more rows than tone pairs.
-           See the Core Values comment above for why each desc's lead phrase
-           sits in a <strong> sibling next to (not inside) the [data-scramble]
-           span. -->
+           See the Core Values comment above for the detail-column fade. -->
       <ol class="mosaic-row-list">
         <li class="mosaic-row">
           <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
@@ -201,7 +200,7 @@
             <h3 class="mosaic-row__name">Operation &amp; Maintenance</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>The day-to-day activities</strong> <span data-scramble>that keep every system and piece of equipment performing reliably — integrating managerial, financial, and technical dimensions so your facility's ecosystem works in harmony. Covers operational assistance, start-up activities, productivity improvement, asset optimization, and process control.</span></p>
+            <p class="mosaic-row__desc"><strong>The day-to-day activities</strong> that keep every system and piece of equipment performing reliably — integrating managerial, financial, and technical dimensions so your facility's ecosystem works in harmony. Covers operational assistance, start-up activities, productivity improvement, asset optimization, and process control.</p>
             <a href="services.html#operation-maintenance" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -211,7 +210,7 @@
             <h3 class="mosaic-row__name">Project Execution</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>End-to-end delivery</strong> <span data-scramble>against engineering design standards and applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity for heavy structural components, conveyor and piping systems, and pollution-control equipment.</span></p>
+            <p class="mosaic-row__desc"><strong>End-to-end delivery</strong> against engineering design standards and applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity for heavy structural components, conveyor and piping systems, and pollution-control equipment.</p>
             <a href="services.html#project-execution" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -221,7 +220,7 @@
             <h3 class="mosaic-row__name">Material Handling</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Thoughtfully designed</strong> <span data-scramble>facility layouts and cost-effective flow management across raw material, work-in-progress, finished goods, and scrap disposal — supported by our in-house fleet of hydras, cranes, and trailers.</span></p>
+            <p class="mosaic-row__desc"><strong>Thoughtfully designed</strong> facility layouts and cost-effective flow management across raw material, work-in-progress, finished goods, and scrap disposal — supported by our in-house fleet of hydras, cranes, and trailers.</p>
             <a href="services.html#material-handling" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -231,7 +230,7 @@
             <h3 class="mosaic-row__name">Mining &amp; Logistics</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>A dependable, disciplined operation</strong> <span data-scramble>for high-volume mineral transportation — coal, iron ore, and other bulk commodities — plus internal shifting between stockyards, conveyor-feeding points, and storage bunkers with real-time monitoring.</span></p>
+            <p class="mosaic-row__desc"><strong>A dependable, disciplined operation</strong> for high-volume mineral transportation — coal, iron ore, and other bulk commodities — plus internal shifting between stockyards, conveyor-feeding points, and storage bunkers with real-time monitoring.</p>
             <a href="services.html#mining-logistics" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -241,7 +240,7 @@
             <h3 class="mosaic-row__name">Mechanised Cleaning</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Advanced industrial housekeeping</strong> <span data-scramble>for facilities where cleanliness and emissions compliance are non-negotiable — truck-mounted and ride-on road sweepers, industrial vacuum systems, dust suppression, and high-pressure jetting.</span></p>
+            <p class="mosaic-row__desc"><strong>Advanced industrial housekeeping</strong> for facilities where cleanliness and emissions compliance are non-negotiable — truck-mounted and ride-on road sweepers, industrial vacuum systems, dust suppression, and high-pressure jetting.</p>
             <a href="services.html#mechanised-cleaning" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -251,7 +250,7 @@
             <h3 class="mosaic-row__name">Design &amp; Consultation</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Qualified engineers</strong> <span data-scramble>and domain specialists translating your requirements into practical, efficient designs — feasibility studies, URS documentation, process optimisation for aluminium smelter carbon plants, and structural design &amp; detailing.</span></p>
+            <p class="mosaic-row__desc"><strong>Qualified engineers</strong> and domain specialists translating your requirements into practical, efficient designs — feasibility studies, URS documentation, process optimisation for aluminium smelter carbon plants, and structural design &amp; detailing.</p>
             <a href="services.html#design-consultation" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -265,35 +264,35 @@
       </div>
       <div class="marquee" id="marquee">
         <div class="marquee__track" id="marqueeTrack">
-          <img class="marquee__logo" src="assets/images/logos/ultratech-cement.png" alt="UltraTech Cement" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/balco.png" alt="BALCO" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/db-power.png" alt="DB Power Ltd" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/monnet.png" alt="Monnet Steel Power Mining" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/vedanta.png" alt="Vedanta" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/ntpc.png" alt="NTPC" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/larsen-toubro.png" alt="Larsen & Toubro" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/dilip-buildcon.png" alt="Dilip Buildcon Limited" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/lloyd-insulations.png" alt="Lloyd Insulations" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/tata-steel.png" alt="Tata Steel" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/shapoorji-pallonji.png" alt="Shapoorji Pallonji" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/hindalco.png" alt="Hindalco" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/jsw.png" alt="JSW" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/osl-group.png" alt="OSL Group" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/ultratech-cement.png" alt="UltraTech Cement" />
+          <img class="marquee__logo" src="assets/images/logos/balco.png" alt="BALCO" />
+          <img class="marquee__logo" src="assets/images/logos/db-power.png" alt="DB Power Ltd" />
+          <img class="marquee__logo" src="assets/images/logos/monnet.png" alt="Monnet Steel Power Mining" />
+          <img class="marquee__logo" src="assets/images/logos/vedanta.png" alt="Vedanta" />
+          <img class="marquee__logo" src="assets/images/logos/ntpc.png" alt="NTPC" />
+          <img class="marquee__logo" src="assets/images/logos/larsen-toubro.png" alt="Larsen & Toubro" />
+          <img class="marquee__logo" src="assets/images/logos/dilip-buildcon.png" alt="Dilip Buildcon Limited" />
+          <img class="marquee__logo" src="assets/images/logos/lloyd-insulations.png" alt="Lloyd Insulations" />
+          <img class="marquee__logo" src="assets/images/logos/tata-steel.png" alt="Tata Steel" />
+          <img class="marquee__logo" src="assets/images/logos/shapoorji-pallonji.png" alt="Shapoorji Pallonji" />
+          <img class="marquee__logo" src="assets/images/logos/hindalco.png" alt="Hindalco" />
+          <img class="marquee__logo" src="assets/images/logos/jsw.png" alt="JSW" />
+          <img class="marquee__logo" src="assets/images/logos/osl-group.png" alt="OSL Group" />
           <!-- Duplicated for a seamless loop — keep this list identical to the one above. aria-hidden + alt="" since it's a non-informative repeat. -->
-          <img class="marquee__logo" src="assets/images/logos/ultratech-cement.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/balco.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/db-power.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/monnet.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/vedanta.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/ntpc.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/larsen-toubro.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/dilip-buildcon.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/lloyd-insulations.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/tata-steel.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/shapoorji-pallonji.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/hindalco.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/jsw.png" alt="" aria-hidden="true" loading="lazy" />
-          <img class="marquee__logo" src="assets/images/logos/osl-group.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/ultratech-cement.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/balco.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/db-power.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/monnet.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/vedanta.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/ntpc.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/larsen-toubro.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/dilip-buildcon.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/lloyd-insulations.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/tata-steel.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/shapoorji-pallonji.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/hindalco.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/jsw.png" alt="" aria-hidden="true" />
+          <img class="marquee__logo" src="assets/images/logos/osl-group.png" alt="" aria-hidden="true" />
         </div>
       </div>
     </section>

@@ -27,7 +27,10 @@
   --color-accent: var(--color-orange-500);
 
   /* Typography */
-  --font-display: "Poppins", "Arial Narrow", sans-serif;
+  /* Forum (Denis Masharov) ships one weight — Regular 400 — so every
+     --font-display consumer is set to font-weight: 400 explicitly rather
+     than the old 600/700, avoiding browser-synthesized fake-bold. */
+  --font-display: "Forum", Georgia, "Times New Roman", serif;
   --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Inter", -apple-system, "Segoe UI", sans-serif;
 
