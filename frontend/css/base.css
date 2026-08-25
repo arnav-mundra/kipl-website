@@ -1,0 +1,229 @@
+/* Reset, base typography, and layout utilities shared by every page. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+}
+
+/* Respect reduced-motion at the document level; JS also checks this before
+   registering scroll-triggered tweens. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  /* The rule above only zeroes duration — these also carry a delay
+     (staggered letters, a held title card, the zoom-out) that would
+     otherwise still make a reduced-motion visitor wait through the full
+     sequence. */
+  .preloader,
+  .preloader__inner,
+  .preloader__letter,
+  .preloader__cursor,
+  .preloader__line {
+    animation-delay: 0s !important;
+  }
+}
+
+/* Layout utilities */
+
+.container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--content-pad);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+}
+
+.section {
+  padding-block: var(--space-2xl);
+}
+
+.section--tight {
+  padding-block: var(--space-xl);
+}
+
+.section--dark {
+  background: var(--color-bg-dark);
+  color: var(--color-text-inverse);
+}
+
+.section-head {
+  max-width: 640px;
+  margin-bottom: var(--space-lg);
+}
+
+.section-head__title {
+  margin-top: var(--space-sm);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: 0.9em 1.6em;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background: var(--color-orange-600);
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.section:not(.section--dark) .btn--ghost:hover {
+  background: var(--color-blue-100);
+}
+
+/* data-reveal targets start hidden; animations.js animates them in and
+   removes the inline transform via GSAP. This inline fallback keeps content
+   readable if JS fails to load. */
+[data-reveal],
+[data-reveal-hero] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.no-js [data-reveal],
+.no-js [data-reveal-hero],
+.reveal-disabled [data-reveal],
+.reveal-disabled [data-reveal-hero] {
+  opacity: 1;
+  transform: none;
+}

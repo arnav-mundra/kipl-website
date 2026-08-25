@@ -1,0 +1,192 @@
+/* Home page layout: hero slideshow, stat band, values list, services/domains
+   list, marquee, CTA band. Component-level styling (buttons, nav, mosaic
+   rows, footer) lives in components.css — this file is purely home-page
+   arrangement. */
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+}
+
+/* Full-bleed slideshow stage: height is derived from the source photos' own
+   ~16:9 aspect ratio rather than an arbitrary fixed height, per the actual
+   hero photography in assets/images/hero/. Nav sits fixed on top (see
+   components.css .nav), so the stage intentionally runs edge-to-edge behind
+   it — no top padding here. background-color is just the pre-load/no-JS
+   fallback tone. */
+.hero__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 480px;
+  overflow: hidden;
+  background-color: var(--color-blue-900);
+}
+
+.hero__slide-base {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Above the photo/mosaic-cell layers (mosaic-grid is z-index 2) so the fixed
+   nav and hero card stay legible against any of the six rotating photos. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 33, 61, 0.65) 0%,
+    rgba(20, 33, 61, 0.08) 22%,
+    rgba(20, 33, 61, 0.08) 62%,
+    rgba(20, 33, 61, 0.55) 100%
+  );
+  pointer-events: none;
+}
+
+.hero__stage-inner {
+  position: relative;
+  z-index: 4;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Reserve clearance under the fixed nav before centering the card in
+     whatever space is left, so it can never sit under the nav bar. */
+  padding-block: calc(var(--nav-height) + var(--space-md)) var(--space-lg);
+}
+
+.hero__card {
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: clamp(2rem, 2vw + 1.5rem, 3.5rem);
+  border-radius: var(--radius-lg);
+  background: rgba(20, 33, 61, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--color-white);
+  box-shadow: 0 32px 64px -24px rgba(20, 33, 61, 0.55);
+}
+
+.hero__card .eyebrow {
+  color: var(--color-orange-100);
+}
+
+/* The site-wide --fs-h1 clamp (up to 84px) assumes a free-flowing column;
+   this card sits inside a fixed-height stage (locked to the photos' aspect
+   ratio), so an oversized heading here would just overflow instead of
+   growing the section. Sized to comfortably wrap the headline to 2-3 lines
+   at the card's own width. */
+.hero__card h1 {
+  font-size: clamp(2rem, 2vw + 1.4rem, 3.25rem);
+}
+
+.hero__lead {
+  font-size: var(--fs-body-lg);
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 46ch;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-2xs);
+}
+
+/* ---------- Stat band ---------- */
+
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-lg);
+  text-align: left;
+}
+
+.stat__value {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 3vw, 3.25rem);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+.stat__value .stat__suffix {
+  font-size: 0.5em;
+  color: var(--color-orange-100);
+  margin-inline-start: 0.15em;
+}
+
+.stat__label {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ---------- Services / domains ---------- */
+
+.services .section-head {
+  color: var(--color-white);
+}
+
+.services .section-head .eyebrow {
+  color: var(--color-orange-100);
+}
+
+/* ---------- Marquee ---------- */
+
+.marquee-section .container {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+/* ---------- CTA band ---------- */
+
+.cta__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-xl);
+  background: var(--color-blue-100);
+  border-radius: var(--radius-lg);
+}
+
+.cta__inner h2 {
+  max-width: 20ch;
+  color: var(--color-blue-700);
+}
+
+@media (max-width: 700px) {
+  /* 16:9 gets too short on phones to hold the card comfortably — trade the
+     exact photo aspect ratio for a fixed floor here; background-size:cover
+     still crops the photo cleanly, just shows less of it top-to-bottom. */
+  .hero__stage {
+    aspect-ratio: auto;
+    min-height: 620px;
+  }
+
+  .hero__card {
+    max-width: none;
+    padding: var(--space-lg);
+  }
+}
+
+@media (max-width: 860px) {
+  .cta__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-lg);
+  }
+}

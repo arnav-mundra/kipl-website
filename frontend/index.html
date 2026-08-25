@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KIPL — Kainsara Infraprojects Pvt Ltd | Industrial Engineering Services, Odisha</title>
+  <meta name="description" content="KIPL partners with the aluminum, steel, coal, and power sectors across Odisha on operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+
+  <!-- ============ PRELOADER ============
+       Pure-CSS intro (see css/base.css) — plays and self-dismisses via
+       @keyframes alone, no JS/GSAP dependency, so it can never get stuck
+       covering the site if a script fails to load or a tab's rAF stalls. -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <div class="preloader__mark">
+        <span class="preloader__letter">K</span>
+        <span class="preloader__letter">I</span>
+        <span class="preloader__letter">P</span>
+        <span class="preloader__letter">L</span>
+        <span class="preloader__cursor"></span>
+      </div>
+      <span class="preloader__line"></span>
+    </div>
+  </div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/kipl-logo.jpeg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">KIPL</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link is-active">Home</a>
+        <a href="services.html" class="nav__link">Services</a>
+        <a href="projects.html" class="nav__link">Projects</a>
+        <a href="about.html" class="nav__link">About</a>
+        <a href="contact.html" class="nav__link">Contact</a>
+      </nav>
+
+      <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <!-- Full-bleed photo slideshow, sized to the source photography's own
+           aspect ratio (see css/home.css .hero__stage). data-hero-images
+           lists every frame in rotation; js/animations.js#initHeroSlideshow
+           cycles them every 4s, dissolving cell-by-cell (same mosaic
+           mechanic used elsewhere on the page) rather than a plain
+           crossfade. Without JS, the first frame set below just holds. -->
+      <div
+        class="hero__stage"
+        data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg"
+      >
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="container hero__stage-inner">
+          <div class="hero__card">
+            <p class="eyebrow" data-reveal-hero>Est. 2009 · Jharsuguda, Odisha</p>
+            <h1 data-reveal-hero>Engineering reliability into every shift, every site, every ton moved.</h1>
+            <p class="hero__lead" data-reveal-hero>
+              KIPL keeps aluminum, steel, coal, and power operations across Odisha
+              running — from mechanical fabrication and plant maintenance to
+              mine-to-plant logistics that can't afford downtime.
+            </p>
+            <div class="hero__actions" data-reveal-hero>
+              <a href="services.html" class="btn btn--primary">Explore Services</a>
+              <a href="contact.html" class="btn btn--ghost">Get in Touch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STAT BAND ============ -->
+    <section class="stats section--dark section--tight">
+      <div class="container stats__grid">
+        <div class="stat" data-reveal>
+          <span class="stat__value">2009</span>
+          <span class="stat__label">Established</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__value"><span data-counter-to="17">0</span><span class="stat__suffix">+</span></span>
+          <span class="stat__label">Years Active</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__value"><span data-counter-to="200">0</span><span class="stat__suffix">MT/mo</span></span>
+          <span class="stat__label">Fabrication Capacity</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__value"><span data-counter-to="6">0</span></span>
+          <span class="stat__label">Service Domains</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CORE VALUES (full-bleed mosaic bands) ============ -->
+    <section class="values section section--dark section--tight">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>What we stand on</p>
+          <h2 class="section-head__title" data-reveal>Core values</h2>
+        </div>
+      </div>
+
+      <!-- Full-bleed, edge-to-edge — breaks out of .container on purpose.
+           Same generated-texture treatment as the Services/domains rows
+           below (no data-mosaic-fill — see components.css .mosaic-row-list)
+           so both sections share one look, tied directly to scroll position
+           (scrub, not once) so they reassemble/undo as you scroll down/up.
+           Each desc's lead phrase sits in a plain <strong> sibling, with the
+           rest in a [data-scramble] span — animations.js#initTextScramble
+           rewrites that span's text wholesale on every scroll tick, which
+           would silently eat any nested markup, so the bold lead-in has to
+           stay outside it, not inside. -->
+      <ol class="mosaic-row-list">
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
+            <span class="mosaic-row__index">01</span>
+            <h3 class="mosaic-row__name">Ethics</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="eyebrow">Integrity first</p>
+            <p class="mosaic-row__desc"><strong>We believe</strong> <span data-scramble>ethics is the backbone of an establishment. We are uncompromising in our integrity, honesty, and fairness.</span></p>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="1">
+            <span class="mosaic-row__index">02</span>
+            <h3 class="mosaic-row__name">Health &amp; Safety</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="eyebrow">People before output</p>
+            <p class="mosaic-row__desc"><strong>Health is wealth</strong> <span data-scramble>and life is invaluable. We are relentless in keeping people safe from harm and providing a healthy work environment.</span></p>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="2">
+            <span class="mosaic-row__index">03</span>
+            <h3 class="mosaic-row__name">Quality</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="eyebrow">Right, the first time</p>
+            <p class="mosaic-row__desc"><strong>We are passionate</strong> <span data-scramble>about excellence and doing our work right the first time. Our reputation depends on the value we deliver, in the eyes of every customer and community.</span></p>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="3">
+            <span class="mosaic-row__index">04</span>
+            <h3 class="mosaic-row__name">Sustainability</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="eyebrow">Built to last</p>
+            <p class="mosaic-row__desc"><strong>We improve</strong> <span data-scramble>the quality of life in the communities where we work by respecting local cultures, engaging local people, and protecting the environment.</span></p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ SERVICES / DOMAINS (full-bleed mosaic rows) ============ -->
+    <section class="services section section--dark section--tight" id="services">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>What we do</p>
+          <h2 class="section-head__title" data-reveal>Six domains, one accountable partner</h2>
+        </div>
+      </div>
+
+      <!-- Same full-bleed row component as Core Values (see css/components.css
+           .mosaic-row-list), generated-texture mode, cycling data-mosaic-tone
+           0-3 across the six rows since there are more rows than tone pairs.
+           See the Core Values comment above for why each desc's lead phrase
+           sits in a <strong> sibling next to (not inside) the [data-scramble]
+           span. -->
+      <ol class="mosaic-row-list">
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
+            <span class="mosaic-row__index">01</span>
+            <h3 class="mosaic-row__name">Operation &amp; Maintenance</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="mosaic-row__desc"><strong>The day-to-day activities</strong> <span data-scramble>that keep every system and piece of equipment performing reliably — integrating managerial, financial, and technical dimensions so your facility's ecosystem works in harmony. Covers operational assistance, start-up activities, productivity improvement, asset optimization, and process control.</span></p>
+            <a href="services.html#operation-maintenance" class="mosaic-row__link">Read more →</a>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="1">
+            <span class="mosaic-row__index">02</span>
+            <h3 class="mosaic-row__name">Project Execution</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="mosaic-row__desc"><strong>End-to-end delivery</strong> <span data-scramble>against engineering design standards and applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity for heavy structural components, conveyor and piping systems, and pollution-control equipment.</span></p>
+            <a href="services.html#project-execution" class="mosaic-row__link">Read more →</a>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="2">
+            <span class="mosaic-row__index">03</span>
+            <h3 class="mosaic-row__name">Material Handling</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="mosaic-row__desc"><strong>Thoughtfully designed</strong> <span data-scramble>facility layouts and cost-effective flow management across raw material, work-in-progress, finished goods, and scrap disposal — supported by our in-house fleet of hydras, cranes, and trailers.</span></p>
+            <a href="services.html#material-handling" class="mosaic-row__link">Read more →</a>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="3">
+            <span class="mosaic-row__index">04</span>
+            <h3 class="mosaic-row__name">Mining &amp; Logistics</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="mosaic-row__desc"><strong>A dependable, disciplined operation</strong> <span data-scramble>for high-volume mineral transportation — coal, iron ore, and other bulk commodities — plus internal shifting between stockyards, conveyor-feeding points, and storage bunkers with real-time monitoring.</span></p>
+            <a href="services.html#mining-logistics" class="mosaic-row__link">Read more →</a>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
+            <span class="mosaic-row__index">05</span>
+            <h3 class="mosaic-row__name">Mechanised Cleaning</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="mosaic-row__desc"><strong>Advanced industrial housekeeping</strong> <span data-scramble>for facilities where cleanliness and emissions compliance are non-negotiable — truck-mounted and ride-on road sweepers, industrial vacuum systems, dust suppression, and high-pressure jetting.</span></p>
+            <a href="services.html#mechanised-cleaning" class="mosaic-row__link">Read more →</a>
+          </div>
+        </li>
+        <li class="mosaic-row">
+          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="1">
+            <span class="mosaic-row__index">06</span>
+            <h3 class="mosaic-row__name">Design &amp; Consultation</h3>
+          </div>
+          <div class="mosaic-row__detail">
+            <p class="mosaic-row__desc"><strong>Qualified engineers</strong> <span data-scramble>and domain specialists translating your requirements into practical, efficient designs — feasibility studies, URS documentation, process optimisation for aluminium smelter carbon plants, and structural design &amp; detailing.</span></p>
+            <a href="services.html#design-consultation" class="mosaic-row__link">Read more →</a>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ CLIENT LOGO MARQUEE ============ -->
+    <section class="marquee-section section--tight">
+      <div class="container">
+        <p class="eyebrow" data-reveal>Clients We've Worked With</p>
+      </div>
+      <div class="marquee" id="marquee">
+        <div class="marquee__track" id="marqueeTrack">
+          <img class="marquee__logo" src="assets/images/logos/ultratech-cement.png" alt="UltraTech Cement" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/balco.png" alt="BALCO" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/db-power.png" alt="DB Power Ltd" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/monnet.png" alt="Monnet Steel Power Mining" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/vedanta.png" alt="Vedanta" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/ntpc.png" alt="NTPC" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/larsen-toubro.png" alt="Larsen & Toubro" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/dilip-buildcon.png" alt="Dilip Buildcon Limited" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/lloyd-insulations.png" alt="Lloyd Insulations" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/tata-steel.png" alt="Tata Steel" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/shapoorji-pallonji.png" alt="Shapoorji Pallonji" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/hindalco.png" alt="Hindalco" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/jsw.png" alt="JSW" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/osl-group.png" alt="OSL Group" loading="lazy" />
+          <!-- Duplicated for a seamless loop — keep this list identical to the one above. aria-hidden + alt="" since it's a non-informative repeat. -->
+          <img class="marquee__logo" src="assets/images/logos/ultratech-cement.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/balco.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/db-power.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/monnet.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/vedanta.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/ntpc.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/larsen-toubro.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/dilip-buildcon.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/lloyd-insulations.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/tata-steel.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/shapoorji-pallonji.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/hindalco.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/jsw.png" alt="" aria-hidden="true" loading="lazy" />
+          <img class="marquee__logo" src="assets/images/logos/osl-group.png" alt="" aria-hidden="true" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta section--tight">
+      <div class="container">
+        <div class="cta__inner" data-reveal>
+          <h2>Let's talk about what your site needs.</h2>
+          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo">
+          <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
+          KIPL
+        </a>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Site</h4>
+        <ul class="footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul class="footer__contact">
+          <li>Plot No. 100, Boxi Chowk,<br />Beherapat, Jharsuguda,<br />Odisha – 768202</li>
+          <li><a href="tel:+9106645291044">06645-291044</a></li>
+          <li><a href="tel:+919178470789">+91 91784 70789</a></li>
+          <li><a href="mailto:info@kipl.co">info@kipl.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Kainsara Infraprojects Pvt Ltd. All rights reserved.</span>
+      <span>CIN: U63000OR2009PTC011167 · MSME: UDYAM-OD-14-0000152</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger (CDN, no build step — see plan for rationale) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

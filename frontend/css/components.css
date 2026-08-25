@@ -1,0 +1,499 @@
+/* Reusable components: nav, mosaic rows, marquee, footer.
+   Shared across every page — page-specific layout lives in css/home.css
+   (and future css/<page>.css files). */
+
+/* ---------- Preloader ----------
+   Full-screen intro shown once per page load, before the site underneath is
+   visible — pure CSS keyframes, deliberately with no JS/GSAP dependency
+   (see index.html comment). Sequence: each letter types in via a clip-path
+   wipe (a blinking cursor rides alongside), the accent line draws under the
+   wordmark (echoes .eyebrow::before's brand motif), a brief hold, then the
+   whole mark scales up and fades — a "zoom past the logo" transition — in
+   sync with the overlay itself fading and disabling (visibility +
+   pointer-events, so it can't trap focus or block clicks once done).
+   Reduced-motion overrides for the delays live in base.css. */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-blue-900);
+  animation: preloader-out 0.7s ease-in-out 2.3s forwards;
+}
+
+.preloader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: preloader-zoom 0.7s cubic-bezier(0.55, 0, 1, 0.45) 2.3s forwards;
+}
+
+.preloader__mark {
+  display: flex;
+  align-items: baseline;
+  letter-spacing: 0.02em;
+}
+
+.preloader__letter {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4rem, 15vw, 10rem);
+  line-height: 1;
+  color: var(--color-white);
+  clip-path: inset(0 100% 0 0);
+  animation: preloader-type 0.5s steps(6) forwards;
+}
+
+.preloader__letter:nth-child(1) { animation-delay: 0.1s; }
+.preloader__letter:nth-child(2) { animation-delay: 0.32s; }
+.preloader__letter:nth-child(3) { animation-delay: 0.54s; }
+.preloader__letter:nth-child(4) { animation-delay: 0.76s; }
+
+.preloader__cursor {
+  display: inline-block;
+  align-self: stretch;
+  width: 0.06em;
+  margin-inline-start: 0.05em;
+  background: var(--color-accent);
+  opacity: 0;
+  animation: preloader-cursor-in 0.1s linear 0.1s forwards, preloader-blink 0.8s steps(1) 0.1s infinite;
+}
+
+.preloader__line {
+  width: 64px;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  animation: preloader-line 0.5s ease-out 1.3s forwards;
+}
+
+@keyframes preloader-type {
+  to { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes preloader-cursor-in {
+  to { opacity: 1; }
+}
+
+@keyframes preloader-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes preloader-line {
+  to { transform: scaleX(1); }
+}
+
+@keyframes preloader-zoom {
+  to {
+    transform: scale(9);
+    opacity: 0;
+  }
+}
+
+@keyframes preloader-out {
+  from { opacity: 1; }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    backdrop-filter var(--dur-base) var(--ease-out);
+}
+
+.nav.is-scrolled {
+  background: rgba(250, 250, 250, 0.78);
+  border-bottom-color: var(--color-line);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.nav.is-scrolled .nav__link,
+.nav.is-scrolled .nav__logo-text {
+  color: var(--color-ink);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-white);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.nav__logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.nav__link {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-white);
+  position: relative;
+  padding-block: var(--space-3xs);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 2px;
+  background: var(--color-accent);
+  transition: right var(--dur-base) var(--ease-out);
+}
+
+.nav__link:hover::after,
+.nav__link.is-active::after {
+  right: 0;
+}
+
+.nav__cta {
+  flex-shrink: 0;
+}
+
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.nav__toggle span,
+.nav__toggle::before,
+.nav__toggle::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin-inline: auto;
+  background: currentColor;
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.nav.is-scrolled .nav__toggle {
+  color: var(--color-ink);
+}
+
+.nav:not(.is-scrolled) .nav__toggle {
+  color: var(--color-white);
+}
+
+/* ---------- Mosaic rows (full-bleed) ----------
+   Shared row component: a full-bleed list of panel/detail pairs, each
+   panel driven by animations.js#initMosaicReveal ([data-mosaic-reveal]).
+   Used by both the Core Values section (data-mosaic-fill, flat color) and
+   the Services/domains section (generated texture, no fill) — genuinely
+   the same visual pattern, so one component rather than two near-copies. */
+
+.mosaic-row-list {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.mosaic-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: clamp(160px, 20vw, 220px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.mosaic-row__panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-inline: var(--content-pad);
+  /* Fallback if JS/canvas can't run: a plain brand-toned gradient so it
+     still reads as intentional, not an empty panel. */
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+}
+
+.mosaic-row__index {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mosaic-row__name {
+  position: relative;
+  z-index: 3;
+  color: var(--color-white);
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+}
+
+.mosaic-row__detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-lg) var(--content-pad);
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.mosaic-row__detail .eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.mosaic-row__desc {
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 46ch;
+}
+
+.mosaic-row__desc strong {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.mosaic-row__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+  margin-top: var(--space-2xs);
+}
+
+@media (max-width: 700px) {
+  .mosaic-row {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .mosaic-row__panel {
+    padding-block: var(--space-lg);
+  }
+
+  .mosaic-row__detail {
+    border-inline-start: none;
+    border-block-start: 1px solid rgba(255, 255, 255, 0.14);
+  }
+}
+
+/* ---------- Mosaic reveal ----------
+   Built by animations.js#initMosaicReveal for any [data-mosaic-reveal] host:
+   a single generated (or real, once supplied) image is sliced into a grid of
+   mixed 1x1/2x2 cells, which pop in — each already showing its correct slice
+   — in random order as the host scrolls into view. Host needs position:
+   relative/overflow:hidden — already true of .mosaic-row__panel. The
+   hero's own photo dissolve (js/animations.js#initHeroSlideshow) reuses the same
+   packMosaicGrid helper directly rather than going through this init. */
+
+.mosaic-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  pointer-events: none;
+}
+
+.mosaic-cell {
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* ---------- Marquee ---------- */
+
+.marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--color-line);
+  padding-block: var(--space-md);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: var(--space-2xl);
+}
+
+/* Each source logo was cropped to its own content box, so widths vary
+   naturally (a wordmark vs. a badge) — fixing height and letting width
+   follow keeps every logo reading at the same visual size, with the flex
+   gap above giving them all identical, evenly-spaced gutters. */
+.marquee__logo {
+  height: 48px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  background: var(--color-blue-900);
+  color: rgba(255, 255, 255, 0.7);
+  padding-block-start: var(--space-2xl);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.footer__logo-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.footer__tagline {
+  max-width: 34ch;
+}
+
+.footer h4 {
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+}
+
+.footer__links li + li,
+.footer__contact li + li {
+  margin-top: var(--space-xs);
+}
+
+.footer__links a:hover {
+  color: var(--color-white);
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-md);
+  font-size: var(--fs-small);
+}
+
+@media (max-width: 860px) {
+  .nav__links {
+    position: fixed;
+    inset-block-start: var(--nav-height);
+    inset-inline: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: var(--color-off-white);
+    border-bottom: 1px solid var(--color-line);
+    padding: var(--space-sm) var(--content-pad) var(--space-md);
+    transform: translateY(-8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+
+  .nav__links.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav__links .nav__link {
+    color: var(--color-ink);
+    width: 100%;
+    padding-block: var(--space-sm);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .nav__cta {
+    display: none;
+  }
+
+  .nav__toggle {
+    display: flex;
+  }
+
+  .nav__toggle.is-active span {
+    opacity: 0;
+  }
+
+  .nav__toggle.is-active::before {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .nav__toggle.is-active::after {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+  }
+}

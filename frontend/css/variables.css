@@ -1,0 +1,66 @@
+/* KIPL design tokens — colors and type from the KIPL brand style guide.
+   Single source of truth: change values here to re-theme the whole site. */
+
+:root {
+  /* Brand color */
+  --color-blue-900: #14213D;   /* Deep Navy — near-black ink, footer base */
+  --color-blue-700: #1F3666;   /* deep blue, dark sections (navy→blue blend) */
+  --color-blue-500: #3055A5;   /* KIPL Blue — primary brand blue */
+  --color-blue-300: #A2B2D6;   /* tints for borders/dividers on blue */
+  --color-blue-100: #E8EEF9;   /* Soft Blue — pale blue for light section backgrounds */
+
+  --color-orange-600: #CD5820; /* orange hover/active */
+  --color-orange-500: #F16726; /* KIPL Orange — primary accent */
+  --color-orange-100: #FFF0E8; /* Soft Orange — pale orange for chips/badges */
+
+  --color-white: #FFFFFF;
+  --color-off-white: #F7F8F6; /* Warm White */
+  --color-ink: #14213D;        /* Deep Navy — body text on light backgrounds */
+  --color-ink-soft: #526078;   /* Slate — secondary text on light backgrounds */
+  --color-line: #DEE3EA;       /* hairline borders on light backgrounds */
+
+  /* Semantic aliases */
+  --color-bg: var(--color-off-white);
+  --color-bg-dark: var(--color-blue-700);
+  --color-text: var(--color-ink);
+  --color-text-inverse: var(--color-white);
+  --color-accent: var(--color-orange-500);
+
+  /* Typography */
+  --font-display: "Poppins", "Arial Narrow", sans-serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Inter", -apple-system, "Segoe UI", sans-serif;
+
+  --fs-h1: clamp(2.5rem, 4.5vw + 1rem, 5.25rem);
+  --fs-h2: clamp(2rem, 2.6vw + 1rem, 3.25rem);
+  --fs-h3: clamp(1.375rem, 1.2vw + 1rem, 1.875rem);
+  --fs-body-lg: clamp(1.0625rem, 0.4vw + 1rem, 1.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.8125rem;
+
+  /* Spacing scale */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: 9rem;
+
+  /* Layout */
+  --content-max: 1280px;
+  --content-pad: clamp(1.25rem, 4vw, 3rem);
+  --nav-height: 84px;
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 28px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.25s;
+  --dur-base: 0.45s;
+  --dur-slow: 0.8s;
+}
