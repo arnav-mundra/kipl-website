@@ -117,66 +117,64 @@ html.intro-seen .preloader {
 }
 
 /* ---------- Page transition ----------
-   Curtain-wipe overlay for in-site navigation, shared by every page
-   (markup is identical everywhere — see index.html/services.html). Default
-   state is off-screen (translateY(-100%)) so a page that loads with no JS,
-   or before JS runs, is never blocked by it — same "never trust JS alone to
-   unblock a full-page overlay" reasoning as the preloader above.
+   A slim progress bar along the top edge for in-site navigation, shared
+   by every page (markup is identical everywhere — see index.html/
+   services.html). Was a full-viewport curtain that slid down over the
+   whole page before — deliberately replaced after feedback that a
+   full-screen wipe was "too big and noticeable"; a thin top-edge bar
+   (the same pattern as GitHub/YouTube's page-load indicator) registers as
+   "something is happening" without taking over the screen or blocking
+   content underneath, and — being a fixed height rather than inset: 0 —
+   there's no risk of it ever revealing an unstyled page through a
+   translucent veil the way a see-through curtain would.
+
+   Default state is width: 0 (invisible) so a page that loads with no JS,
+   or before JS runs, is never blocked by it — same "never trust JS alone
+   to unblock a full-page overlay" reasoning as the preloader above, even
+   though this component is small enough that the stakes of it sticking
+   around are much lower than the preloader's.
 
    Exit (js/main.js#initPageTransitions intercepts a same-site link click):
-   .page-transition--cover is added, sliding the panel down over the
-   viewport via a plain CSS transition; JS waits out a matching setTimeout
-   (not a transitionend/animationend listener — those can fail to fire) and
-   only then navigates.
+   .page-transition--cover grows the bar via a plain CSS transition; JS
+   waits out a matching setTimeout (not a transitionend/animationend
+   listener — those can fail to fire) and only then navigates.
 
    Entry: the arriving page's inline <head> script (synchronous, before
    first paint) adds html.nav-transition-cover if it detects it just got
-   here via that same click — which instantly paints the panel already
-   covering (no transition, no flash of the new page underneath), then the
-   rule below runs a pure @keyframes animation, with no JS involvement at
-   all, back up off-screen. Because it's a self-running CSS animation
-   (like the preloader) rather than something JS has to remove, the panel
-   is guaranteed to lift on its own even if a later script fails. */
+   here via that same click — which instantly paints the bar already at
+   its "loading" width (no transition, no flash of a zero-width bar), then
+   the rule below runs a pure @keyframes animation, with no JS involvement
+   at all, finishing the bar and fading it out. Because it's a self-running
+   CSS animation (like the preloader) rather than something JS has to
+   remove, it's guaranteed to clear on its own even if a later script
+   fails. */
 
 .page-transition {
   position: fixed;
-  inset: 0;
-  z-index: 900;
-  overflow: hidden;
-  background: var(--color-blue-900);
-  transform: translateY(-100%);
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 1100;
+  height: 3px;
+  width: 0;
+  background: var(--color-accent);
+  opacity: 0;
   pointer-events: none;
 }
 
-.page-transition::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 64px;
-  height: 3px;
-  background: var(--color-accent);
-  transform: translate(-50%, -50%) scaleX(0);
-  transition: transform 0.25s var(--ease-out) 0.12s;
-}
-
 .page-transition--cover {
-  transform: translateY(0);
-  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
-  pointer-events: auto;
-}
-
-.page-transition--cover::after {
-  transform: translate(-50%, -50%) scaleX(1);
+  width: 70%;
+  opacity: 1;
+  transition: width 0.4s var(--ease-out), opacity 0.15s var(--ease-out);
 }
 
 html.nav-transition-cover .page-transition {
-  animation: page-transition-reveal 0.55s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation: page-transition-reveal 0.45s var(--ease-out) both;
 }
 
 @keyframes page-transition-reveal {
-  from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  0% { width: 70%; opacity: 1; }
+  60% { width: 100%; opacity: 1; }
+  100% { width: 100%; opacity: 0; }
 }
 
 /* ---------- Nav ---------- */

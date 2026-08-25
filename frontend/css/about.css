@@ -120,32 +120,52 @@
 .md-desk {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
-  align-items: center;
+  /* start, not center — with the text column now sized up to better match
+     the portrait's height, top-aligning both reads as one deliberate
+     block instead of a mismatched pairing. */
+  align-items: start;
   gap: var(--space-2xl);
 }
 
+/* position: relative + overflow: hidden are required by the mosaic-reveal
+   host contract (js/animations.js#initMosaicReveal draws its cell grid as
+   an inset: 0 absolutely-positioned overlay) — same as .service-block__
+   panel. The div's own background-image (set inline in about.html) is
+   what the script auto-detects and slices instead of generating a texture. */
 .md-desk__portrait {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-lg);
-  object-fit: cover;
-  /* Tint shows briefly while the photo loads rather than a blank box. */
-  background: var(--color-blue-900);
+  background-size: cover;
+  background-position: center top;
+  /* Fallback tone if JS/canvas can't run, or briefly while the photo loads. */
+  background-color: var(--color-blue-900);
 }
 
+/* Inter 600 + uppercase, matching .team-card__name — see that rule's
+   comment for why (Forum has no bold weight to synthesize from). */
 .md-desk__name {
   margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-white);
 }
 
 .md-desk__title {
-  margin-top: var(--space-3xs);
+  margin-top: var(--space-2xs);
   font-family: var(--font-mono);
-  font-size: var(--fs-small);
+  font-size: var(--fs-body-lg);
   color: var(--color-accent);
 }
 
 .md-desk__bio {
-  margin-top: var(--space-md);
+  margin-top: var(--space-lg);
+  font-size: var(--fs-body-lg);
   /* .section--dark's own color (--color-text-inverse, solid white) is a bit
      stark for a multi-line bio paragraph — same softened-white treatment
      .hero__lead uses on the equally-dark hero card. */
@@ -172,24 +192,37 @@
   margin-top: var(--space-lg);
 }
 
-/* White card against the section's off-white background — was a plain
-   border with no fill before, which didn't read as a distinct "box" on a
-   page background that's nearly the same tone. */
+/* Soft-blue card against the section's off-white background (was plain
+   white, then a plain border before that — neither read as a distinct
+   "box" clearly enough). Same shade .mission-card uses, so the page's two
+   card types read as one family. Photo sits flush at the top (no card
+   padding around it — see .team-card__body below for where the padding
+   actually lives) so it can run edge-to-edge and "almost full sized"
+   rather than a small inset thumbnail. overflow: hidden clips the photo's
+   square corners to the card's own border-radius. */
 .team-card {
-  padding: var(--space-lg);
   border-radius: var(--radius-md);
-  background: var(--color-white);
+  background: var(--color-blue-100);
   box-shadow: 0 10px 24px -16px rgba(20, 33, 61, 0.22);
+  overflow: hidden;
   text-align: center;
 }
 
+/* position: relative + overflow: hidden are required by the mosaic-reveal
+   host contract — see .md-desk__portrait's comment above, same deal here.
+   Large and rectangular now, not the earlier 96px circular crop. */
 .team-card__photo {
-  width: 96px;
-  height: 96px;
-  margin-inline: auto;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--color-blue-100);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background-size: cover;
+  background-position: center top;
+  background-color: var(--color-blue-300);
+}
+
+.team-card__body {
+  padding: var(--space-lg);
 }
 
 /* Inter 600 (already loaded — see index.html's Google Fonts link), not
@@ -197,7 +230,6 @@
    would force the browser to synthesize a fake-bold, which the rest of
    the site deliberately avoids (see variables.css --font-display comment). */
 .team-card__name {
-  margin-top: var(--space-md);
   font-family: var(--font-mono);
   font-size: var(--fs-body-lg);
   font-weight: 600;
@@ -217,7 +249,7 @@
   margin-top: var(--space-sm);
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
-  text-align: left;
+  text-align: justify;
 }
 
 @media (max-width: 860px) {

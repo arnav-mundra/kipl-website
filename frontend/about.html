@@ -32,7 +32,7 @@
 <body>
 
   <!-- ============ PAGE TRANSITION ============
-       Shared curtain-wipe overlay for in-site navigation (see
+       Shared top-edge progress bar for in-site navigation (see
        css/components.css .page-transition and js/main.js
        #initPageTransitions). Present on every page, identical markup. -->
   <div class="page-transition" aria-hidden="true"></div>
@@ -207,12 +207,18 @@
         </div>
 
         <div class="md-desk">
-          <img
+          <!-- Real photo + the site's mosaic-cell reveal (same mechanic as
+               Home/Services — see js/animations.js#initMosaicReveal, which
+               auto-detects a real background-image and slices that instead
+               of generating a texture). A div, not <img>, since the effect
+               needs a CSS background-image to slice. -->
+          <div
             class="md-desk__portrait"
-            src="assets/images/team/somnath-naik.jpg"
-            alt="Somnath Naik, Managing Director"
-            data-reveal
-          />
+            data-mosaic-reveal
+            style="background-image:url('assets/images/team/somnath-naik.jpg')"
+            role="img"
+            aria-label="Somnath Naik, Managing Director"
+          ></div>
           <div data-reveal>
             <h3 class="md-desk__name">Somnath Naik</h3>
             <p class="md-desk__title">Managing Director</p>
@@ -262,48 +268,59 @@
 
         <!-- Full bios from kipl.co/our-team/ — the old site's fourth
              profile (an HR-professional bio duplicated under Naik's name
-             and title) is dropped, see docs/about-page-content-plan.md. -->
+             and title) is dropped, see docs/about-page-content-plan.md.
+             Photo is a div + mosaic-reveal (see the MD's Desk comment
+             above), not <img> — same effect, now large/full-width instead
+             of the earlier small circular crop. -->
         <div class="team-grid">
           <div class="team-card" data-reveal>
-            <img class="team-card__photo" src="assets/images/team/somnath-naik.jpg" alt="" />
-            <h3 class="team-card__name">Somnath Naik</h3>
-            <p class="team-card__title">Managing Director</p>
-            <p class="team-card__bio">
-              Founded the organization in 2009 with a vision to contribute
-              to Odisha's industrial growth. Guided by strong values and a
-              people-first philosophy, he has built a culture of trust,
-              collaboration, and long-term relationships. His commitment to
-              zero-harm principles ensures the highest standards of Health,
-              Safety, and Environment, driving sustainable growth while
-              fostering inclusivity and respect across the organization.
-            </p>
+            <div class="team-card__photo" data-mosaic-reveal style="background-image:url('assets/images/team/somnath-naik.jpg')" role="img" aria-label="Somnath Naik"></div>
+            <div class="team-card__body">
+              <h3 class="team-card__name">Somnath Naik</h3>
+              <p class="team-card__title">Managing Director</p>
+              <p class="team-card__bio">
+                Founded the organization in 2009 with a vision to contribute
+                to Odisha's industrial growth. Guided by strong values and a
+                people-first philosophy, he has built a culture of trust,
+                collaboration, and long-term relationships. His commitment
+                to zero-harm principles ensures the highest standards of
+                Health, Safety, and Environment, driving sustainable growth
+                while fostering inclusivity and respect across the
+                organization.
+              </p>
+            </div>
           </div>
           <div class="team-card" data-reveal>
-            <img class="team-card__photo" src="assets/images/team/sushil-mundra.jpg" alt="" />
-            <h3 class="team-card__name">Sushil Mundra</h3>
-            <p class="team-card__title">Chief Executive Officer</p>
-            <p class="team-card__bio">
-              A dynamic leader with over 25 years of experience in
-              operations, finance, and MIS. An MBA in Finance, he has served
-              Grasim Industries, UltraTech Cement, and Value Labs. Known for
-              driving operational and financial excellence, he leads
-              high-performing teams, optimizes performance, and strengthens
-              governance — delivering results with strong business acumen
-              and innovative thinking.
-            </p>
+            <div class="team-card__photo" data-mosaic-reveal style="background-image:url('assets/images/team/sushil-mundra.jpg')" role="img" aria-label="Sushil Mundra"></div>
+            <div class="team-card__body">
+              <h3 class="team-card__name">Sushil Mundra</h3>
+              <p class="team-card__title">Chief Executive Officer</p>
+              <p class="team-card__bio">
+                A dynamic leader with over 25 years of experience in
+                operations, finance, and MIS. An MBA in Finance, he has
+                served Grasim Industries, UltraTech Cement, and Value Labs.
+                Known for driving operational and financial excellence, he
+                leads high-performing teams, optimizes performance, and
+                strengthens governance — delivering results with strong
+                business acumen and innovative thinking.
+              </p>
+            </div>
           </div>
           <div class="team-card" data-reveal>
-            <img class="team-card__photo" src="assets/images/team/jyotirmoy-patel.jpg" alt="" />
-            <h3 class="team-card__name">Jyotirmoy Patel</h3>
-            <p class="team-card__title">Chief Financial Officer</p>
-            <p class="team-card__bio">
-              An accomplished business leader with over 25 years of industry
-              experience, he holds an MBA and has served in senior roles at
-              Pidilite, Wipro, and UltraTech Cement. Known for strategic
-              leadership, stakeholder trust, and sustainable growth, he
-              drives organizational success through collaboration, sound
-              decision-making, and long-term value creation.
-            </p>
+            <div class="team-card__photo" data-mosaic-reveal style="background-image:url('assets/images/team/jyotirmoy-patel.jpg')" role="img" aria-label="Jyotirmoy Patel"></div>
+            <div class="team-card__body">
+              <h3 class="team-card__name">Jyotirmoy Patel</h3>
+              <p class="team-card__title">Chief Financial Officer</p>
+              <p class="team-card__bio">
+                An accomplished business leader with over 25 years of
+                industry experience, he holds an MBA and has served in
+                senior roles at Pidilite, Wipro, and UltraTech Cement. Known
+                for strategic leadership, stakeholder trust, and
+                sustainable growth, he drives organizational success
+                through collaboration, sound decision-making, and long-term
+                value creation.
+              </p>
+            </div>
           </div>
         </div>
       </div>

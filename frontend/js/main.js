@@ -111,12 +111,12 @@
   }
 
   /**
-   * Intercepts same-site link clicks and plays the curtain-wipe overlay
+   * Intercepts same-site link clicks and grows the top-edge progress bar
    * (css/components.css .page-transition) before actually navigating, so
    * moving between pages feels like one continuous site instead of a flash
    * of a blank new document. The reveal on the *arriving* page is pure CSS
-   * (see components.css) — this function only owns the "cover, then go"
-   * half, which unavoidably needs JS to delay the navigation.
+   * (see components.css) — this function only owns the "grow the bar, then
+   * go" half, which unavoidably needs JS to delay the navigation.
    *
    * Navigation is timed with a plain setTimeout matched to the CSS
    * transition duration, not a transitionend listener — that event can
@@ -131,7 +131,7 @@
     var prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    var COVER_MS = prefersReducedMotion ? 60 : 470;
+    var COVER_MS = prefersReducedMotion ? 60 : 400;
 
     document.addEventListener("click", function (e) {
       if (e.defaultPrevented || e.button !== 0) return;
