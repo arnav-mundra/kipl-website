@@ -1,0 +1,171 @@
+/* Services page layout: page header, quick-nav strip, six alternating
+   domain blocks. Component-level styling (buttons, nav, mosaic reveal,
+   footer, CTA band) lives in components.css — this file is purely
+   services-page arrangement. */
+
+/* ---------- Page header ----------
+   Dark solid section (no photography for this page) doubling as the nav's
+   backdrop, so the fixed nav's white text/logo reads correctly before the
+   visitor has scrolled — same requirement the hero photo fills on Home. */
+
+.page-header {
+  padding-block: calc(var(--nav-height) + var(--space-2xl)) var(--space-2xl);
+  background: var(--color-bg-dark);
+  color: var(--color-text-inverse);
+}
+
+.page-header .eyebrow {
+  color: var(--color-orange-100);
+}
+
+.page-header__title {
+  margin-top: var(--space-sm);
+  max-width: 18ch;
+}
+
+.page-header__lead {
+  margin-top: var(--space-md);
+  max-width: 60ch;
+  font-size: var(--fs-body-lg);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ---------- Quick-nav strip ----------
+   Jump links to each domain below — six full sections is enough content
+   that a visitor arriving for one domain shouldn't have to scroll past
+   the others to find it. */
+
+.service-quicknav {
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-bg);
+}
+
+.service-quicknav__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2xs) var(--space-sm);
+  padding-block: var(--space-md);
+}
+
+.service-quicknav__list a {
+  padding: var(--space-2xs) var(--space-sm);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.service-quicknav__list a:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ---------- Domain blocks ----------
+   Alternating image/content pairs — contained and rounded, deliberately not
+   full-bleed like Home's mosaic-row-list, so this page reads as its own
+   layout rather than a repeat. Each panel reuses the shared mosaic-reveal
+   mechanic (components.css .mosaic-grid / js/animations.js#initMosaicReveal)
+   via [data-mosaic-reveal]. scroll-margin-top keeps the fixed nav from
+   covering a section's heading when a quick-nav link jumps to it. */
+
+.service-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+  padding-block: var(--space-2xl);
+  border-bottom: 1px solid var(--color-line);
+  scroll-margin-top: calc(var(--nav-height) + var(--space-md));
+}
+
+.service-block:last-child {
+  border-bottom: none;
+}
+
+.service-block--reverse .service-block__panel {
+  order: 2;
+}
+
+.service-block__panel {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  /* Fallback if JS/canvas can't run — matches .mosaic-row__panel's rationale. */
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+}
+
+.service-block__index {
+  position: relative;
+  z-index: 3;
+  display: block;
+  padding: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-h3);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.service-block__content .eyebrow {
+  margin-bottom: var(--space-2xs);
+}
+
+.service-block__lead {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-soft);
+  max-width: 52ch;
+}
+
+.service-block__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  margin-top: var(--space-md);
+}
+
+.service-block__list li {
+  position: relative;
+  padding-inline-start: var(--space-md);
+  font-size: var(--fs-small);
+}
+
+.service-block__list li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.6em;
+  width: 10px;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+.service-block__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-blue-500);
+}
+
+.service-block__link:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 860px) {
+  .service-block {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding-block: var(--space-xl);
+  }
+
+  /* Panel always leads on mobile regardless of the desktop alternation. */
+  .service-block__panel,
+  .service-block__content {
+    order: 0;
+  }
+}

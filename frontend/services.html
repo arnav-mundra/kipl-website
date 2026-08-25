@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — KIPL | Operation &amp; Maintenance, Project Execution, Material Handling &amp; More</title>
+  <meta name="description" content="KIPL's six service domains: operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation for Odisha's aluminum, steel, coal, and power sectors." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/services.css" />
+</head>
+<body>
+
+  <!-- No preloader here on purpose — it's Home-only. Replaying a ~3s intro
+       on every internal page navigation (Services → Projects → About …)
+       would cost more than it adds; the preloader's job is a one-time
+       first-impression on arrival at the site. -->
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/kipl-logo.jpeg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">KIPL</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="services.html" class="nav__link is-active">Services</a>
+        <a href="projects.html" class="nav__link">Projects</a>
+        <a href="about.html" class="nav__link">About</a>
+        <a href="contact.html" class="nav__link">Contact</a>
+      </nav>
+
+      <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ PAGE HEADER ============
+         Solid dark section standing in for a hero photo — gives the fixed
+         nav's white text a readable backdrop before scroll, same role the
+         hero slideshow plays on Home. -->
+    <section class="page-header">
+      <div class="container">
+        <p class="eyebrow" data-reveal-hero>What we do</p>
+        <h1 class="page-header__title" data-reveal-hero>Six domains, one accountable partner across the plant lifecycle.</h1>
+        <p class="page-header__lead" data-reveal-hero>
+          From day-one operations to major capital projects, KIPL brings mechanical
+          fabrication, logistics, and engineering design under one roof — so you
+          coordinate with one partner, not six.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ QUICK NAV ============ -->
+    <nav class="service-quicknav" aria-label="Jump to a service">
+      <div class="container">
+        <div class="service-quicknav__list">
+          <a href="#operation-maintenance">Operation &amp; Maintenance</a>
+          <a href="#project-execution">Project Execution</a>
+          <a href="#material-handling">Material Handling</a>
+          <a href="#mining-logistics">Mining &amp; Logistics</a>
+          <a href="#mechanised-cleaning">Mechanised Cleaning</a>
+          <a href="#design-consultation">Design &amp; Consultation</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============ DOMAIN BLOCKS ============
+         Alternating panel/content pairs, each panel driven by the shared
+         mosaic-reveal mechanic (see css/components.css .mosaic-grid,
+         js/animations.js#initMosaicReveal) via [data-mosaic-reveal]. -->
+    <section class="section">
+      <div class="container">
+
+        <div class="service-block" id="operation-maintenance">
+          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="0">
+            <span class="service-block__index">01</span>
+          </div>
+          <div class="service-block__content">
+            <p class="eyebrow">Domain 01</p>
+            <h2>Operation &amp; Maintenance</h2>
+            <p class="service-block__lead">
+              The day-to-day activities that keep every system and piece of
+              equipment performing reliably — integrating managerial, financial,
+              and technical dimensions so your facility's ecosystem works in
+              harmony.
+            </p>
+            <ul class="service-block__list">
+              <li>Operational assistance &amp; start-up activities</li>
+              <li>Productivity improvement programs</li>
+              <li>Asset optimization</li>
+              <li>Process control</li>
+            </ul>
+            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          </div>
+        </div>
+
+        <div class="service-block service-block--reverse" id="project-execution">
+          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="1">
+            <span class="service-block__index">02</span>
+          </div>
+          <div class="service-block__content">
+            <p class="eyebrow">Domain 02</p>
+            <h2>Project Execution</h2>
+            <p class="service-block__lead">
+              End-to-end delivery against engineering design standards and
+              applicable codes — backed by our own fabrication workshop in
+              Jharsuguda, running at ~200 MT/month capacity.
+            </p>
+            <ul class="service-block__list">
+              <li>Heavy structural components</li>
+              <li>Conveyor and piping systems</li>
+              <li>Pollution-control equipment</li>
+              <li>In-house fabrication workshop, ~200 MT/month capacity</li>
+            </ul>
+            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          </div>
+        </div>
+
+        <div class="service-block" id="material-handling">
+          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="2">
+            <span class="service-block__index">03</span>
+          </div>
+          <div class="service-block__content">
+            <p class="eyebrow">Domain 03</p>
+            <h2>Material Handling</h2>
+            <p class="service-block__lead">
+              Thoughtfully designed facility layouts and cost-effective flow
+              management across raw material, work-in-progress, finished goods,
+              and scrap disposal.
+            </p>
+            <ul class="service-block__list">
+              <li>Raw material &amp; WIP flow management</li>
+              <li>Finished goods handling</li>
+              <li>Scrap disposal</li>
+              <li>In-house fleet — hydras, cranes &amp; trailers</li>
+            </ul>
+            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          </div>
+        </div>
+
+        <div class="service-block service-block--reverse" id="mining-logistics">
+          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="3">
+            <span class="service-block__index">04</span>
+          </div>
+          <div class="service-block__content">
+            <p class="eyebrow">Domain 04</p>
+            <h2>Mining &amp; Logistics</h2>
+            <p class="service-block__lead">
+              A dependable, disciplined operation for high-volume mineral
+              transportation — coal, iron ore, and other bulk commodities —
+              plus internal shifting with real-time monitoring.
+            </p>
+            <ul class="service-block__list">
+              <li>High-volume mineral transportation (coal, iron ore &amp; bulk commodities)</li>
+              <li>Stockyard-to-conveyor shifting</li>
+              <li>Storage bunker logistics</li>
+              <li>Real-time monitoring</li>
+            </ul>
+            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          </div>
+        </div>
+
+        <div class="service-block" id="mechanised-cleaning">
+          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="0">
+            <span class="service-block__index">05</span>
+          </div>
+          <div class="service-block__content">
+            <p class="eyebrow">Domain 05</p>
+            <h2>Mechanised Cleaning</h2>
+            <p class="service-block__lead">
+              Advanced industrial housekeeping for facilities where cleanliness
+              and emissions compliance are non-negotiable.
+            </p>
+            <ul class="service-block__list">
+              <li>Truck-mounted &amp; ride-on road sweepers</li>
+              <li>Industrial vacuum systems</li>
+              <li>Dust suppression</li>
+              <li>High-pressure jetting</li>
+            </ul>
+            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          </div>
+        </div>
+
+        <div class="service-block service-block--reverse" id="design-consultation">
+          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="1">
+            <span class="service-block__index">06</span>
+          </div>
+          <div class="service-block__content">
+            <p class="eyebrow">Domain 06</p>
+            <h2>Design &amp; Consultation</h2>
+            <p class="service-block__lead">
+              Qualified engineers and domain specialists translating your
+              requirements into practical, efficient designs.
+            </p>
+            <ul class="service-block__list">
+              <li>Feasibility studies</li>
+              <li>URS documentation</li>
+              <li>Process optimisation for aluminium smelter carbon plants</li>
+              <li>Structural design &amp; detailing</li>
+            </ul>
+            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta section--tight">
+      <div class="container">
+        <div class="cta__inner" data-reveal>
+          <h2>Let's scope your next shutdown, project, or plant upgrade.</h2>
+          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo">
+          <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
+          KIPL
+        </a>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Site</h4>
+        <ul class="footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul class="footer__contact">
+          <li>Plot No. 100, Boxi Chowk,<br />Beherapat, Jharsuguda,<br />Odisha – 768202</li>
+          <li><a href="tel:+9106645291044">06645-291044</a></li>
+          <li><a href="tel:+919178470789">+91 91784 70789</a></li>
+          <li><a href="mailto:info@kipl.co">info@kipl.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Kainsara Infraprojects Pvt Ltd. All rights reserved.</span>
+      <span>CIN: U63000OR2009PTC011167 · MSME: UDYAM-OD-14-0000152</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger (CDN, no build step) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

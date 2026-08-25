@@ -150,24 +150,6 @@
   margin-bottom: var(--space-lg);
 }
 
-/* ---------- CTA band ---------- */
-
-.cta__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-lg);
-  padding: var(--space-xl) var(--space-xl);
-  background: var(--color-blue-100);
-  border-radius: var(--radius-lg);
-}
-
-.cta__inner h2 {
-  max-width: 20ch;
-  color: var(--color-blue-700);
-}
-
 @media (max-width: 700px) {
   /* 16:9 gets too short on phones to hold the card comfortably — trade the
      exact photo aspect ratio for a fixed floor here; background-size:cover
@@ -179,14 +161,6 @@
 
   .hero__card {
     max-width: none;
-    padding: var(--space-lg);
-  }
-}
-
-@media (max-width: 860px) {
-  .cta__inner {
-    flex-direction: column;
-    align-items: flex-start;
     padding: var(--space-lg);
   }
 }

@@ -370,6 +370,34 @@
   flex-shrink: 0;
 }
 
+/* ---------- CTA band ----------
+   Originally home-page-only; now shared (Services reuses it) so it lives
+   here rather than in css/home.css. */
+
+.cta__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-xl);
+  background: var(--color-blue-100);
+  border-radius: var(--radius-lg);
+}
+
+.cta__inner h2 {
+  max-width: 20ch;
+  color: var(--color-blue-700);
+}
+
+@media (max-width: 860px) {
+  .cta__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-lg);
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .footer {
