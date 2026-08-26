@@ -109,9 +109,11 @@
 }
 
 /* Set on <html> by index.html's inline <head> script when sessionStorage
-   already has the "seen it this session" flag — skips the preloader
-   outright (not just a faster animation) on repeat Home visits/refreshes
-   within the same browser session. New tab/session clears the flag. */
+   already has the "seen it" flag (localStorage, not sessionStorage — so
+   it holds across new tabs and browser restarts, not just the current
+   one) — skips the preloader outright (not just a faster animation) on
+   every repeat Home visit/refresh from here on. Only clears if the
+   visitor clears site data for this origin. */
 html.intro-seen .preloader {
   display: none;
 }

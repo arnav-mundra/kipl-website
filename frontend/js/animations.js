@@ -459,6 +459,48 @@
   }
 
   /**
+   * Every scroll-scrubbed mosaic-reveal/row-fade trigger above is built at
+   * DOMContentLoaded, from each host's position at that exact moment — but
+   * the page's real layout isn't necessarily final yet. Web fonts (Forum/
+   * Poppins/Inter, loaded async via the Google Fonts <link>) can swap in
+   * afterwards and change heading/paragraph line-heights, and the About
+   * page in particular has several text-heavy sections stacked above the
+   * mosaic-reveal photos — a late font swap shifts everything below it
+   * down (or up) by however much its box height changed.
+   *
+   * ScrollTrigger caches each trigger's start/end scroll position at setup
+   * time and does not re-measure on its own when something *else* on the
+   * page reflows later — see initMosaicRowFade's comment above for the
+   * same underlying lesson via a different reflow source (there: JS
+   * rewriting text content; here: async font loading). The visible
+   * symptom is identical either way: a trigger firing against a stale
+   * position looks like the pixel effect "sometimes doesn't appear" —
+   * whether it does depends on the font finishing loading before or after
+   * ScrollTrigger's initial calculation, which is inherently racy (network
+   * speed, cache state), hence "sometimes".
+   *
+   * Fix: call ScrollTrigger.refresh() once every font the page requested
+   * has actually loaded (document.fonts.ready), and again on window `load`
+   * as a second pass in case images (hero, team photos) still shifted
+   * anything despite their reserved aspect-ratio boxes. refresh()
+   * re-measures every trigger's start/end against current layout — safe to
+   * call more than once, it's a full recalculation, not a toggle.
+   */
+  function initScrollRefresh() {
+    if (!hasGsap || !window.ScrollTrigger) return;
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        window.ScrollTrigger.refresh();
+      });
+    }
+
+    window.addEventListener("load", function () {
+      window.ScrollTrigger.refresh();
+    });
+  }
+
+  /**
    * Hero background slideshow: cycles the photos listed in the host's
    * data-hero-images (comma-separated URLs), dissolving to the next one
    * every ~3.2s via the same mosaic-cell mechanic used elsewhere on the
@@ -554,6 +596,7 @@
     initMarquee: initMarquee,
     initMosaicReveal: initMosaicReveal,
     initMosaicRowFade: initMosaicRowFade,
+    initScrollRefresh: initScrollRefresh,
     initHeroSlideshow: initHeroSlideshow,
     prefersReducedMotion: prefersReducedMotion,
   };

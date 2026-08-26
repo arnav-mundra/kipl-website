@@ -7,20 +7,28 @@
        1. Scroll restoration to manual — otherwise a plain refresh reopens
           the page at whatever scroll position the visitor left it at.
        2. Intro-seen flag (Home-only) — the preloader below should only
-          ever play once per browser session, not on every Home visit/
-          refresh. See css/components.css "html.intro-seen .preloader".
+          ever play once, full stop, the very first time this browser
+          opens the site — not on every Home visit/refresh, and (per
+          explicit request) not even once per new tab/session. Uses
+          localStorage, not sessionStorage — sessionStorage is scoped per
+          TAB, so it was replaying on every new tab or browser restart,
+          which read to the user as "keeps loading every time". localStorage
+          persists until the visitor clears site data. See css/
+          components.css "html.intro-seen .preloader".
        3. Nav-transition-cover flag — set by js/main.js#initPageTransitions
           right before it navigates here from another page, so this page
           starts already covered by .page-transition and can animate the
-          reveal, instead of flashing unstyled content first. -->
+          reveal, instead of flashing unstyled content first. Still
+          sessionStorage — this one genuinely is a short-lived, per-
+          navigation handoff, not a "seen it" record. -->
   <script>
     (function () {
       if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
       try {
-        if (sessionStorage.getItem("kiplIntroSeen")) {
+        if (localStorage.getItem("kiplIntroSeen")) {
           document.documentElement.classList.add("intro-seen");
         } else {
-          sessionStorage.setItem("kiplIntroSeen", "1");
+          localStorage.setItem("kiplIntroSeen", "1");
         }
         if (sessionStorage.getItem("kiplNavigating")) {
           sessionStorage.removeItem("kiplNavigating");
