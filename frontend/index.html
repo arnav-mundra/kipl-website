@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <!-- Must run before first paint, hence inline + first thing in <head>
-       rather than in js/main.js (deferred, runs too late). Three jobs:
+       rather than in js/main.js (deferred, runs too late). Two jobs:
        1. Scroll restoration to manual — otherwise a plain refresh reopens
           the page at whatever scroll position the visitor left it at.
-       2. Intro-seen flag (Home-only) — the preloader below should only
-          ever play once, full stop, the very first time this browser
-          opens the site — not on every Home visit/refresh, and (per
-          explicit request) not even once per new tab/session. Uses
-          localStorage, not sessionStorage — sessionStorage is scoped per
-          TAB, so it was replaying on every new tab or browser restart,
-          which read to the user as "keeps loading every time". localStorage
-          persists until the visitor clears site data. See css/
-          components.css "html.intro-seen .preloader".
-       3. Nav-transition-cover flag — set by js/main.js#initPageTransitions
-          right before it navigates here from another page, so this page
-          starts already covered by .page-transition and can animate the
-          reveal, instead of flashing unstyled content first. Still
-          sessionStorage — this one genuinely is a short-lived, per-
-          navigation handoff, not a "seen it" record. -->
+       2. kiplNavigating (sessionStorage) is set by js/main.js
+          #initPageTransitions right before it intercepts a same-site link
+          click and navigates here. Its presence means this load is
+          in-site routing (clicking Home/logo/a "Get in Touch" link etc.
+          from elsewhere on the site) rather than someone actually opening
+          the link fresh — so both effects below only fire for genuine
+          direct loads (new tab, typed URL, external link, bookmark,
+          plain refresh) and are skipped for in-site navigation:
+            a. nav-transition-cover — starts the page already covered by
+               .page-transition so it can animate the reveal instead of
+               flashing unstyled content first.
+            b. skip-preloader — the preloader (below) is meant as Home's
+               one-time "just arrived at the site" moment, not something
+               that replays every time a visitor clicks back to Home from
+               another page they're already browsing. -->
   <script>
     (function () {
       if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
       try {
-        if (localStorage.getItem("kiplIntroSeen")) {
-          document.documentElement.classList.add("intro-seen");
-        } else {
-          localStorage.setItem("kiplIntroSeen", "1");
-        }
         if (sessionStorage.getItem("kiplNavigating")) {
           sessionStorage.removeItem("kiplNavigating");
           document.documentElement.classList.add("nav-transition-cover");
+          document.documentElement.classList.add("skip-preloader");
         }
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KIPL — Kainsara Infraprojects Pvt Ltd | Industrial Engineering Services, Odisha</title>
-  <meta name="description" content="KIPL partners with the aluminum, steel, coal, and power sectors across Odisha on operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation." />
+  <meta name="description"
+    content="KIPL partners with the aluminum, steel, coal, and power sectors across Odisha on operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,13 +45,16 @@
        .preloader__letter) — kept as the original intro typeface on request,
        decoupled from --font-display (Forum) which now covers everything
        else on the page. -->
-  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css" />
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/variables.css?v=3" />
+  <link rel="stylesheet" href="css/base.css?v=3" />
+  <link rel="stylesheet" href="css/components.css?v=3" />
+  <link rel="stylesheet" href="css/home.css?v=3" />
 </head>
+
 <body>
 
   <!-- ============ PAGE TRANSITION ============
@@ -66,8 +67,11 @@
        Pure-CSS intro (see css/base.css) — plays and self-dismisses via
        @keyframes alone, no JS/GSAP dependency, so it can never get stuck
        covering the site if a script fails to load or a tab's rAF stalls.
-       html.intro-seen (set in <head> above) hides this outright on repeat
-       Home visits within the same browser session. -->
+       Plays on every genuine direct load of Home (new tab, typed URL,
+       external link, bookmark, refresh) — no localStorage/"seen it"
+       persistence. html.skip-preloader (set above) is the only thing that
+       hides it, and only for the one case that isn't a fresh open: an
+       in-site link click landing back on Home. -->
   <div class="preloader" aria-hidden="true">
     <div class="preloader__inner">
       <div class="preloader__mark">
@@ -96,9 +100,11 @@
         <div class="nav__item nav__item--dropdown">
           <div class="nav__item-row">
             <a href="about.html" class="nav__link">About</a>
-            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown" aria-label="Show About sections">
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown"
+              aria-label="Show About sections">
               <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
-                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </button>
           </div>
@@ -113,7 +119,8 @@
 
       <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
 
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"
+        aria-controls="navLinks">
         <span></span>
       </button>
     </div>
@@ -129,12 +136,10 @@
            cycles them every 4s, dissolving cell-by-cell (same mosaic
            mechanic used elsewhere on the page) rather than a plain
            crossfade. Without JS, the first frame set below just holds. -->
-      <div
-        class="hero__stage"
-        data-hero-slideshow
-        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg"
-      >
-        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+      <div class="hero__stage" data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg">
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true">
+        </div>
         <div class="hero__scrim" aria-hidden="true"></div>
 
         <div class="container hero__stage-inner">
@@ -205,7 +210,8 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">Integrity first</p>
-            <p class="mosaic-row__desc"><strong>We believe</strong> ethics is the backbone of an establishment. We are uncompromising in our integrity, honesty, and fairness.</p>
+            <p class="mosaic-row__desc"><strong>We believe</strong> ethics is the backbone of an establishment. We are
+              uncompromising in our integrity, honesty, and fairness.</p>
           </div>
         </li>
         <li class="mosaic-row">
@@ -215,7 +221,8 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">People before output</p>
-            <p class="mosaic-row__desc"><strong>Health is wealth</strong> and life is invaluable. We are relentless in keeping people safe from harm and providing a healthy work environment.</p>
+            <p class="mosaic-row__desc"><strong>Health is wealth</strong> and life is invaluable. We are relentless in
+              keeping people safe from harm and providing a healthy work environment.</p>
           </div>
         </li>
         <li class="mosaic-row">
@@ -225,7 +232,9 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">Right, the first time</p>
-            <p class="mosaic-row__desc"><strong>We are passionate</strong> about excellence and doing our work right the first time. Our reputation depends on the value we deliver, in the eyes of every customer and community.</p>
+            <p class="mosaic-row__desc"><strong>We are passionate</strong> about excellence and doing our work right the
+              first time. Our reputation depends on the value we deliver, in the eyes of every customer and community.
+            </p>
           </div>
         </li>
         <li class="mosaic-row">
@@ -235,7 +244,8 @@
           </div>
           <div class="mosaic-row__detail">
             <p class="eyebrow">Built to last</p>
-            <p class="mosaic-row__desc"><strong>We improve</strong> the quality of life in the communities where we work by respecting local cultures, engaging local people, and protecting the environment.</p>
+            <p class="mosaic-row__desc"><strong>We improve</strong> the quality of life in the communities where we work
+              by respecting local cultures, engaging local people, and protecting the environment.</p>
           </div>
         </li>
       </ol>
@@ -261,7 +271,10 @@
             <h3 class="mosaic-row__name">Operation &amp; Maintenance</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>The day-to-day activities</strong> that keep every system and piece of equipment performing reliably — integrating managerial, financial, and technical dimensions so your facility's ecosystem works in harmony. Covers operational assistance, start-up activities, productivity improvement, asset optimization, and process control.</p>
+            <p class="mosaic-row__desc"><strong>The day-to-day activities</strong> that keep every system and piece of
+              equipment performing reliably — integrating managerial, financial, and technical dimensions so your
+              facility's ecosystem works in harmony. Covers operational assistance, start-up activities, productivity
+              improvement, asset optimization, and process control.</p>
             <a href="services.html#operation-maintenance" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -271,7 +284,9 @@
             <h3 class="mosaic-row__name">Project Execution</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>End-to-end delivery</strong> against engineering design standards and applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity for heavy structural components, conveyor and piping systems, and pollution-control equipment.</p>
+            <p class="mosaic-row__desc"><strong>End-to-end delivery</strong> against engineering design standards and
+              applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity
+              for heavy structural components, conveyor and piping systems, and pollution-control equipment.</p>
             <a href="services.html#project-execution" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -281,7 +296,9 @@
             <h3 class="mosaic-row__name">Material Handling</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Thoughtfully designed</strong> facility layouts and cost-effective flow management across raw material, work-in-progress, finished goods, and scrap disposal — supported by our in-house fleet of hydras, cranes, and trailers.</p>
+            <p class="mosaic-row__desc"><strong>Thoughtfully designed</strong> facility layouts and cost-effective flow
+              management across raw material, work-in-progress, finished goods, and scrap disposal — supported by our
+              in-house fleet of hydras, cranes, and trailers.</p>
             <a href="services.html#material-handling" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -291,7 +308,9 @@
             <h3 class="mosaic-row__name">Mining &amp; Logistics</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>A dependable, disciplined operation</strong> for high-volume mineral transportation — coal, iron ore, and other bulk commodities — plus internal shifting between stockyards, conveyor-feeding points, and storage bunkers with real-time monitoring.</p>
+            <p class="mosaic-row__desc"><strong>A dependable, disciplined operation</strong> for high-volume mineral
+              transportation — coal, iron ore, and other bulk commodities — plus internal shifting between stockyards,
+              conveyor-feeding points, and storage bunkers with real-time monitoring.</p>
             <a href="services.html#mining-logistics" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -301,7 +320,9 @@
             <h3 class="mosaic-row__name">Mechanised Cleaning</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Advanced industrial housekeeping</strong> for facilities where cleanliness and emissions compliance are non-negotiable — truck-mounted and ride-on road sweepers, industrial vacuum systems, dust suppression, and high-pressure jetting.</p>
+            <p class="mosaic-row__desc"><strong>Advanced industrial housekeeping</strong> for facilities where
+              cleanliness and emissions compliance are non-negotiable — truck-mounted and ride-on road sweepers,
+              industrial vacuum systems, dust suppression, and high-pressure jetting.</p>
             <a href="services.html#mechanised-cleaning" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -311,7 +332,9 @@
             <h3 class="mosaic-row__name">Design &amp; Consultation</h3>
           </div>
           <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Qualified engineers</strong> and domain specialists translating your requirements into practical, efficient designs — feasibility studies, URS documentation, process optimisation for aluminium smelter carbon plants, and structural design &amp; detailing.</p>
+            <p class="mosaic-row__desc"><strong>Qualified engineers</strong> and domain specialists translating your
+              requirements into practical, efficient designs — feasibility studies, URS documentation, process
+              optimisation for aluminium smelter carbon plants, and structural design &amp; detailing.</p>
             <a href="services.html#design-consultation" class="mosaic-row__link">Read more →</a>
           </div>
         </li>
@@ -376,6 +399,106 @@
       </div>
     </section>
 
+    <!-- ============ GROWTH TREND ============
+         Same underlying figures as projects.html's growth band (sourced
+         from docs/kipl latest profile.pdf, "Milestones" page) but a
+         different visual — a line chart instead of bars, and interactive:
+         the line draws itself in, the area fill fades underneath it, and
+         the point markers pop in with a stagger, all triggered once the
+         chart scrolls into view (js/animations.js#initTrendChart). 178%
+         is turnover's own growth from FY21-22 to FY25-26
+         ((100.82-36.27)/36.27), not a separately sourced figure. -->
+    <section class="growth-trend section--dark section--tight">
+      <div class="container growth-trend__grid">
+        <div class="growth-trend__intro" data-reveal>
+          <p class="eyebrow">The trajectory</p>
+          <h2>Growing every year since day one.</h2>
+          <p class="growth-trend__lead">
+            Turnover has climbed from &#8377;36.27 Cr to &#8377;100.82 Cr
+            over the last five years &mdash; and our workforce has scaled
+            right alongside it, from 900 to 1,470 people.
+          </p>
+          <div class="growth-trend__callout">
+            <span class="growth-trend__callout-value"><span
+                data-counter-to="178">0</span><span class="growth-trend__callout-suffix">%</span></span>
+            <span class="growth-trend__callout-label">Turnover growth since FY21-22</span>
+          </div>
+        </div>
+
+        <div class="growth-trend__chart">
+          <svg viewBox="0 0 600 260" class="trend-chart" data-trend-chart role="img"
+            aria-label="Turnover line chart, FY2021-22 to FY2025-26, rising from 36.27 to 100.82 crore rupees">
+            <defs>
+              <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" class="trend-chart__stop trend-chart__stop--start" />
+                <stop offset="100%" class="trend-chart__stop trend-chart__stop--end" />
+              </linearGradient>
+            </defs>
+
+            <line x1="24" y1="220" x2="576" y2="220" class="trend-chart__baseline" />
+
+            <path class="trend-chart__area" data-trend-area
+              d="M40,154.05 L170,127.16 L300,111.04 L430,110.24 L560,36.69 L560,220 L40,220 Z" />
+            <path class="trend-chart__line" data-trend-line
+              d="M40,154.05 L170,127.16 L300,111.04 L430,110.24 L560,36.69" />
+
+            <!-- Each point below is hoverable/focusable (js/animations.js
+                 #initTrendTooltip): a wider, invisible .trend-chart__hit
+                 circle sits over the small visible dot as a bigger, easier
+                 target, and shows a custom tooltip with that year's exact
+                 value — including the three middle years, which otherwise
+                 have no number printed anywhere on this chart. <title> is
+                 a native-tooltip/screen-reader fallback that needs no JS. -->
+            <g class="trend-chart__point" data-trend-point>
+              <circle class="trend-chart__dot" cx="40" cy="154.05" r="5" />
+              <text x="40" y="138" class="trend-chart__value">36.27</text>
+              <circle class="trend-chart__hit" data-trend-hit cx="40" cy="154.05" r="16" tabindex="0" data-r="5"
+                data-year="FY21-22" data-value="&#8377;36.27 Cr">
+                <title>FY21-22: &#8377;36.27 Cr</title>
+              </circle>
+            </g>
+            <g class="trend-chart__point" data-trend-point>
+              <circle class="trend-chart__dot" cx="170" cy="127.16" r="5" />
+              <circle class="trend-chart__hit" data-trend-hit cx="170" cy="127.16" r="16" tabindex="0" data-r="5"
+                data-year="FY22-23" data-value="&#8377;51.06 Cr">
+                <title>FY22-23: &#8377;51.06 Cr</title>
+              </circle>
+            </g>
+            <g class="trend-chart__point" data-trend-point>
+              <circle class="trend-chart__dot" cx="300" cy="111.04" r="5" />
+              <circle class="trend-chart__hit" data-trend-hit cx="300" cy="111.04" r="16" tabindex="0" data-r="5"
+                data-year="FY23-24" data-value="&#8377;59.93 Cr">
+                <title>FY23-24: &#8377;59.93 Cr</title>
+              </circle>
+            </g>
+            <g class="trend-chart__point" data-trend-point>
+              <circle class="trend-chart__dot" cx="430" cy="110.24" r="5" />
+              <circle class="trend-chart__hit" data-trend-hit cx="430" cy="110.24" r="16" tabindex="0" data-r="5"
+                data-year="FY24-25" data-value="&#8377;60.37 Cr">
+                <title>FY24-25: &#8377;60.37 Cr</title>
+              </circle>
+            </g>
+            <g class="trend-chart__point trend-chart__point--current" data-trend-point>
+              <circle class="trend-chart__dot" cx="560" cy="36.69" r="6" />
+              <text x="560" y="22" class="trend-chart__value">&#8377;100.82 Cr</text>
+              <circle class="trend-chart__hit" data-trend-hit cx="560" cy="36.69" r="16" tabindex="0" data-r="6"
+                data-year="FY25-26" data-value="&#8377;100.82 Cr">
+                <title>FY25-26: &#8377;100.82 Cr</title>
+              </circle>
+            </g>
+
+            <text x="40" y="240" class="trend-chart__year">FY21-22</text>
+            <text x="170" y="240" class="trend-chart__year">FY22-23</text>
+            <text x="300" y="240" class="trend-chart__year">FY23-24</text>
+            <text x="430" y="240" class="trend-chart__year">FY24-25</text>
+            <text x="560" y="240" class="trend-chart__year">FY25-26</text>
+          </svg>
+
+          <div class="trend-tooltip" data-trend-tooltip aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ CTA BAND ============ -->
     <section class="cta section--tight">
       <div class="container">
@@ -396,7 +519,8 @@
           <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
           KIPL
         </a>
-        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance
+          since 2009.</p>
       </div>
 
       <div class="footer__col">
@@ -432,7 +556,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js" defer></script>
-  <script src="js/animations.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <script src="js/animations.js?v=3" defer></script>
+  <script src="js/main.js?v=3" defer></script>
 </body>
+
 </html>

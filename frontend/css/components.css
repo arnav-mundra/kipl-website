@@ -53,10 +53,21 @@
   animation: preloader-type 0.5s steps(6) forwards;
 }
 
-.preloader__letter:nth-child(1) { animation-delay: 0.1s; }
-.preloader__letter:nth-child(2) { animation-delay: 0.32s; }
-.preloader__letter:nth-child(3) { animation-delay: 0.54s; }
-.preloader__letter:nth-child(4) { animation-delay: 0.76s; }
+.preloader__letter:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.preloader__letter:nth-child(2) {
+  animation-delay: 0.32s;
+}
+
+.preloader__letter:nth-child(3) {
+  animation-delay: 0.54s;
+}
+
+.preloader__letter:nth-child(4) {
+  animation-delay: 0.76s;
+}
 
 .preloader__cursor {
   display: inline-block;
@@ -77,19 +88,27 @@
 }
 
 @keyframes preloader-type {
-  to { clip-path: inset(0 0% 0 0); }
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
 }
 
 @keyframes preloader-cursor-in {
-  to { opacity: 1; }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes preloader-blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 @keyframes preloader-line {
-  to { transform: scaleX(1); }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @keyframes preloader-zoom {
@@ -100,7 +119,10 @@
 }
 
 @keyframes preloader-out {
-  from { opacity: 1; }
+  from {
+    opacity: 1;
+  }
+
   to {
     opacity: 0;
     visibility: hidden;
@@ -108,13 +130,13 @@
   }
 }
 
-/* Set on <html> by index.html's inline <head> script when sessionStorage
-   already has the "seen it" flag (localStorage, not sessionStorage — so
-   it holds across new tabs and browser restarts, not just the current
-   one) — skips the preloader outright (not just a faster animation) on
-   every repeat Home visit/refresh from here on. Only clears if the
-   visitor clears site data for this origin. */
-html.intro-seen .preloader {
+/* Set on <html> by index.html's inline <head> script only when this load
+   was routed here by an in-site link click (kiplNavigating), not a fresh
+   open — skips the preloader outright for that one case, so clicking back
+   to Home from elsewhere on the site doesn't replay the intro. Every
+   other way of reaching this page (new tab, typed URL, external link,
+   bookmark, refresh) still gets it, every time. */
+html.skip-preloader .preloader {
   display: none;
 }
 
@@ -171,8 +193,13 @@ html.nav-transition-cover .page-transition {
 }
 
 @keyframes page-transition-reveal {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 /* ---------- Nav ---------- */
@@ -465,13 +492,11 @@ html.nav-transition-cover .page-transition {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: linear-gradient(
-    180deg,
-    rgba(20, 33, 61, 0.65) 0%,
-    rgba(20, 33, 61, 0.08) 22%,
-    rgba(20, 33, 61, 0.08) 62%,
-    rgba(20, 33, 61, 0.55) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(20, 33, 61, 0.65) 0%,
+      rgba(20, 33, 61, 0.08) 22%,
+      rgba(20, 33, 61, 0.08) 62%,
+      rgba(20, 33, 61, 0.55) 100%);
   pointer-events: none;
 }
 
@@ -528,6 +553,7 @@ html.nav-transition-cover .page-transition {
 }
 
 @media (max-width: 700px) {
+
   /* 16:9 gets too short on phones to hold the card comfortably — trade the
      exact photo aspect ratio for a fixed floor here; background-size:cover
      still crops the photo cleanly, just shows less of it top-to-bottom. */
@@ -769,8 +795,8 @@ html.nav-transition-cover .page-transition {
   margin-bottom: var(--space-sm);
 }
 
-.footer__links li + li,
-.footer__contact li + li {
+.footer__links li+li,
+.footer__contact li+li {
   margin-top: var(--space-xs);
 }
 

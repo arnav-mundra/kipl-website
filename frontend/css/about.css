@@ -172,7 +172,7 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
-.md-desk__bio p + p {
+.md-desk__bio p+p {
   margin-top: var(--space-sm);
 }
 
@@ -251,11 +251,72 @@
   text-align: justify;
 }
 
+/* ---------- Heads of Department ---------- */
+/* Second tier below the leadership cards above — same card family
+   (mosaic-reveal photo, mono name, accent-colored title) but deliberately
+   smaller and lighter: white card + hairline border instead of the
+   leadership cards' saturated blue-100 fill + shadow, smaller photo, no
+   bio, h3 not h2 — still reads as a card, just a visibly lighter one, so
+   it lands as reporting into the leadership above rather than a fourth
+   peer. */
+.hod-head {
+  margin-top: var(--space-xl);
+  text-align: center;
+}
+
+.hod-head h3 {
+  margin-top: var(--space-3xs);
+}
+
+.hod-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.hod-card {
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  text-align: center;
+}
+
+.hod-card__photo {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-sm);
+  background-size: cover;
+  background-position: center top;
+  background-color: var(--color-blue-300);
+}
+
+.hod-card__name {
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+}
+
+.hod-card__title {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-accent);
+}
+
 @media (max-width: 860px) {
+
   .story-grid,
   .mission-grid,
   .values-strip,
-  .team-grid {
+  .team-grid,
+  .hod-grid {
     grid-template-columns: 1fr;
   }
 

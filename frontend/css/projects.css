@@ -1,0 +1,342 @@
+/* Projects page layout: hero, growth band, project case-study blocks, CTA
+   band. Component-level styling (buttons, nav, hero slideshow, mosaic
+   reveal, footer, CTA band) lives in components.css — this file is purely
+   projects-page arrangement. Layout mirrors services.css's .service-block
+   pattern (alternating panel/content pairs, same "few large sections"
+   shape) but swapped for project case studies with a value figure instead
+   of a domain index number. */
+
+/* ---------- Growth band ----------
+   section--dark, same background as Home's stat band — two-column
+   intro-text/chart pairing echoes about.css's .story-grid. The two
+   headline stats (.growth-stat) are a self-contained variant of Home's
+   .stat/.stat__value pattern rather than sharing that home.css rule
+   directly, matching how every other page here keeps its own
+   page-specific classes even where the visual language repeats. */
+
+.growth__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.growth__lead {
+  margin-top: var(--space-sm);
+  max-width: 48ch;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.growth-stats {
+  display: flex;
+  gap: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+.growth-stat__value {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 2.4vw, 2.5rem);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+.growth-stat__suffix {
+  font-size: 0.5em;
+  color: var(--color-orange-100);
+  margin-inline-start: 0.15em;
+}
+
+.growth-stat__label {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.growth__chart {
+  width: 100%;
+}
+
+.growth-chart {
+  width: 100%;
+  height: auto;
+}
+
+.growth-chart__baseline {
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 1;
+}
+
+/* Muted for the four earlier years; the current year is picked out in the
+   full accent orange (.growth-chart__bar--current) so the eye lands on
+   where the growth has arrived, not just that it happened. */
+.growth-chart__bar rect {
+  fill: var(--color-blue-300);
+}
+
+.growth-chart__bar--current rect {
+  fill: var(--color-accent);
+}
+
+.growth-chart__value {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: rgba(255, 255, 255, 0.85);
+}
+
+.growth-chart__bar--current .growth-chart__value {
+  fill: var(--color-white);
+}
+
+.growth-chart__year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.growth-chart__caption {
+  margin-top: var(--space-sm);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 860px) {
+  .growth__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .growth-stats {
+    gap: var(--space-lg);
+  }
+}
+
+.project-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+  padding-block: var(--space-2xl);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.project-block:last-child {
+  border-bottom: none;
+}
+
+.project-block--reverse .project-block__panel {
+  order: 2;
+}
+
+.project-block__panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  /* Fallback if JS/canvas can't run — matches .service-block__panel's
+     rationale. No real jobsite photography exists for these contracts
+     yet, so (like .service-block__panel) this stays a generated
+     mosaic-reveal texture rather than a photo. */
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+}
+
+/* Above the mosaic-reveal cells (z-index: 2, see components.css
+   .mosaic-grid) so the value stays legible through the whole reveal,
+   same layering .service-block__index uses for its domain number. */
+.project-block__value {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+.project-block__value-suffix {
+  font-size: 0.4em;
+  margin-inline-start: 0.15em;
+  color: var(--color-orange-100);
+}
+
+.project-block__value-label {
+  position: relative;
+  z-index: 3;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.project-block__content .eyebrow {
+  margin-bottom: var(--space-2xs);
+}
+
+.project-block__meta {
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.project-block__lead {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-soft);
+  max-width: 52ch;
+}
+
+.project-block__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-blue-500);
+}
+
+.project-block__link:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 860px) {
+  .project-block {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding-block: var(--space-xl);
+  }
+
+  /* Panel always leads on mobile regardless of the desktop alternation. */
+  .project-block__panel,
+  .project-block__content {
+    order: 0;
+  }
+}
+
+/* ---------- Status pill ----------
+   "Ongoing" flag on the two currently-running project blocks. The dot's
+   pulse is a plain CSS animation, so base.css's global reduced-motion
+   override (which zeroes every animation-duration) neutralizes it for
+   free — no extra media query needed here. */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  margin-bottom: var(--space-sm);
+  padding: 0.3em 0.85em;
+  border-radius: 999px;
+  background: var(--color-orange-100);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-orange-600);
+}
+
+.status-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: status-pill-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes status-pill-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ---------- Completed engagements ----------
+   Deliberately lighter than the project-block case studies above — same
+   hierarchy move as about.css's Heads of Department tier (still a
+   bordered card, just visibly smaller and text-only, no mosaic panel) —
+   so this reads as supporting track record, not the main pitch. */
+
+.project-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.project-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+}
+
+.project-row__main h3 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+}
+
+.project-row__desc {
+  margin-top: var(--space-3xs);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  max-width: 52ch;
+}
+
+.project-row__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3xs);
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  text-align: right;
+}
+
+.project-row__meta span:last-child {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+@media (max-width: 640px) {
+  .project-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-row__meta {
+    align-items: flex-start;
+    text-align: left;
+  }
+}

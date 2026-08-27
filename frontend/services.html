@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <!-- See index.html's <head> comment for why this is inline and first.
@@ -13,22 +14,26 @@
           sessionStorage.removeItem("kiplNavigating");
           document.documentElement.classList.add("nav-transition-cover");
         }
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services — KIPL | Operation &amp; Maintenance, Project Execution, Material Handling &amp; More</title>
-  <meta name="description" content="KIPL's six service domains: operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation for Odisha's aluminum, steel, coal, and power sectors." />
+  <meta name="description"
+    content="KIPL's six service domains: operation & maintenance, project execution, material handling, mining & logistics, mechanised cleaning, and design & consultation for Odisha's aluminum, steel, coal, and power sectors." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css" />
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/services.css" />
+  <link rel="stylesheet" href="css/variables.css?v=3" />
+  <link rel="stylesheet" href="css/base.css?v=3" />
+  <link rel="stylesheet" href="css/components.css?v=3" />
+  <link rel="stylesheet" href="css/services.css?v=3" />
 </head>
+
 <body>
 
   <!-- ============ PAGE TRANSITION ============
@@ -57,9 +62,11 @@
         <div class="nav__item nav__item--dropdown">
           <div class="nav__item-row">
             <a href="about.html" class="nav__link">About</a>
-            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown" aria-label="Show About sections">
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown"
+              aria-label="Show About sections">
               <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
-                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </button>
           </div>
@@ -74,7 +81,8 @@
 
       <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
 
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"
+        aria-controls="navLinks">
         <span></span>
       </button>
     </div>
@@ -88,12 +96,10 @@
          css/components.css .hero for why this now lives there, not
          css/home.css. -->
     <section class="hero">
-      <div
-        class="hero__stage"
-        data-hero-slideshow
-        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg"
-      >
-        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+      <div class="hero__stage" data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg">
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true">
+        </div>
         <div class="hero__scrim" aria-hidden="true"></div>
 
         <div class="container hero__stage-inner">
@@ -285,7 +291,8 @@
           <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
           KIPL
         </a>
-        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance
+          since 2009.</p>
       </div>
 
       <div class="footer__col">
@@ -318,7 +325,8 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <script src="js/animations.js?v=3" defer></script>
+  <script src="js/main.js?v=3" defer></script>
 </body>
+
 </html>

@@ -54,3 +54,192 @@
   margin-bottom: var(--space-lg);
 }
 
+/* ---------- Growth trend ---------- */
+/* section--dark, two-column intro/chart pairing — same shape as
+   projects.css's .growth__grid (that page's dark growth band), but this
+   one is a line chart instead of bars, and animates on scroll rather than
+   just fading in. See js/animations.js#initTrendChart for the actual
+   line-draw/point-pop behavior; the CSS below only sets up the states
+   that script animates between. */
+
+.growth-trend__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.growth-trend__lead {
+  margin-top: var(--space-sm);
+  max-width: 48ch;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.growth-trend__callout {
+  margin-top: var(--space-lg);
+}
+
+.growth-trend__callout-value {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 3vw, 3.25rem);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+.growth-trend__callout-suffix {
+  font-size: 0.6em;
+  color: var(--color-orange-100);
+  margin-inline-start: 0.1em;
+}
+
+.growth-trend__callout-label {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.growth-trend__chart {
+  width: 100%;
+  position: relative;
+}
+
+.trend-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.trend-chart__baseline {
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 1;
+}
+
+/* Gradient stops need a real CSS rule (not a bare SVG attribute) for
+   var() to resolve — see js/animations.js#initTrendChart's comment on why
+   the fill/stroke colors throughout this chart follow the same rule. */
+.trend-chart__stop--start {
+  stop-color: var(--color-accent);
+  stop-opacity: 0.32;
+}
+
+.trend-chart__stop--end {
+  stop-color: var(--color-accent);
+  stop-opacity: 0;
+}
+
+/* Hidden by default (opacity: 0) — js/animations.js#initTrendChart is
+   what reveals these, either by animating them in on scroll or, if
+   GSAP/ScrollTrigger can't run, snapping them straight to visible. */
+.trend-chart__area {
+  fill: url(#trendFill);
+  opacity: 0;
+}
+
+.trend-chart__line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+
+/* Opacity only — no transform/scale here. transform-box: fill-box origin
+   resolution for a <g> mixing a circle with a wide text label proved
+   unreliable across browsers (see js/animations.js#initTrendChart's
+   comment) and collapsed every point toward one shared spot instead of
+   popping in place. The "grow" effect comes from animating each circle's
+   r attribute directly instead, which has no origin to get wrong. */
+.trend-chart__point {
+  opacity: 0;
+}
+
+.trend-chart__dot {
+  fill: var(--color-accent);
+}
+
+.trend-chart__point--current .trend-chart__dot {
+  fill: var(--color-white);
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+}
+
+/* The hover-grow itself is driven by js/animations.js#initTrendTooltip
+   changing the dot's r attribute directly, not by this class — see that
+   function's comment for why (this engine accepts CSS r writes without
+   ever painting them). .is-hovered still gets toggled here as a hook for
+   any other hover-only styling this chart picks up later. */
+
+/* Wider than the visible dot on purpose — a 5px-radius target is fussy
+   to hit with a mouse and worse on touch. Invisible (fill: transparent,
+   not display: none/opacity: 0, which would also kill pointer-events),
+   focusable so keyboard users can reach every point, not just the two
+   with a printed value. */
+.trend-chart__hit {
+  fill: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.trend-chart__hit:focus-visible {
+  fill: rgba(255, 255, 255, 0.08);
+}
+
+.trend-chart__value {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: var(--color-white);
+}
+
+.trend-chart__year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- Trend chart tooltip ----------
+   Plain HTML, absolutely positioned over the SVG by
+   js/animations.js#initTrendTooltip (which measures the hovered point's
+   actual on-screen position via getBoundingClientRect — simpler and more
+   reliable than doing that math in SVG user-space). Positioning is
+   event-driven (mouseenter/focus), not animation-loop-driven, so it works
+   the same regardless of whether the reveal above has run yet. */
+.trend-tooltip {
+  position: absolute;
+  z-index: 5;
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 10px 24px -12px rgba(20, 33, 61, 0.35);
+  opacity: 0;
+  transform: translate(-50%, -100%) translateY(-10px);
+  transition: opacity var(--dur-fast) var(--ease-out);
+  pointer-events: none;
+}
+
+.trend-tooltip.is-visible {
+  opacity: 1;
+}
+
+@media (max-width: 860px) {
+  .growth-trend__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+

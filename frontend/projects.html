@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- See index.html's <head> comment for why this is inline and first.
+       No intro-seen flag here — the preloader is Home-only, this page only
+       needs scroll-restoration and the nav-transition-cover handoff. -->
+  <script>
+    (function () {
+      if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
+      try {
+        if (sessionStorage.getItem("kiplNavigating")) {
+          sessionStorage.removeItem("kiplNavigating");
+          document.documentElement.classList.add("nav-transition-cover");
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — KIPL | Major Contracts Across Odisha's Aluminium, Steel &amp; Power Sectors</title>
+  <meta name="description"
+    content="What KIPL is working on right now, plus a track record of completed operations, fabrication, and start-up contracts for Vedanta, Tata Steel, and Balco across Odisha and Chhattisgarh." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css?v=3" />
+  <link rel="stylesheet" href="css/base.css?v=3" />
+  <link rel="stylesheet" href="css/components.css?v=3" />
+  <link rel="stylesheet" href="css/projects.css?v=3" />
+</head>
+
+<body>
+
+  <!-- ============ PAGE TRANSITION ============
+       Shared full-viewport fade flash for in-site navigation (see
+       css/components.css .page-transition and js/main.js
+       #initPageTransitions). Present on every page, identical markup. -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <!-- No preloader here on purpose — it's Home-only. See services.html. -->
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/images/kipl-logo.jpeg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">KIPL</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="services.html" class="nav__link">Services</a>
+        <a href="projects.html" class="nav__link is-active">Projects</a>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="about.html" class="nav__link">About</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown"
+              aria-label="Show About sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="aboutDropdown">
+            <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
+            <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
+            <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+          </div>
+        </div>
+        <a href="contact.html" class="nav__link">Contact</a>
+      </nav>
+
+      <a href="contact.html" class="btn btn--primary nav__cta">Get in Touch</a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"
+        aria-controls="navLinks">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============
+         Same component as Home/Services: full-bleed photo slideshow, same
+         six photos, same mosaic-cell dissolve
+         (js/animations.js#initHeroSlideshow). -->
+    <section class="hero">
+      <div class="hero__stage" data-hero-slideshow
+        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg">
+        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true">
+        </div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="container hero__stage-inner">
+          <div class="hero__card">
+            <p class="eyebrow" data-reveal-hero>Our work</p>
+            <h1 data-reveal-hero>Delivering on Odisha's toughest industrial sites.</h1>
+            <p class="hero__lead" data-reveal-hero>
+              A look at what KIPL is building right now, backed by a track
+              record of completed operations, fabrication, and start-up
+              contracts across the aluminium, steel, and power sectors.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GROWTH BAND ============
+         Turnover & manpower growth, sourced from the company profile PDF
+         (docs/kipl latest profile.pdf, "Milestones" page) — real figures,
+         not used anywhere else on the site yet. Plain inline SVG bar
+         chart, no charting library; bar heights are scaled proportionally
+         to the actual Rs Cr values, and every value is also printed as
+         text above its bar. -->
+    <section class="growth section--dark section--tight">
+      <div class="container growth__grid">
+        <div class="growth__intro" data-reveal>
+          <p class="eyebrow">Our growth</p>
+          <h2>Five years of consistent growth.</h2>
+          <p class="growth__lead">
+            Turnover has nearly tripled since FY21-22, and our workforce
+            has grown alongside it &mdash; from 900 to 1,470 people over
+            the same five years.
+          </p>
+          <div class="growth-stats">
+            <div class="growth-stat">
+              <span class="growth-stat__value">&#8377;100.82<span class="growth-stat__suffix">Cr</span></span>
+              <span class="growth-stat__label">FY25-26 Turnover</span>
+            </div>
+            <div class="growth-stat">
+              <span class="growth-stat__value">1,470<span class="growth-stat__suffix">+</span></span>
+              <span class="growth-stat__label">Workforce Strength</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="growth__chart" data-reveal>
+          <svg viewBox="0 0 440 240" class="growth-chart" role="img"
+            aria-label="Turnover growth chart, FY2021-22 to FY2025-26: 36.27, 51.06, 59.93, 60.37, and 100.82 crore rupees">
+            <line x1="0" y1="200" x2="440" y2="200" class="growth-chart__baseline" />
+            <g class="growth-chart__bar">
+              <rect x="24" y="147.2" width="56" height="52.8" rx="4" />
+              <text x="52" y="137" class="growth-chart__value">36.27</text>
+              <text x="52" y="220" class="growth-chart__year">FY21-22</text>
+            </g>
+            <g class="growth-chart__bar">
+              <rect x="108" y="125.7" width="56" height="74.3" rx="4" />
+              <text x="136" y="115" class="growth-chart__value">51.06</text>
+              <text x="136" y="220" class="growth-chart__year">FY22-23</text>
+            </g>
+            <g class="growth-chart__bar">
+              <rect x="192" y="112.8" width="56" height="87.2" rx="4" />
+              <text x="220" y="102" class="growth-chart__value">59.93</text>
+              <text x="220" y="220" class="growth-chart__year">FY23-24</text>
+            </g>
+            <g class="growth-chart__bar">
+              <rect x="276" y="112.2" width="56" height="87.8" rx="4" />
+              <text x="304" y="102" class="growth-chart__value">60.37</text>
+              <text x="304" y="220" class="growth-chart__year">FY24-25</text>
+            </g>
+            <g class="growth-chart__bar growth-chart__bar--current">
+              <rect x="360" y="53.3" width="56" height="146.7" rx="4" />
+              <text x="388" y="43" class="growth-chart__value">100.82</text>
+              <text x="388" y="220" class="growth-chart__year">FY25-26</text>
+            </g>
+          </svg>
+          <p class="growth-chart__caption">Turnover, &#8377; Cr</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CURRENTLY WORKING ON ============
+         The main event on this page: contracts still running today (end
+         year is 2026 or later). Same alternating panel/content shape as
+         Services' .service-block (see css/projects.css), reused here for
+         project case studies. Panel shows the approx. contract value —
+         sourced from docs/Projects Print.xlsx — over the shared
+         mosaic-reveal generated texture (no real jobsite photos available
+         yet), same mechanic as css/components.css .mosaic-grid /
+         js/animations.js#initMosaicReveal via [data-mosaic-reveal]. More
+         entries will land here once further ongoing-project details come
+         in. -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>In progress</p>
+          <h2 class="section-head__title" data-reveal>Currently working on.</h2>
+        </div>
+
+        <div class="project-block">
+          <div class="project-block__panel" data-mosaic-reveal data-mosaic-tone="2">
+            <span class="project-block__value">&#8377;75<span class="project-block__value-suffix">Cr</span></span>
+            <span class="project-block__value-label">Approx. contract value</span>
+          </div>
+          <div class="project-block__content">
+            <span class="status-pill"><span class="status-pill__dot" aria-hidden="true"></span>Ongoing</span>
+            <p class="eyebrow">Operation &amp; Maintenance &middot; 2024&ndash;27</p>
+            <h2>Vedanta &mdash; Potline 1 &amp; 2 Operations</h2>
+            <p class="project-block__meta">Jharsuguda, Odisha</p>
+            <p class="project-block__lead">
+              Full operational management of Potline 1 &amp; 2 at Vedanta's
+              Jharsuguda aluminium smelter &mdash; KIPL's largest ongoing
+              operations contract to date.
+            </p>
+            <a href="contact.html" class="project-block__link">Discuss a similar project &rarr;</a>
+          </div>
+        </div>
+
+        <div class="project-block project-block--reverse">
+          <div class="project-block__panel" data-mosaic-reveal data-mosaic-tone="3">
+            <span class="project-block__value">&#8377;10.8<span class="project-block__value-suffix">Cr</span></span>
+            <span class="project-block__value-label">Approx. contract value</span>
+          </div>
+          <div class="project-block__content">
+            <span class="status-pill"><span class="status-pill__dot" aria-hidden="true"></span>Ongoing</span>
+            <p class="eyebrow">Start-up Activities &middot; 2025&ndash;26</p>
+            <h2>Balco &mdash; Start-up of Potline 3</h2>
+            <p class="project-block__meta">Korba, Chhattisgarh</p>
+            <p class="project-block__lead">
+              Commissioning and start-up support for Balco's new Potline 3,
+              bringing fresh smelting capacity online.
+            </p>
+            <a href="contact.html" class="project-block__link">Discuss a similar project &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ COMPLETED PROJECTS ============
+         Secondary to the section above on purpose: a compact row list, not
+         the big mosaic panels — same "still a card, but visibly lighter"
+         hierarchy move as about.html's Heads of Department tier. Proof of
+         track record, not the main pitch. -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>Track record</p>
+          <h2 class="section-head__title" data-reveal>Completed engagements.</h2>
+        </div>
+
+        <div class="project-rows">
+          <div class="project-row" data-reveal>
+            <div class="project-row__main">
+              <h3>Tata Steel &mdash; Mechanised Housekeeping</h3>
+              <p class="project-row__desc">
+                Mechanised housekeeping across all plant areas using
+                industrial vacuum cleaning and sweeping machines.
+              </p>
+            </div>
+            <div class="project-row__meta">
+              <span>Angul, Odisha</span>
+              <span>2021&ndash;24</span>
+              <span>&#8377;30.2 Cr</span>
+            </div>
+          </div>
+
+          <div class="project-row" data-reveal>
+            <div class="project-row__main">
+              <h3>Vedanta &mdash; Carbon Area Operations</h3>
+              <p class="project-row__desc">
+                Multi-year operation of the carbon plant area at Vedanta's
+                Jharsuguda smelter.
+              </p>
+            </div>
+            <div class="project-row__meta">
+              <span>Jharsuguda, Odisha</span>
+              <span>2019&ndash;22</span>
+              <span>&#8377;42.8 Cr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta section--tight">
+      <div class="container">
+        <div class="cta__inner" data-reveal>
+          <h2>Have a similar site or shutdown coming up?</h2>
+          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo">
+          <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
+          KIPL
+        </a>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance
+          since 2009.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Site</h4>
+        <ul class="footer__links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul class="footer__contact">
+          <li>Plot No. 100, Boxi Chowk,<br />Beherapat, Jharsuguda,<br />Odisha – 768202</li>
+          <li><a href="tel:+919178470789">+91 91784 70789</a></li>
+          <li><a href="mailto:info@kipl.co">info@kipl.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Kainsara Infraprojects Pvt Ltd. All rights reserved.</span>
+      <span>CIN: U63000OR2009PTC011167 · MSME: UDYAM-OD-14-0000152</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger (CDN, no build step) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/animations.js?v=3" defer></script>
+  <script src="js/main.js?v=3" defer></script>
+</body>
+
+</html>

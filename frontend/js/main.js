@@ -259,6 +259,8 @@
       window.KIPL.animations.initHeroIntro();
       window.KIPL.animations.initReveals();
       window.KIPL.animations.initCounters();
+      window.KIPL.animations.initTrendChart();
+      window.KIPL.animations.initTrendTooltip();
       window.KIPL.animations.initMarquee();
     }
   });

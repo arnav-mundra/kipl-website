@@ -132,6 +132,157 @@
   }
 
   /**
+   * Draws in the Home growth-trend line chart (Home only —
+   * [data-trend-chart], see index.html) as it scrolls into view: the line
+   * traces itself via a stroke-dashoffset tween (the standard SVG
+   * "line-draw" technique — measure the path's real rendered length with
+   * getTotalLength(), since that varies with the path's actual geometry
+   * and can't be hardcoded in CSS), the area fill fades in underneath it,
+   * then the point markers fade in and their dots grow from r:0 back to
+   * their real radius. Same once-per-page-load, no-replay-on-rescroll
+   * behavior as initCounters (ScrollTrigger once: true) and the same
+   * GSAP/reduced-motion fallback shape used throughout this file — if
+   * either is unavailable, every piece just snaps straight to its
+   * finished state instead of animating.
+   *
+   * Deliberately NOT animating the point <g>s via CSS transform: scale()
+   * — transform-box: fill-box origin resolution for an SVG <g> containing
+   * both a circle and (on two of the five points) a wide text label is
+   * unreliable across browsers, and in practice collapsed every point
+   * toward one shared, wrong-looking spot instead of scaling each from
+   * its own center. Animating the circle's r attribute directly sidesteps
+   * transform-origin entirely — there's no origin ambiguity in growing a
+   * circle from its own cx/cy — and the text labels get a plain opacity
+   * fade, which has no origin concept to get wrong either.
+   */
+  function initTrendChart() {
+    var chart = document.querySelector("[data-trend-chart]");
+    if (!chart) return;
+
+    var line = chart.querySelector("[data-trend-line]");
+    var area = chart.querySelector("[data-trend-area]");
+    var points = chart.querySelectorAll("[data-trend-point]");
+    // .trend-chart__dot specifically, not a bare "circle" — each point
+    // also has a larger invisible .trend-chart__hit circle
+    // (js/animations.js#initTrendTooltip) for easier hovering, which
+    // must NOT be swept into this same grow-in tween.
+    var dots = chart.querySelectorAll("[data-trend-point] .trend-chart__dot");
+
+    if (!hasGsap || !window.ScrollTrigger || prefersReducedMotion) {
+      if (line) line.style.opacity = 1;
+      if (area) area.style.opacity = 1;
+      points.forEach(function (p) {
+        p.style.opacity = 1;
+      });
+      return;
+    }
+
+    var length = line.getTotalLength();
+    line.style.strokeDasharray = length;
+    line.style.strokeDashoffset = length;
+
+    var radii = [];
+    dots.forEach(function (dot, i) {
+      radii[i] = parseFloat(dot.getAttribute("r"));
+      dot.setAttribute("r", 0);
+    });
+
+    window.ScrollTrigger.create({
+      trigger: chart,
+      start: "top 75%",
+      once: true,
+      onEnter: function () {
+        window.gsap
+          .timeline()
+          .to(line, { opacity: 1, strokeDashoffset: 0, duration: 1.4, ease: "power2.out" })
+          .to(area, { opacity: 1, duration: 0.8, ease: "power1.out" }, "-=0.7")
+          .to(points, { opacity: 1, duration: 0.4, ease: "power1.out", stagger: 0.12 }, "-=1.1")
+          .to(
+            dots,
+            {
+              attr: { r: function (i) { return radii[i]; } },
+              duration: 0.5,
+              ease: "back.out(2)",
+              stagger: 0.12,
+            },
+            "-=1.1"
+          );
+      },
+    });
+  }
+
+  /**
+   * Hover/focus tooltip for the Home growth-trend chart's five points
+   * (see index.html's .trend-chart__hit circles) — reveals that year's
+   * exact turnover figure, including the three middle years that have no
+   * value printed anywhere else on the chart, and grows the dot slightly
+   * for feedback. Deliberately independent of ScrollTrigger and of
+   * initTrendChart's reveal-on-scroll: this is plain, always-on
+   * mouseenter/focus handling, not tied to any animation frame loop, so
+   * it works immediately regardless of whether the chart has finished (or
+   * even started) its scroll-triggered draw-in.
+   *
+   * The dot grows via a direct r-attribute change (GSAP-tweened if
+   * available, an instant set otherwise), not a CSS r transition — this
+   * browser engine accepts writes to a circle's CSS `r` property but
+   * never actually paints them (confirmed via getComputedStyle staying
+   * frozen at the attribute value regardless), so a CSS-only version of
+   * this silently did nothing. Attribute writes are what
+   * initTrendChart's own reveal animation already uses successfully, so
+   * this reuses that same proven mechanism instead. Each hit circle's
+   * data-r is its dot's real resting radius, read once from markup —
+   * not from the dot's live r attribute, which initTrendChart may have
+   * already zeroed out for its own reveal tween by the time this runs.
+   */
+  function initTrendTooltip() {
+    var chart = document.querySelector("[data-trend-chart]");
+    var tooltip = document.querySelector("[data-trend-tooltip]");
+    if (!chart || !tooltip) return;
+
+    var container = tooltip.parentElement;
+    var hits = chart.querySelectorAll("[data-trend-hit]");
+
+    function growDot(hit, r) {
+      var point = hit.closest("[data-trend-point]");
+      var dot = point ? point.querySelector(".trend-chart__dot") : null;
+      if (!dot) return;
+      if (hasGsap) {
+        window.gsap.to(dot, { attr: { r: r }, duration: 0.2, ease: "power1.out" });
+      } else {
+        dot.setAttribute("r", r);
+      }
+    }
+
+    function show(hit) {
+      var point = hit.closest("[data-trend-point]");
+      if (point) point.classList.add("is-hovered");
+      growDot(hit, parseFloat(hit.getAttribute("data-r")) + 3);
+
+      tooltip.textContent = hit.getAttribute("data-year") + " · " + hit.getAttribute("data-value");
+
+      var hitBox = hit.getBoundingClientRect();
+      var containerBox = container.getBoundingClientRect();
+      tooltip.style.left = hitBox.left + hitBox.width / 2 - containerBox.left + "px";
+      tooltip.style.top = hitBox.top - containerBox.top + "px";
+      tooltip.classList.add("is-visible");
+    }
+
+    function hide(hit) {
+      var point = hit.closest("[data-trend-point]");
+      if (point) point.classList.remove("is-hovered");
+      growDot(hit, parseFloat(hit.getAttribute("data-r")));
+      tooltip.classList.remove("is-visible");
+    }
+
+    hits.forEach(function (hit) {
+      hit.addEventListener("mouseenter", function () { show(hit); });
+      hit.addEventListener("mouseleave", function () { hide(hit); });
+      hit.addEventListener("focus", function () { show(hit); });
+      hit.addEventListener("blur", function () { hide(hit); });
+    });
+  }
+
+  /**
    * Continuously loops the client-logo marquee track (its HTML content is
    * duplicated once so a full-width translate is seamless). Runs
    * continuously, including under the cursor — deliberately no
@@ -663,6 +814,8 @@
     initHeroIntro: initHeroIntro,
     initReveals: initReveals,
     initCounters: initCounters,
+    initTrendChart: initTrendChart,
+    initTrendTooltip: initTrendTooltip,
     initMarquee: initMarquee,
     initMosaicReveal: initMosaicReveal,
     initMosaicRowFade: initMosaicRowFade,

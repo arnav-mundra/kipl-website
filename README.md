@@ -68,20 +68,36 @@ python -m http.server 8791
 
 Then open `http://localhost:8791`.
 
+**Cache-busting while developing:** every `<link rel="stylesheet">` and
+`<script src>` pointing at `css/` or `js/` carries a shared `?v=N` query
+string (e.g. `css/base.css?v=1`). `python -m http.server` sends no
+cache-control headers at all, which lets browsers silently serve a stale
+copy of a CSS/JS file after you've edited it — a plain refresh (even
+Ctrl+Shift+R, sometimes) isn't reliable, only a cache-cleared/private
+window is, and that's easy to forget mid-session and chase a "fix" for
+what's actually just a stale tab. **Bump `?v=N` by one, across all five
+HTML pages, every time you edit any file in `css/` or `js/`** — that
+forces every browser to treat it as a new URL and fetch it fresh, no
+private window needed. It's one shared number for all assets on all
+pages (not per-file), so bumping is a single find-and-replace. Google
+Fonts/CDN `<link>`/`<script>` tags don't need this — only local
+`css/`/`js/` files.
+
 ## Adding pages
 
-`index.html`, `services.html`, and `about.html` are built. `projects.html`
-and `contact.html` are linked from the nav already but don't exist yet —
-each new page goes directly in `frontend/`, next to the others, reusing
+`index.html`, `services.html`, `about.html`, `projects.html`, and
+`contact.html` are all built. A future new page goes directly in
+`frontend/`, next to the others, reusing
 `css/` and `js/` as-is: shared styling lives in `css/components.css`
 (nav, hero, footer, buttons, the mosaic-reveal effect, the page
 transition), page-specific layout gets its own `css/<page>.css` (see
 `home.css`/`services.css`/`about.css` for the pattern). Every page also
 needs the same inline `<head>` script (scroll-restoration +
 nav-transition-cover handoff — copy it from `services.html` or
-`about.html`, *not* `index.html`, which has an extra intro-seen check
-that's deliberately Home-only) and the `.page-transition` div right after
-`<body>`.
+`about.html`, *not* `index.html`, which has no nav-transition-cover
+concerns of its own but does carry the Home-only preloader markup), the
+`.page-transition` div right after `<body>`, and the same `?v=N` on its
+own `css/`/`js/` links (see "Cache-busting while developing" above).
 
 About's dropdown (Mission & Vision / MD's Desk / Our Team) is a
 reference pattern worth reusing if a future page needs the same
