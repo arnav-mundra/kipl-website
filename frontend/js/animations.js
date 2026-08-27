@@ -153,7 +153,7 @@
     if (!hasGsap || prefersReducedMotion) return;
 
     function start() {
-      var pxPerSecond = 55;
+      var pxPerSecond = 65;
       var distance = track.scrollWidth / 2;
       var duration = distance / pxPerSecond;
 
