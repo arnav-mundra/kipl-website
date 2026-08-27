@@ -426,9 +426,12 @@
     </div>
   </footer>
 
-  <!-- GSAP + ScrollTrigger (CDN, no build step — see plan for rationale) -->
+  <!-- GSAP + ScrollTrigger (CDN, no build step — see plan for rationale).
+       Draggable is Home-only (the client-logo marquee is the only thing
+       that needs it) — see js/animations.js#initMarquee for how it's used. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js" defer></script>
   <script src="js/animations.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>

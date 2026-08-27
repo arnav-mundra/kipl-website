@@ -21,6 +21,9 @@
   if (hasGsap && window.ScrollTrigger) {
     window.gsap.registerPlugin(window.ScrollTrigger);
   }
+  if (hasGsap && window.Draggable) {
+    window.gsap.registerPlugin(window.Draggable);
+  }
 
   // Shared by initMosaicReveal's cell tween and initMosaicRowFade's detail
   // fade — both live on the same .mosaic-row, so they need the identical
@@ -130,8 +133,16 @@
 
   /**
    * Continuously loops the client-logo marquee track (its HTML content is
-   * duplicated once so a 50% translate is seamless). Runs continuously,
-   * including under the cursor — deliberately no pause-on-hover.
+   * duplicated once so a full-width translate is seamless). Runs
+   * continuously, including under the cursor — deliberately no
+   * pause-on-hover. Also draggable (js/animations.js#initMarqueeDrag below)
+   * — the auto-scroll only ever pauses while a drag is actively in
+   * progress, resuming the instant the pointer is released.
+   *
+   * Uses a plain pixel `x` tween now (was `xPercent: -50`) rather than
+   * percent-based translation — Draggable's `type: "x"` reads/writes the
+   * same `x` property GSAP tweens use, so keeping both on `x` means they
+   * can hand off to each other directly without any unit conversion.
    *
    * Logos load eagerly on purpose (no loading="lazy") — the track is a
    * `width: max-content` row far wider than the viewport, and the browser's
@@ -154,15 +165,16 @@
 
     function start() {
       var pxPerSecond = 65;
-      var distance = track.scrollWidth / 2;
-      var duration = distance / pxPerSecond;
+      var distance = track.scrollWidth / 2; // width of one (non-duplicated) copy of the logos
 
-      window.gsap.to(track, {
-        xPercent: -50,
-        duration: duration,
+      var tween = window.gsap.to(track, {
+        x: -distance,
+        duration: distance / pxPerSecond,
         ease: "none",
         repeat: -1,
       });
+
+      initMarqueeDrag(track, wrapper, distance, pxPerSecond, tween);
     }
 
     var pending = Array.prototype.filter.call(track.querySelectorAll("img"), function (img) {
@@ -182,6 +194,64 @@
     pending.forEach(function (img) {
       img.addEventListener("load", settle, { once: true });
       img.addEventListener("error", settle, { once: true });
+    });
+  }
+
+  /**
+   * Lets a visitor grab the marquee track and drag it by hand — the
+   * auto-scroll pauses only for the duration of an actual press-and-drag,
+   * never merely on hover, and resumes on release from wherever the
+   * visitor left it rather than snapping back.
+   *
+   * Bounded, not infinitely wrapping: the track's own content is only
+   * duplicated once (for the auto-scroll loop), so there isn't a third
+   * copy to reveal if a visitor dragged further than that — bounding drag
+   * to the track's real scrollable range (0 to -(scrollWidth - wrapper
+   * width)) means they can always drag through every logo at least once
+   * in either direction without ever exposing blank space past the end.
+   *
+   * On release, a brand-new tween is created — rather than resuming the
+   * original — targeting one more `distance` of travel from wherever the
+   * drag left off, then repeating from there (repeat: -1 restarts a tween
+   * from its own recorded "from" value each cycle, and since the content
+   * repeats visually every `distance` px, snapping back to *any* absolute
+   * x looks identical to continuing, so there's no need to fold the
+   * dragged position back into a single canonical cycle first).
+   *
+   * This turned out to be load-bearing, not just simpler: resuming the
+   * original tween via .progress(p).play() silently failed to animate at
+   * all after a drag — confirmed with gsap.ticker.tick() called manually
+   * (bypassing rAF/real-time entirely) still not moving x, so it wasn't a
+   * throttled-tab false alarm either. Draggable's own internal renders
+   * during the drag itself compete for ownership of the same `x`
+   * property the tween drives (GSAP's default overwrite management lets
+   * the more recent assignment win), leaving the original tween's render
+   * function disconnected even though .paused()/.progress() still
+   * reported plausible-looking values. A freshly created tween has no
+   * such stale state to inherit.
+   */
+  function initMarqueeDrag(track, wrapper, distance, pxPerSecond, tween) {
+    if (!window.Draggable) return;
+
+    var maxDrag = track.scrollWidth - wrapper.clientWidth;
+
+    window.Draggable.create(track, {
+      type: "x",
+      bounds: { minX: -maxDrag, maxX: 0 },
+      allowNativeTouchScrolling: false,
+      onPress: function () {
+        tween.pause();
+      },
+      onRelease: function () {
+        tween.kill();
+        var currentX = window.gsap.getProperty(track, "x");
+        tween = window.gsap.to(track, {
+          x: currentX - distance,
+          duration: distance / pxPerSecond,
+          ease: "none",
+          repeat: -1,
+        });
+      },
     });
   }
 

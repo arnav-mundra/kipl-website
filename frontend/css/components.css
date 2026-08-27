@@ -673,6 +673,10 @@ html.nav-transition-cover .page-transition {
   align-items: center;
   width: max-content;
   gap: var(--space-2xl);
+  /* GSAP Draggable (js/animations.js#initMarqueeDrag) sets this itself
+     once it initializes, switching to "grabbing" mid-drag — set here too
+     as a static fallback so it still reads as draggable before JS runs. */
+  cursor: grab;
 }
 
 /* Each source logo was cropped to its own content box, so widths vary
