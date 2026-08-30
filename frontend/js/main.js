@@ -261,6 +261,8 @@
       window.KIPL.animations.initCounters();
       window.KIPL.animations.initTrendChart();
       window.KIPL.animations.initTrendTooltip();
+      window.KIPL.animations.initMilestoneBars();
+      window.KIPL.animations.initMilestoneTooltip();
       window.KIPL.animations.initMarquee();
     }
   });

@@ -24,10 +24,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=3" />
-  <link rel="stylesheet" href="css/base.css?v=3" />
-  <link rel="stylesheet" href="css/components.css?v=3" />
-  <link rel="stylesheet" href="css/contact.css?v=3" />
+  <link rel="stylesheet" href="css/variables.css?v=4" />
+  <link rel="stylesheet" href="css/base.css?v=4" />
+  <link rel="stylesheet" href="css/components.css?v=4" />
+  <link rel="stylesheet" href="css/contact.css?v=4" />
 </head>
 <body>
 
@@ -61,9 +61,11 @@
             </button>
           </div>
           <div class="nav__dropdown" id="aboutDropdown">
-            <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
-            <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
-            <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+            <div class="nav__dropdown-inner">
+              <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
+              <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
+              <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+            </div>
           </div>
         </div>
         <a href="contact.html" class="nav__link is-active">Contact</a>
@@ -167,15 +169,26 @@
             </div>
 
             <!-- Keyless Google Maps embed (google.com/maps?...&output=embed)
-                 — no API key/account needed. Pinned to the exact
-                 coordinates for the office's confirmed final location
-                 (resolved from the user-supplied Google Maps share link:
-                 21.8732678, 83.9908352 — Google's own place data, more
-                 precise than the earlier DMS-derived reading it replaces),
-                 not an address-text search. -->
+                 — no API key/account needed. A raw q=lat,lng query (the
+                 previous version here) pins the exact right spot but shows
+                 as a bare, unlabeled dot — Google's embed API silently
+                 drops the "(Label)" suffix trick that used to attach a
+                 name to a coordinate pin, confirmed by testing it directly
+                 (it just falls back to the DMS coordinates as the title,
+                 exactly the unlabeled-pin screenshot this was reported
+                 against). Querying the business name instead resolves to
+                 KIPL's own verified Google Business listing — confirmed by
+                 searching it directly: "Kainsara Infraprojects Private
+                 Limited", 4.1★ (57), "Corporate office · Plot No. 100,
+                 Boxi Chowk", hours matching the card above — i.e. the same
+                 place, not a fuzzy address-geocoding guess (that concern
+                 is what the coordinate-based query above was originally
+                 introduced to avoid), just resolved by name instead of by
+                 raw coordinates so the pin actually carries KIPL's name,
+                 rating, and hours instead of showing up bare. -->
             <div class="contact-map">
               <iframe
-                src="https://maps.google.com/maps?q=21.8732678,83.9908352&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=Kainsara+Infraprojects+Private+Limited,+Plot+No.+100,+Boxi+Chowk,+Jharsuguda,+Odisha&t=&z=17&ie=UTF8&iwloc=&output=embed"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
                 title="KIPL office location — Jharsuguda, Odisha"
@@ -230,7 +243,7 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js?v=3" defer></script>
-  <script src="js/main.js?v=3" defer></script>
+  <script src="js/animations.js?v=4" defer></script>
+  <script src="js/main.js?v=4" defer></script>
 </body>
 </html>

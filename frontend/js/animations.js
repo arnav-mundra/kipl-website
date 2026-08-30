@@ -283,6 +283,121 @@
   }
 
   /**
+   * Grows in the About page's milestone bars (About only —
+   * [data-milestone-chart], see about.html) as they scroll into view: each
+   * bar's rect animates its height/y attributes directly from the
+   * baseline up to its real size (data-final-height/data-final-y, read
+   * from markup first the same way initTrendChart reads the line's real
+   * length before hiding it), staggered — not a CSS transform: scaleY(),
+   * for the same transform-origin reasons noted on initTrendChart. Each
+   * bar's value/icon/manpower/year labels are a separate opacity fade on
+   * the wrapping <g> (.milestone-bar), timed alongside its own rect.
+   */
+  function initMilestoneBars() {
+    var chart = document.querySelector("[data-milestone-chart]");
+    if (!chart) return;
+
+    var items = chart.querySelectorAll("[data-milestone-item]");
+    var bars = chart.querySelectorAll("[data-milestone-bar]");
+
+    if (!hasGsap || !window.ScrollTrigger || prefersReducedMotion) {
+      items.forEach(function (item) { item.style.opacity = 1; });
+      bars.forEach(function (bar) {
+        bar.setAttribute("y", bar.getAttribute("data-final-y"));
+        bar.setAttribute("height", bar.getAttribute("data-final-height"));
+      });
+      return;
+    }
+
+    var finals = [];
+    bars.forEach(function (bar, i) {
+      finals[i] = {
+        y: parseFloat(bar.getAttribute("data-final-y")),
+        height: parseFloat(bar.getAttribute("data-final-height")),
+      };
+    });
+
+    window.ScrollTrigger.create({
+      trigger: chart,
+      start: "top 75%",
+      once: true,
+      onEnter: function () {
+        window.gsap
+          .timeline()
+          .to(items, { opacity: 1, duration: 0.4, ease: "power1.out", stagger: 0.12 })
+          .to(
+            bars,
+            {
+              // attr, not bare y/height — GSAP treats an unprefixed `y` as
+              // shorthand for a translateY() transform (same as `x`), not
+              // the SVG attribute, so this was translating each bar an
+              // extra ~60-165px down the page on top of its already-at-
+              // -baseline y — exactly the "bars floating below the section"
+              // bug this replaced. attr targets the real SVG attributes,
+              // same as the dot-radius grow in initTrendChart above.
+              attr: {
+                y: function (i) { return finals[i].y; },
+                height: function (i) { return finals[i].height; },
+              },
+              duration: 0.6,
+              ease: "power2.out",
+              stagger: 0.12,
+            },
+            "-=0.4"
+          );
+      },
+    });
+  }
+
+  /**
+   * Hover/focus tooltip for the About page's milestone bars (see
+   * about.html's .milestone-bar__hit rects) — same pattern as
+   * initTrendTooltip on Home, just reporting both turnover and manpower
+   * for that year instead of a single value.
+   */
+  function initMilestoneTooltip() {
+    var chart = document.querySelector("[data-milestone-chart]");
+    var tooltip = document.querySelector("[data-milestone-tooltip]");
+    if (!chart || !tooltip) return;
+
+    var container = tooltip.parentElement;
+    var hits = chart.querySelectorAll("[data-milestone-hit]");
+
+    function show(hit) {
+      var item = hit.closest("[data-milestone-item]");
+      if (item) item.classList.add("is-hovered");
+
+      tooltip.textContent =
+        hit.getAttribute("data-year") + " · " + hit.getAttribute("data-turnover") + " · " + hit.getAttribute("data-manpower") + " people";
+
+      // Position off the visible bar, not the hit rect — the hit rect
+      // spans the chart's full height for an easy hover target anywhere
+      // over that column, so its own bounding box top is the top of the
+      // whole chart, not the bar. The bar's real top is what the tooltip
+      // should sit above.
+      var bar = item ? item.querySelector("[data-milestone-bar]") : hit;
+      var barBox = bar.getBoundingClientRect();
+      var containerBox = container.getBoundingClientRect();
+      tooltip.style.left = barBox.left + barBox.width / 2 - containerBox.left + "px";
+      tooltip.style.top = barBox.top - containerBox.top + "px";
+      tooltip.classList.add("is-visible");
+    }
+
+    function hide(hit) {
+      var item = hit.closest("[data-milestone-item]");
+      if (item) item.classList.remove("is-hovered");
+      tooltip.classList.remove("is-visible");
+    }
+
+    hits.forEach(function (hit) {
+      hit.addEventListener("mouseenter", function () { show(hit); });
+      hit.addEventListener("mouseleave", function () { hide(hit); });
+      hit.addEventListener("focus", function () { show(hit); });
+      hit.addEventListener("blur", function () { hide(hit); });
+    });
+  }
+
+  /**
    * Continuously loops the client-logo marquee track (its HTML content is
    * duplicated once so a full-width translate is seamless). Runs
    * continuously, including under the cursor — deliberately no
@@ -383,6 +498,19 @@
    */
   function initMarqueeDrag(track, wrapper, distance, pxPerSecond, tween) {
     if (!window.Draggable) return;
+
+    // Mouse/trackpad only — on a touch-only device, allowNativeTouchScrolling:
+    // false below means Draggable claims every touch that starts on the
+    // track, including an incidental brush of it while a visitor is just
+    // trying to scroll the page past this section. onPress pauses the
+    // auto-scroll for that gesture; if the touch sequence doesn't resolve
+    // to a clean release (easy on mobile, where the OS's own scroll
+    // gesture is fighting the same touch), onRelease never fires to
+    // restart it, and the marquee is stuck for good — reported as "not
+    // working" on mobile. (hover: hover) and (pointer: fine) is true only
+    // for a real mouse/trackpad, so touchscreens (including touch-capable
+    // laptops) skip Draggable entirely and just keep auto-scrolling.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     var maxDrag = track.scrollWidth - wrapper.clientWidth;
 
@@ -816,6 +944,8 @@
     initCounters: initCounters,
     initTrendChart: initTrendChart,
     initTrendTooltip: initTrendTooltip,
+    initMilestoneBars: initMilestoneBars,
+    initMilestoneTooltip: initMilestoneTooltip,
     initMarquee: initMarquee,
     initMosaicReveal: initMosaicReveal,
     initMosaicRowFade: initMosaicRowFade,

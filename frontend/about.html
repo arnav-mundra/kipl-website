@@ -28,10 +28,10 @@
     href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=3" />
-  <link rel="stylesheet" href="css/base.css?v=3" />
-  <link rel="stylesheet" href="css/components.css?v=3" />
-  <link rel="stylesheet" href="css/about.css?v=3" />
+  <link rel="stylesheet" href="css/variables.css?v=4" />
+  <link rel="stylesheet" href="css/base.css?v=4" />
+  <link rel="stylesheet" href="css/components.css?v=4" />
+  <link rel="stylesheet" href="css/about.css?v=4" />
 </head>
 
 <body>
@@ -68,9 +68,11 @@
             </button>
           </div>
           <div class="nav__dropdown" id="aboutDropdown">
-            <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
-            <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
-            <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+            <div class="nav__dropdown-inner">
+              <a href="about.html#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
+              <a href="about.html#md-desk" class="nav__dropdown-link">MD's Desk</a>
+              <a href="about.html#our-team" class="nav__dropdown-link">Our Team</a>
+            </div>
           </div>
         </div>
         <a href="contact.html" class="nav__link">Contact</a>
@@ -144,6 +146,124 @@
               <li>Operating Asset Management</li>
               <li>Global Technology Solutions</li>
             </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MILESTONES ============
+         Same underlying five-year figures as projects.html's growth band
+         and index.html's growth-trend chart, but a third distinct visual:
+         paired bars (turnover) + a person-icon manpower figure above each
+         one, closer to a classic "milestones" chart than either of those.
+         Bars grow in from the baseline on scroll (js/animations.js
+         #initMilestoneBars — attr-tweening height/y directly, not a CSS
+         transform, per the same transform-origin lesson noted in
+         initTrendChart), and each bar is hoverable/focusable for an exact
+         turnover + manpower tooltip (#initMilestoneTooltip), reusing the
+         growth-trend chart's own tooltip pattern. -->
+    <section class="milestones section--dark section--tight">
+      <div class="container milestones__grid">
+        <div class="milestones__intro" data-reveal>
+          <p class="eyebrow">Year on year</p>
+          <h2>Turnover and team, growing together.</h2>
+          <p class="milestones__lead">
+            Every year of growth in turnover has come with real headcount
+            behind it &mdash; from 900 people in FY21-22 to 1,470 today.
+          </p>
+        </div>
+
+        <div class="milestones__chart">
+          <svg viewBox="0 0 440 260" class="milestone-chart" data-milestone-chart role="img"
+            aria-label="Turnover and manpower by year, FY2021-22 to FY2025-26: 36.27 crore rupees and 900 people, 51.06 crore and 1,100 people, 59.93 crore and 1,250 people, 60.37 crore and 1,360 people, 100.82 crore and 1,470 people">
+            <line x1="10" y1="225" x2="430" y2="225" class="milestone-chart__baseline" />
+
+            <g class="milestone-bar" data-milestone-item>
+              <rect class="milestone-bar__rect" data-milestone-bar x="24" y="225" width="56" height="0" rx="4"
+                data-final-y="166.06" data-final-height="58.94" />
+              <text x="52" y="188.06" class="milestone-bar__value">36.27</text>
+              <g class="milestone-bar__icon" transform="translate(52,134.06)">
+                <circle cx="0" cy="-3.2" r="1.6" />
+                <path d="M-2.6,3.2 C-2.6,-0.2 2.6,-0.2 2.6,3.2 L2.6,4.6 L-2.6,4.6 Z" />
+              </g>
+              <text x="52" y="152.06" class="milestone-bar__manpower">900</text>
+              <text x="52" y="245" class="milestone-bar__year">FY21-22</text>
+              <rect class="milestone-bar__hit" data-milestone-hit x="24" y="0" width="56" height="260" tabindex="0"
+                data-year="FY21-22" data-turnover="&#8377;36.27 Cr" data-manpower="900">
+                <title>FY21-22: &#8377;36.27 Cr turnover, 900 people</title>
+              </rect>
+            </g>
+
+            <g class="milestone-bar" data-milestone-item>
+              <rect class="milestone-bar__rect" data-milestone-bar x="108" y="225" width="56" height="0" rx="4"
+                data-final-y="142.03" data-final-height="82.97" />
+              <text x="136" y="164.03" class="milestone-bar__value">51.06</text>
+              <g class="milestone-bar__icon" transform="translate(136,110.03)">
+                <circle cx="0" cy="-3.2" r="1.6" />
+                <path d="M-2.6,3.2 C-2.6,-0.2 2.6,-0.2 2.6,3.2 L2.6,4.6 L-2.6,4.6 Z" />
+              </g>
+              <text x="136" y="128.03" class="milestone-bar__manpower">1,100</text>
+              <text x="136" y="245" class="milestone-bar__year">FY22-23</text>
+              <rect class="milestone-bar__hit" data-milestone-hit x="108" y="0" width="56" height="260" tabindex="0"
+                data-year="FY22-23" data-turnover="&#8377;51.06 Cr" data-manpower="1,100">
+                <title>FY22-23: &#8377;51.06 Cr turnover, 1,100 people</title>
+              </rect>
+            </g>
+
+            <g class="milestone-bar" data-milestone-item>
+              <rect class="milestone-bar__rect" data-milestone-bar x="192" y="225" width="56" height="0" rx="4"
+                data-final-y="127.61" data-final-height="97.39" />
+              <text x="220" y="149.61" class="milestone-bar__value">59.93</text>
+              <g class="milestone-bar__icon" transform="translate(220,95.61)">
+                <circle cx="0" cy="-3.2" r="1.6" />
+                <path d="M-2.6,3.2 C-2.6,-0.2 2.6,-0.2 2.6,3.2 L2.6,4.6 L-2.6,4.6 Z" />
+              </g>
+              <text x="220" y="113.61" class="milestone-bar__manpower">1,250</text>
+              <text x="220" y="245" class="milestone-bar__year">FY23-24</text>
+              <rect class="milestone-bar__hit" data-milestone-hit x="192" y="0" width="56" height="260" tabindex="0"
+                data-year="FY23-24" data-turnover="&#8377;59.93 Cr" data-manpower="1,250">
+                <title>FY23-24: &#8377;59.93 Cr turnover, 1,250 people</title>
+              </rect>
+            </g>
+
+            <g class="milestone-bar" data-milestone-item>
+              <rect class="milestone-bar__rect" data-milestone-bar x="276" y="225" width="56" height="0" rx="4"
+                data-final-y="126.90" data-final-height="98.10" />
+              <text x="304" y="148.90" class="milestone-bar__value">60.37</text>
+              <g class="milestone-bar__icon" transform="translate(304,94.90)">
+                <circle cx="0" cy="-3.2" r="1.6" />
+                <path d="M-2.6,3.2 C-2.6,-0.2 2.6,-0.2 2.6,3.2 L2.6,4.6 L-2.6,4.6 Z" />
+              </g>
+              <text x="304" y="112.90" class="milestone-bar__manpower">1,360</text>
+              <text x="304" y="245" class="milestone-bar__year">FY24-25</text>
+              <rect class="milestone-bar__hit" data-milestone-hit x="276" y="0" width="56" height="260" tabindex="0"
+                data-year="FY24-25" data-turnover="&#8377;60.37 Cr" data-manpower="1,360">
+                <title>FY24-25: &#8377;60.37 Cr turnover, 1,360 people</title>
+              </rect>
+            </g>
+
+            <g class="milestone-bar milestone-bar--current" data-milestone-item>
+              <rect class="milestone-bar__rect" data-milestone-bar x="360" y="225" width="56" height="0" rx="4"
+                data-final-y="61.17" data-final-height="163.83" />
+              <text x="388" y="83.17" class="milestone-bar__value">100.82</text>
+              <g class="milestone-bar__icon" transform="translate(388,29.17)">
+                <circle cx="0" cy="-3.2" r="1.6" />
+                <path d="M-2.6,3.2 C-2.6,-0.2 2.6,-0.2 2.6,3.2 L2.6,4.6 L-2.6,4.6 Z" />
+              </g>
+              <text x="388" y="47.17" class="milestone-bar__manpower">1,470</text>
+              <text x="388" y="245" class="milestone-bar__year">FY25-26</text>
+              <rect class="milestone-bar__hit" data-milestone-hit x="360" y="0" width="56" height="260" tabindex="0"
+                data-year="FY25-26" data-turnover="&#8377;100.82 Cr" data-manpower="1,470">
+                <title>FY25-26: &#8377;100.82 Cr turnover, 1,470 people</title>
+              </rect>
+            </g>
+          </svg>
+
+          <div class="milestone-tooltip" data-milestone-tooltip aria-hidden="true"></div>
+
+          <div class="milestone-chart__legend">
+            <span><span class="milestone-chart__legend-swatch"></span>Turnover, &#8377; Cr</span>
+            <span><span class="milestone-chart__legend-icon"><svg viewBox="-4 -6 8 12" width="10" height="12" aria-hidden="true"><circle cx="0" cy="-3.2" r="1.6" /><path d="M-2.6,3.2 C-2.6,-0.2 2.6,-0.2 2.6,3.2 L2.6,4.6 L-2.6,4.6 Z" /></svg></span>Manpower</span>
           </div>
         </div>
       </div>
@@ -423,8 +543,8 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js?v=3" defer></script>
-  <script src="js/main.js?v=3" defer></script>
+  <script src="js/animations.js?v=4" defer></script>
+  <script src="js/main.js?v=4" defer></script>
 </body>
 
 </html>

@@ -371,9 +371,6 @@ html.nav-transition-cover .page-transition {
   top: 100%;
   left: 50%;
   min-width: 190px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   padding: var(--space-sm) var(--space-2xs) var(--space-2xs);
   border-radius: var(--radius-md);
   background: rgba(20, 33, 61, 0.92);
@@ -385,6 +382,20 @@ html.nav-transition-cover .page-transition {
   pointer-events: none;
   transform: translate(-50%, -3px);
   transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility var(--dur-fast) var(--ease-out);
+}
+
+/* The actual link list now lives one level in, inside .nav__dropdown-inner
+   (added so the mobile accordion below has a single element to clip/size
+   — see that rule's comment) — so THIS is what needs to lay the links out
+   in a column; .nav__dropdown itself just wraps that one child now. Was
+   briefly missing after the wrapper was introduced, which left the 3
+   links as default inline content wrapping mid-phrase inside the
+   dropdown's fixed min-width, e.g. "Our" / "Team" breaking onto two
+   lines. */
+.nav__dropdown-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .nav__dropdown-link {
@@ -876,6 +887,14 @@ html.nav-transition-cover .page-transition {
     opacity: 1;
   }
 
+  /* Grid 0fr->1fr accordion, not a hardcoded max-height — a fixed
+     max-height (220px, tuned for 3 links) always overshoots the real
+     content (127px for the current 3 links), leaving a dead gap below
+     the links before the next nav item. grid-template-rows: 0fr/1fr
+     tracks the wrapper's actual content height instead, so it stays
+     correct regardless of how many links this dropdown ever has.
+     .nav__dropdown-inner (the single grid item spanning that row) is
+     what actually gets clipped by overflow: hidden mid-transition. */
   .nav__dropdown {
     position: static;
     transform: none;
@@ -885,16 +904,23 @@ html.nav-transition-cover .page-transition {
     box-shadow: none;
     padding: 0;
     margin-inline-start: var(--space-sm);
-    max-height: 0;
-    overflow: hidden;
+    display: grid;
+    grid-template-rows: 0fr;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transition: max-height var(--dur-base) var(--ease-out);
+    transition: grid-template-rows var(--dur-base) var(--ease-out);
+  }
+
+  .nav__dropdown-inner {
+    overflow: hidden;
   }
 
   .nav__item--dropdown.is-open .nav__dropdown {
-    max-height: 220px;
+    grid-template-rows: 1fr;
+  }
+
+  .nav__item--dropdown.is-open .nav__dropdown-inner {
     padding-block-end: var(--space-2xs);
   }
 
