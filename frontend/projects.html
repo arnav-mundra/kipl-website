@@ -28,10 +28,10 @@
     href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=4" />
-  <link rel="stylesheet" href="css/base.css?v=4" />
-  <link rel="stylesheet" href="css/components.css?v=4" />
-  <link rel="stylesheet" href="css/projects.css?v=4" />
+  <link rel="stylesheet" href="css/variables.css?v=5" />
+  <link rel="stylesheet" href="css/base.css?v=5" />
+  <link rel="stylesheet" href="css/components.css?v=5" />
+  <link rel="stylesheet" href="css/projects.css?v=5" />
 </head>
 
 <body>
@@ -179,57 +179,239 @@
     </section>
 
     <!-- ============ CURRENTLY WORKING ON ============
-         The main event on this page: contracts still running today (end
-         year is 2026 or later). Same alternating panel/content shape as
-         Services' .service-block (see css/projects.css), reused here for
-         project case studies. Panel shows the approx. contract value —
-         sourced from docs/Projects Print.xlsx — over the shared
-         mosaic-reveal generated texture (no real jobsite photos available
-         yet), same mechanic as css/components.css .mosaic-grid /
-         js/animations.js#initMosaicReveal via [data-mosaic-reveal]. More
-         entries will land here once further ongoing-project details come
-         in. -->
+         The main event on this page: KIPL's active book of work, sourced
+         from docs/current projects.xlsx and grouped by the same five
+         domains as services.html. Two rows from that sheet are
+         deliberately excluded — a Tenon FM rental and a Hindalco Lapanga
+         sweeping vehicle, both listed under firm "ST" (Samaleswari
+         Traders, a group company, not KIPL itself). Replaces the two
+         summarized case-study cards this section used to show (Vedanta
+         Potline 1&2 / Balco Potline 3 start-up, from the older Projects
+         Print.xlsx) now that this sheet gives the real, itemized current
+         breakdown of that same work instead. Compact rows, not big
+         panels, on purpose — 17 engagements couldn't read as 17 hero
+         cards, and the point here is breadth/reliability, not a handful
+         of highlight reels. -->
     <section class="section">
       <div class="container">
         <div class="section-head">
           <p class="eyebrow" data-reveal>In progress</p>
           <h2 class="section-head__title" data-reveal>Currently working on.</h2>
+          <p class="project-domains__intro" data-reveal>
+            17 active engagements across five domains &mdash; &#8377;205+ Cr
+            in combined contract value.
+          </p>
         </div>
 
-        <div class="project-block">
-          <div class="project-block__panel" data-mosaic-reveal data-mosaic-tone="2">
-            <span class="project-block__value">&#8377;75<span class="project-block__value-suffix">Cr</span></span>
-            <span class="project-block__value-label">Approx. contract value</span>
-          </div>
-          <div class="project-block__content">
-            <span class="status-pill"><span class="status-pill__dot" aria-hidden="true"></span>Ongoing</span>
-            <p class="eyebrow">Operation &amp; Maintenance &middot; 2024&ndash;27</p>
-            <h2>Vedanta &mdash; Potline 1 &amp; 2 Operations</h2>
-            <p class="project-block__meta">Jharsuguda, Odisha</p>
-            <p class="project-block__lead">
-              Full operational management of Potline 1 &amp; 2 at Vedanta's
-              Jharsuguda aluminium smelter &mdash; KIPL's largest ongoing
-              operations contract to date.
-            </p>
-            <a href="contact.html" class="project-block__link">Discuss a similar project &rarr;</a>
+        <div class="project-domain" data-reveal>
+          <h3 class="project-domain__title">Operation &amp; Maintenance</h3>
+          <div class="project-rows">
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Vedanta &mdash; Pot Room Operation</h4>
+                <p class="project-row__desc">Operational assistance &amp; redressing.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2023&ndash;26</span>
+                <span>&#8377;34.40 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Vedanta &mdash; Pot Room Operation, Plant 2</h4>
+                <p class="project-row__desc">Skimming, clamp drop, measurement crew &amp; LMV.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2024&ndash;27</span>
+                <span>&#8377;15.82 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Vedanta &mdash; Pot Room Operation, Plant 1</h4>
+                <p class="project-row__desc">Skimming, clamp drop, measurement crew &amp; LMV.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2024&ndash;27</span>
+                <span>&#8377;10.17 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Vedanta &mdash; Pot Room Operation (Pot Manager)</h4>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2025&ndash;28</span>
+                <span>&#8377;22.02 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Balco &mdash; Pot Room Operation Support</h4>
+                <p class="project-row__desc">PTM operation support.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Korba, Chhattisgarh</span>
+                <span>2025&ndash;28</span>
+                <span>&#8377;4.48 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Balco &mdash; Green Anode Plant Operation</h4>
+                <p class="project-row__desc">Bag management.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Korba, Chhattisgarh</span>
+                <span>2023&ndash;27</span>
+                <span>&#8377;2.34 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Balco &mdash; Pot Room Start-up</h4>
+              </div>
+              <div class="project-row__meta">
+                <span>Korba, Chhattisgarh</span>
+                <span>2025&ndash;26</span>
+                <span>&#8377;8.84 Cr</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="project-block project-block--reverse">
-          <div class="project-block__panel" data-mosaic-reveal data-mosaic-tone="3">
-            <span class="project-block__value">&#8377;10.8<span class="project-block__value-suffix">Cr</span></span>
-            <span class="project-block__value-label">Approx. contract value</span>
+        <div class="project-domain" data-reveal>
+          <h3 class="project-domain__title">Project Execution</h3>
+          <div class="project-rows">
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Vedanta &mdash; General Fabrication</h4>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2023&ndash;27</span>
+                <span>&#8377;13.50 Cr</span>
+              </div>
+            </div>
           </div>
-          <div class="project-block__content">
-            <span class="status-pill"><span class="status-pill__dot" aria-hidden="true"></span>Ongoing</span>
-            <p class="eyebrow">Start-up Activities &middot; 2025&ndash;26</p>
-            <h2>Balco &mdash; Start-up of Potline 3</h2>
-            <p class="project-block__meta">Korba, Chhattisgarh</p>
-            <p class="project-block__lead">
-              Commissioning and start-up support for Balco's new Potline 3,
-              bringing fresh smelting capacity online.
-            </p>
-            <a href="contact.html" class="project-block__link">Discuss a similar project &rarr;</a>
+        </div>
+
+        <div class="project-domain" data-reveal>
+          <h3 class="project-domain__title">Material Handling</h3>
+          <div class="project-rows">
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Tata Steel &mdash; Crane Hire</h4>
+                <p class="project-row__desc">F15 &amp; F23 cranes.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Meramandali, Odisha</span>
+                <span>2023&ndash;27</span>
+                <span>&#8377;12.61 Cr</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-domain" data-reveal>
+          <h3 class="project-domain__title">Mining &amp; Logistics</h3>
+          <div class="project-rows">
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Vedanta &mdash; Jamkhani Coal Transport</h4>
+                <p class="project-row__desc">Lifting &amp; transportation of coal from Jamkhani mines.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2025&ndash;26</span>
+                <span>&#8377;13.20 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>JSW &mdash; MCL Kulda Coal Transport</h4>
+                <p class="project-row__desc">To JSW Energy (Utkal)'s 2&times;350&nbsp;MW thermal power plant.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2024&ndash;25</span>
+                <span>&#8377;15.78 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Coal &amp; Ash Transportation</h4>
+                <p class="project-row__desc">Under various transporters.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Jharsuguda, Odisha</span>
+                <span>2022&ndash;26</span>
+                <span>Variable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-domain" data-reveal>
+          <h3 class="project-domain__title">Mechanised Cleaning</h3>
+          <div class="project-rows">
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Tata Steel &mdash; IVC Machine Hire</h4>
+              </div>
+              <div class="project-row__meta">
+                <span>Meramandali, Odisha</span>
+                <span>2024&ndash;27</span>
+                <span>&#8377;48.22 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Tata Steel &mdash; Waterjet Hire</h4>
+              </div>
+              <div class="project-row__meta">
+                <span>Meramandali, Odisha</span>
+                <span>2023&ndash;26</span>
+                <span>&#8377;2.60 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>PAPL &mdash; Vacuum Truck Hire</h4>
+                <p class="project-row__desc">3 MTPA facility.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Lanjigarh, Odisha</span>
+                <span>2026</span>
+                <span>&#8377;0.56 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>Hindalco &mdash; Cast House Sweeping</h4>
+                <p class="project-row__desc">Ride-on sweeping machine &amp; operators.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Lapanga, Odisha</span>
+                <span>2025&ndash;26</span>
+                <span>&#8377;0.24 Cr</span>
+              </div>
+            </div>
+            <div class="project-row">
+              <div class="project-row__main">
+                <h4>NTPC &mdash; Ash Dyke Road Cleaning</h4>
+                <p class="project-row__desc">Manpower deployment, ash dyke road &amp; RR Colony.</p>
+              </div>
+              <div class="project-row__meta">
+                <span>Darlipali, Odisha</span>
+                <span>2025&ndash;27</span>
+                <span>&#8377;0.58 Cr</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -336,8 +518,8 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js?v=4" defer></script>
-  <script src="js/main.js?v=4" defer></script>
+  <script src="js/animations.js?v=5" defer></script>
+  <script src="js/main.js?v=5" defer></script>
 </body>
 
 </html>
