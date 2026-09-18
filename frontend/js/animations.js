@@ -708,21 +708,78 @@
       var built = packMosaicGrid(host, cols, rows);
       var cells = built.cells;
 
-      if (fillColor) {
-        cells.forEach(function (cell) {
-          cell.style.background = fillColor;
-        });
-      } else {
-        // Read back each cell's rendered rect (cheap: background-image/size/
-        // position are paint-only, so this doesn't re-trigger layout per
-        // iteration) to slice the shared texture at the right offset.
+      // Stretches the shared image across the whole grid at exactly the
+      // host's own box dimensions (background-size in flat px, not
+      // "cover") — correct for the generated grain texture, which is a
+      // uniform, non-representational pattern with nothing in it to
+      // distort. Also the fallback if a real photo fails to load.
+      function sliceCellsStretched(url) {
         cells.forEach(function (cell) {
           var rect = cell.getBoundingClientRect();
-          cell.style.backgroundImage = textureUrl || hostImage;
+          cell.style.backgroundImage = url;
           cell.style.backgroundSize = hostBox.width + "px " + hostBox.height + "px";
           cell.style.backgroundPosition =
             "-" + Math.round(rect.left - hostBox.left) + "px -" + Math.round(rect.top - hostBox.top) + "px";
         });
+      }
+
+      // Same slicing, but sized/offset as a "cover" fit (scale to fill the
+      // host box on its shorter axis, centered, overflow on the other axis
+      // cropped) computed from the photo's own natural dimensions — for a
+      // real photograph, where a flat stretch-to-host-box would visibly
+      // distort anything recognisable whenever the photo's aspect ratio
+      // doesn't already match the host's (service-card__media's ~1.3:1 box
+      // against these 16:9-ish source photos, for instance).
+      function sliceCellsCover(url, naturalWidth, naturalHeight) {
+        var hostRatio = hostBox.width / hostBox.height;
+        var imageRatio = naturalWidth / naturalHeight;
+        var displayWidth, displayHeight;
+        if (imageRatio > hostRatio) {
+          displayHeight = hostBox.height;
+          displayWidth = displayHeight * imageRatio;
+        } else {
+          displayWidth = hostBox.width;
+          displayHeight = displayWidth / imageRatio;
+        }
+        var offsetX = (hostBox.width - displayWidth) / 2;
+        var offsetY = (hostBox.height - displayHeight) / 2;
+        cells.forEach(function (cell) {
+          var rect = cell.getBoundingClientRect();
+          cell.style.backgroundImage = url;
+          cell.style.backgroundSize = displayWidth + "px " + displayHeight + "px";
+          cell.style.backgroundPosition =
+            "-" + Math.round(rect.left - hostBox.left - offsetX) + "px " +
+            "-" + Math.round(rect.top - hostBox.top - offsetY) + "px";
+        });
+      }
+
+      if (fillColor) {
+        cells.forEach(function (cell) {
+          cell.style.background = fillColor;
+        });
+      } else if (hasRealImage) {
+        // Pull the bare URL out of the computed `url("...")` / `url('...')`
+        // string so it can be preloaded with a plain Image() to read its
+        // natural size — cells stay at opacity:0 until the reveal tween
+        // runs regardless, so painting their backgrounds a beat later once
+        // the photo decodes costs nothing visible.
+        var srcMatch = /^url\(["']?(.*?)["']?\)$/.exec(hostImage);
+        if (srcMatch) {
+          (function (url) {
+            var img = new Image();
+            img.onload = function () {
+              sliceCellsCover(url, img.naturalWidth, img.naturalHeight);
+            };
+            img.onerror = function () {
+              sliceCellsStretched(url);
+            };
+            img.src = srcMatch[1];
+          })(hostImage);
+        } else {
+          sliceCellsStretched(hostImage);
+        }
+      } else {
+        sliceCellsStretched(textureUrl);
       }
 
       // Each cell pops in fast on its own (short duration), but the stagger

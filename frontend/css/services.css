@@ -1,110 +1,378 @@
-/* Services page layout: quick-nav strip, six alternating domain blocks.
-   Component-level styling (buttons, nav, hero slideshow, mosaic reveal,
-   footer, CTA band) lives in components.css — this file is purely
-   services-page arrangement. */
+/* Services page layout: page-specific navy hero, quick-nav strip, six wide
+   horizontal service cards, industries band, why-KIPL band, orange CTA
+   band. Component-level styling (buttons, nav, mosaic reveal, footer)
+   lives in components.css — this file is purely services-page arrangement,
+   including its own hero and its own CTA band (see those sections for
+   why neither reuses the shared component). */
+
+/* ---------- Hero (page-specific, not components.css .hero) ----------
+   Intentionally a mirror of projects.css's .projects-hero — same padding,
+   same navy, same radial-glow texture, same intro-left / stats-right split
+   — so Services and Projects read as a matched pair of dark editorial
+   heroes. If one of them is ever retuned, retune both. padding-block on
+   the section itself clears the fixed nav the way .hero__stage-inner does,
+   minus the photo stage. */
+
+.services-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-blue-900);
+  color: var(--color-white);
+  padding-block: calc(var(--nav-height) + var(--space-xl)) var(--space-2xl);
+}
+
+.services-hero__texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(700px 480px at 92% 105%, rgba(241, 103, 38, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.services-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.services-hero__intro h1 {
+  margin-top: var(--space-sm);
+  color: var(--color-white);
+  font-size: clamp(2rem, 2vw + 1.4rem, 3.25rem);
+}
+
+.services-hero__lead {
+  margin-top: var(--space-md);
+  font-size: var(--fs-body-lg);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 46ch;
+}
+
+.services-hero__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg) var(--space-xl);
+}
+
+.services-hero__stat:nth-child(even) {
+  padding-inline-start: var(--space-lg);
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.services-hero__stat-icon {
+  color: var(--color-orange-100);
+}
+
+.services-hero__stat-value {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2vw, 1.85rem);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+.services-hero__stat-suffix {
+  font-size: 0.55em;
+  color: var(--color-orange-100);
+  margin-inline-start: 0.15em;
+}
+
+.services-hero__stat-label {
+  display: block;
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
 
 /* ---------- Quick-nav strip ----------
    Jump links to each domain below — six full sections is enough content
    that a visitor arriving for one domain shouldn't have to scroll past
-   the others to find it. */
+   the others to find it. Icon-badge chips with dividers between them,
+   rather than plain text pills — one per domain, matching the six
+   .service-card icons below in spirit (not literally reused; a nav chip
+   at ~22px reads better as a simple line glyph than the fuller service-
+   card artwork would at that size).
 
+   blue-700, not a light background: this strip is the last thing before
+   the hero's navy hands off to the page's cream background, and a light
+   strip right under a dark hero read as an abrupt cut. blue-700 is the
+   palette's own "navy→blue blend" step (see variables.css), so it
+   continues the hero's blue-900 one shade lighter rather than jumping
+   straight to cream; the section below still starts the cream background
+   fresh. */
 .service-quicknav {
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-bg);
+  background: var(--color-blue-700);
 }
 
 .service-quicknav__list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-2xs) var(--space-sm);
+  align-items: stretch;
   padding-block: var(--space-md);
 }
 
-.service-quicknav__list a {
-  padding: var(--space-2xs) var(--space-sm);
-  border: 1px solid var(--color-line);
+.service-quicknav__list li {
+  display: flex;
+}
+
+/* The divider sits between <li>s, not on the <a> itself, so it spans the
+   full row height regardless of how tall the active pill's own border/
+   padding makes its neighbour — same "+ sibling, reset via the same
+   selector" pattern as .industries__item / .why__item below. */
+.service-quicknav__list li+li {
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* Sized to fit all six chips on one row inside the 1280px content-max at
+   typical desktop widths (six items at the roomier spacing this started
+   with — space-md padding, space-sm icon/label gap, 9rem label — added up
+   to ~1550px, well past the container, and wrapped into two rows even at
+   1440px viewport). Tightened padding/gap/label-width brings six items to
+   ~1150px, comfortably inside one row with margin to spare; the divider
+   between items (li+li, above) is what actually separates them, so the
+   item itself doesn't need its own extra margin on top of that. */
+.service-quicknav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-2xs) var(--space-xs);
+  border: 1px solid transparent;
   border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: var(--fs-small);
-  color: var(--color-ink-soft);
+  color: rgba(255, 255, 255, 0.8);
   transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
-.service-quicknav__list a:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-/* ---------- Domain blocks ----------
-   Alternating image/content pairs — contained and rounded, deliberately not
-   full-bleed like Home's mosaic-row-list, so this page reads as its own
-   layout rather than a repeat. Each panel reuses the shared mosaic-reveal
-   mechanic (components.css .mosaic-grid / js/animations.js#initMosaicReveal)
-   via [data-mosaic-reveal]. scroll-margin-top keeps the fixed nav from
-   covering a section's heading when a quick-nav link jumps to it. */
-
-.service-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.service-quicknav__icon {
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-2xl);
-  padding-block: var(--space-2xl);
-  border-bottom: 1px solid var(--color-line);
-  scroll-margin-top: calc(var(--nav-height) + var(--space-md));
+  justify-content: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: inherit;
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 
-.service-block:last-child {
-  border-bottom: none;
+.service-quicknav__label {
+  max-width: 6.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  line-height: 1.25;
 }
 
-.service-block--reverse .service-block__panel {
-  order: 2;
+.service-quicknav__item:hover {
+  color: var(--color-white);
 }
 
-.service-block__panel {
+.service-quicknav__item:hover .service-quicknav__icon {
+  border-color: var(--color-accent);
+}
+
+/* Current domain (js/main.js#initServiceQuicknavSpy tracks scroll
+   position; the first item starts marked in the markup as the resting
+   default) — filled accent circle, full-white label, orange pill outline.
+   Distinct from :hover on purpose: hover is a light touch on any item,
+   .is-active is the one the visitor is actually looking at. */
+.service-quicknav__item.is-active {
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.service-quicknav__item.is-active .service-quicknav__icon {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* ---------- "What we do" section head ----------
+   Deliberately wider and larger than the shared .section-head (base.css,
+   capped at 640px): the heading sits left at display scale with the
+   descriptive line set alongside it on the right, so the two read as one
+   band across the full measure rather than a narrow stacked block. */
+
+.services-list__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  align-items: end;
+  gap: var(--space-lg) var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.services-list__title {
+  margin-top: var(--space-sm);
+  font-size: clamp(2.5rem, 4vw + 0.5rem, 4.5rem);
+  line-height: 1.02;
+}
+
+.services-list__intro {
+  color: var(--color-ink-soft);
+  font-size: var(--fs-body-lg);
+  padding-bottom: 0.4em;
+}
+
+/* ---------- Service cards ----------
+   Wide horizontal blocks: number + title + copy held in the left ~58%, the
+   image area occupying the right ~46%, the two overlapping through a fade
+   so there's no vertical seam between them. Replaces the earlier
+   alternating half/half panel-and-text pairs — same six domains, same copy.
+
+   Every card runs the same direction (content left, image right) rather
+   than alternating: at this width alternation would push the eye back and
+   forth across a 1280px measure six times, and the reference direction is a
+   single consistent rhythm. scroll-margin-top keeps the fixed nav off the
+   heading when a quick-nav link jumps here. */
+
+/* grid-auto-rows: 1fr equalizes all six cards to the tallest one's height.
+   The six domains carry different amounts of copy (Mechanised Cleaning's
+   lead is two lines, Mining & Logistics' is four), and left to themselves
+   the cards ended up ~80px apart in height, which reads as sloppy in a
+   single stacked column. Doing it with grid rather than a fixed min-height
+   means it re-equalizes automatically at every width instead of needing a
+   magic number per breakpoint. */
+.services-list__cards {
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: var(--space-lg);
+}
+
+.service-card {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  /* Fallback if JS/canvas can't run — matches .mosaic-row__panel's rationale. */
-  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  display: flex;
+  align-items: center;
+  min-height: clamp(19rem, 24vw, 25rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  scroll-margin-top: calc(var(--nav-height) + var(--space-md));
+  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
 }
 
-.service-block__index {
+.service-card:hover {
+  border-color: var(--color-blue-300);
+  box-shadow: 0 18px 44px -32px rgba(20, 33, 61, 0.55);
+}
+
+/* ---------- Service card image area ----------
+   The media host carries each card's real photo as an inline
+   background-image (see the HTML comment above the cards) and is also what
+   [data-mosaic-reveal] slices into its reveal grid, preserving the photo's
+   aspect ratio rather than stretching it. background-size/position here are
+   the ones that matter when JS can't run at all (no GSAP, or reduced
+   motion — initMosaicReveal bails out and leaves the host's own background
+   showing as-is); the linear-gradient is only the last-resort fallback
+   behind that, for a card whose image attribute is ever removed, matching
+   .mosaic-row__panel's rationale.
+
+   The fade is a two-axis CSS mask applied to this host, so it fades
+   whatever the host is showing and is a pure alpha operation, so it works
+   regardless of the image's dominant colours (no colour-matched scrim that
+   only works over dark photos). X axis: fully transparent at the left edge,
+   fully opaque by ~62% in, so the image dissolves into the card under the
+   text rather than butting against it. Y axis: a short fade at top and
+   bottom so the image doesn't cut a hard line against the card's rounded
+   edge either. The two layers are intersected, so a pixel shows only where
+   both say show. */
+
+.service-card__media {
+  position: absolute;
+  z-index: 0;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 46%;
+  overflow: hidden;
+  background-color: var(--color-blue-700);
+  background-image: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  background-size: cover;
+  background-position: center;
+
+  --media-fade-x: linear-gradient(to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.16) 12%,
+      rgba(0, 0, 0, 0.55) 32%,
+      rgba(0, 0, 0, 0.88) 48%,
+      #000 62%);
+  --media-fade-y: linear-gradient(to bottom,
+      transparent 0%,
+      #000 13%,
+      #000 87%,
+      transparent 100%);
+
+  -webkit-mask-image: var(--media-fade-x), var(--media-fade-y);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--media-fade-x), var(--media-fade-y);
+  mask-composite: intersect;
+}
+
+/* ---------- Service card content ---------- */
+
+.service-card__body {
   position: relative;
-  z-index: 3;
-  display: block;
-  padding: var(--space-md);
-  font-family: var(--font-mono);
-  font-size: var(--fs-h3);
-  color: rgba(255, 255, 255, 0.85);
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-lg);
+  width: 100%;
+  max-width: 60%;
+  padding: var(--space-xl);
 }
 
-.service-block__content .eyebrow {
-  margin-bottom: var(--space-2xs);
+.service-card__index {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 3.4vw, 3.75rem);
+  line-height: 0.9;
+  color: var(--color-accent);
+  padding-inline-end: var(--space-lg);
+  border-inline-end: 1px solid var(--color-line);
+  align-self: stretch;
 }
 
-.service-block__lead {
+.service-card__title {
+  font-size: clamp(1.5rem, 1.6vw + 0.9rem, 2.25rem);
+  line-height: 1.1;
+  /* Navy, not orange — the number is the accent on these cards, and six
+     orange headings in a column would spend the accent entirely. */
+  color: var(--color-ink);
+}
+
+.service-card__lead {
   margin-top: var(--space-sm);
   color: var(--color-ink-soft);
-  max-width: 52ch;
+  max-width: 46ch;
 }
 
-.service-block__list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xs);
+.service-card__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2xs) var(--space-md);
   margin-top: var(--space-md);
+  max-width: 46ch;
 }
 
-.service-block__list li {
+.service-card__list li {
   position: relative;
   padding-inline-start: var(--space-md);
   font-size: var(--fs-small);
+  line-height: 1.5;
 }
 
-.service-block__list li::before {
+.service-card__list li::before {
   content: "";
   position: absolute;
   inset-inline-start: 0;
@@ -114,31 +382,444 @@
   background: var(--color-accent);
 }
 
-.service-block__link {
+/* ---------- Service card action ----------
+   One element doing two jobs: a circular arrow sitting over the far right
+   of the image on desktop (the reference's affordance), and a plain
+   "Get a quote →" text link once the card stacks on narrow screens, where
+   a lone floating circle over a banner image reads as decoration. */
+
+.service-card__action {
+  position: absolute;
+  z-index: 2;
+  inset-inline-end: var(--space-xl);
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2xs);
-  margin-top: var(--space-md);
-  font-family: var(--font-mono);
-  font-size: var(--fs-small);
-  font-weight: 500;
-  color: var(--color-blue-500);
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  /* Translucent glass, sitting on the six real (dusk-toned, fairly dark)
+     service photos now in place — a light glass pill reads clearly against
+     them. It sits at the media area's unfaded right edge (see
+     .service-card__media's mask), so it never has to contend with the
+     left-edge fade underneath it. */
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--color-white);
+  transition: background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 
-.service-block__link:hover {
+.service-card__action:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* Clipped, not display:none — the label is half the link's accessible name
+   ("Get a quote" + "about Operation & Maintenance"), and display:none would
+   drop it from the accessibility tree, leaving screen readers with a link
+   announced as just "about Operation & Maintenance". It comes back as
+   visible text below 860px (see the stacked-card rules). */
+.service-card__action-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.service-card__action-arrow {
+  display: inline-flex;
+}
+
+/* ---------- Industries band ----------
+   section--dark supplies the inverted text colour; the background is
+   overridden to the same blue-900 as the hero (section--dark's own
+   blue-700 sits too light against the orange labels and the reference's
+   deep field). Not using .section either — this band sets its own padding
+   so the rail can sit tighter under the head than .section's rhythm. */
+
+.industries {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-blue-900);
+  /* Tighter at the bottom than the top: the rail is the band's closing
+     line, and a full --space-2xl under it left a dead navy strip before
+     the next section. */
+  padding-block: var(--space-2xl) var(--space-xl);
+}
+
+/* The reference's orange checkerboard bleeding out of the top-right
+   corner, built as a repeating conic gradient rather than an image and
+   masked so it dissolves toward the middle of the band instead of ending
+   on a straight edge. */
+.industries__texture {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  width: min(42%, 560px);
+  height: 78%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: repeating-conic-gradient(var(--color-orange-600) 0% 25%, transparent 0% 50%);
+  background-size: 78px 78px;
+  -webkit-mask-image: radial-gradient(125% 125% at 100% 0%, #000 0%, transparent 68%);
+  mask-image: radial-gradient(125% 125% at 100% 0%, #000 0%, transparent 68%);
+}
+
+.industries__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.industries__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 24rem);
+  align-items: start;
+  gap: var(--space-lg) var(--space-2xl);
+}
+
+.industries__title {
+  margin-top: var(--space-sm);
+  color: var(--color-white);
+  font-size: clamp(2rem, 2.6vw + 0.8rem, 3.25rem);
+  line-height: 1.06;
+  max-width: 18ch;
+}
+
+.industries__lead {
+  margin-top: var(--space-sm);
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 44ch;
+}
+
+.industries__rail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* Orange label + orange icon, per the reference direction. This is the one
+   place on the page where the accent carries a whole row of text, which
+   works because it's five short uppercase labels against deep navy, not
+   body copy. */
+.industries__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-orange-500);
+}
+
+.industries__item + .industries__item {
+  padding-inline-start: var(--space-lg);
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.industries__icon {
+  flex: none;
+  color: inherit;
+}
+
+/* ---------- Why KIPL band ---------- */
+
+/* The heading column is given the lion's share so "A partner for what
+   keeps industry moving." sets in two lines rather than three — the lead
+   and the button are both fixed-ish, so widening the head means narrowing
+   them, not the container. */
+.why__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 19rem) auto;
+  align-items: center;
+  gap: var(--space-lg) var(--space-xl);
+}
+
+.why__title {
+  margin-top: var(--space-sm);
+  font-size: clamp(1.9rem, 2vw + 0.85rem, 2.75rem);
+  line-height: 1.08;
+  max-width: 22ch;
+  color: var(--color-blue-700);
+}
+
+.why__lead {
+  color: var(--color-ink-soft);
+  max-width: 40ch;
+}
+
+.why__action {
+  padding-inline-start: var(--space-xl);
+  border-inline-start: 1px solid var(--color-line);
+}
+
+.why__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.why__item + .why__item {
+  padding-inline-start: var(--space-lg);
+  border-inline-start: 1px solid var(--color-line);
+}
+
+.why__icon {
   color: var(--color-accent);
 }
 
-@media (max-width: 860px) {
-  .service-block {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-    padding-block: var(--space-xl);
+.why__item-title {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-body-lg);
+  color: var(--color-accent);
+}
+
+.why__item-text {
+  margin-top: var(--space-2xs);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+/* ---------- CTA band ----------
+   Moved to components.css (.cta-band) once Projects reused it too — see
+   that file's "CTA band, full-bleed orange variant" comment. Nothing
+   Services-specific left to keep here. */
+
+/* ---------- Responsive ---------- */
+
+/* Quick-nav row-wrap safety net, at a wider breakpoint than the tiers
+   below: the six items are sized to fit one row inside the 1280px
+   content-max on typical desktop widths, but the exact point where they
+   wrap can drift a little (layout rounding, browser zoom, an unusual
+   viewport width) somewhere in the ~1130-1250px range. A vertical divider
+   that lands at the start of a wrapped line reads as a stray mark, not a
+   separator, so dividers come off — and the row-gap that replaces them
+   goes on — any time wrapping is even plausible, not just once the layout
+   has clearly moved into mobile stacking. */
+@media (max-width: 1300px) {
+  .service-quicknav__list {
+    row-gap: var(--space-sm);
   }
 
-  /* Panel always leads on mobile regardless of the desktop alternation. */
-  .service-block__panel,
-  .service-block__content {
-    order: 0;
+  .service-quicknav__list li+li {
+    border-inline-start: none;
+  }
+}
+
+/* Tablet: the two-column detail list gets cramped before the card itself
+   needs to stack, so collapse it first. The five-across rails drop to
+   three, which means the "no left border on the first item in a row" reset
+   moves from 5n+1 to 3n+1 — same trick at every breakpoint below. */
+@media (max-width: 1080px) {
+  .service-card__body {
+    max-width: 64%;
+    padding: var(--space-lg);
+  }
+
+  .service-card__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .industries__rail,
+  .why__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: var(--space-xl);
+  }
+
+  .industries__item:nth-child(3n + 1),
+  .why__item:nth-child(3n + 1) {
+    padding-inline-start: 0;
+    border-inline-start: none;
+  }
+
+  .why__head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+  }
+
+  .why__action {
+    grid-column: 1 / -1;
+    padding-inline-start: 0;
+    border-inline-start: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .service-quicknav__label {
+    max-width: 7.5rem;
+  }
+
+  .services-hero__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .services-list__head {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    margin-bottom: var(--space-xl);
+  }
+
+  /* Equal heights are dropped here on purpose: stacked, each card is a
+     banner plus its own copy, and forcing the short ones to match the
+     tallest just opens dead space under their text. */
+  .services-list__cards {
+    grid-auto-rows: auto;
+  }
+
+  /* Stacked: the image becomes a banner above the content instead of a
+     right-hand column. The mask flips to a single vertical fade — the copy
+     now sits *below* the image rather than beside it, so an X-axis fade
+     would do nothing useful and a bottom fade is what blends the banner
+     into the card. Text never overlaps the image in this mode, so
+     readability doesn't depend on the fade at all. */
+  .service-card {
+    display: block;
+    min-height: 0;
+  }
+
+  .service-card__media {
+    position: relative;
+    width: 100%;
+    height: clamp(9rem, 34vw, 13rem);
+
+    --media-fade-x: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    -webkit-mask-composite: source-over;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    mask-composite: add;
+  }
+
+  .service-card__body {
+    max-width: none;
+    padding: var(--space-lg);
+    padding-top: var(--space-md);
+  }
+
+  /* Back into the flow as a text link under the copy. */
+  .service-card__action {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+    gap: var(--space-2xs);
+    margin: 0 var(--space-lg) var(--space-lg);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    color: var(--color-blue-500);
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+    font-weight: 500;
+  }
+
+  .service-card__action:hover {
+    background: none;
+    color: var(--color-accent);
+  }
+
+  .service-card__action-label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+  }
+
+  .industries__head,
+  .why__head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .industries__title,
+  .why__title {
+    max-width: none;
+  }
+
+  .industries__rail,
+  .why__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .industries__item:nth-child(3n + 1),
+  .why__item:nth-child(3n + 1) {
+    padding-inline-start: var(--space-lg);
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .why__item:nth-child(3n + 1) {
+    border-inline-start-color: var(--color-line);
+  }
+
+  .industries__item:nth-child(2n + 1),
+  .why__item:nth-child(2n + 1) {
+    padding-inline-start: 0;
+    border-inline-start: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .service-card__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-sm);
+  }
+
+  /* Number moves above the title instead of beside it — a 3.75rem numeral
+     plus a rule eats most of a phone's width otherwise. */
+  .service-card__index {
+    padding-inline-end: 0;
+    border-inline-end: none;
+    align-self: start;
+    font-size: 2.25rem;
+  }
+
+  .services-hero__stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .services-hero__stat:nth-child(even) {
+    padding-inline-start: 0;
+    border-inline-start: none;
+  }
+
+  /* Single column: vertical dividers stop making sense, so every item
+     resets and the row gap carries the separation instead. */
+  .industries__rail,
+  .why__grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-lg);
+  }
+
+  /* The adjacent-sibling selector that draws the dividers is (0,2,0), so a
+     bare `.industries__item` reset loses to it and every even item keeps a
+     stray rule. Reset through the same `+` selector to match its
+     specificity. */
+  .industries__item + .industries__item,
+  .why__item + .why__item,
+  .industries__item:nth-child(3n + 1),
+  .why__item:nth-child(3n + 1),
+  .industries__item:nth-child(2n + 1),
+  .why__item:nth-child(2n + 1) {
+    padding-inline-start: 0;
+    border-inline-start: none;
   }
 }

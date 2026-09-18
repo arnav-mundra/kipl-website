@@ -28,10 +28,16 @@
     href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=5" />
-  <link rel="stylesheet" href="css/base.css?v=5" />
-  <link rel="stylesheet" href="css/components.css?v=5" />
-  <link rel="stylesheet" href="css/projects.css?v=5" />
+  <link rel="stylesheet" href="css/variables.css?v=41" />
+  <link rel="stylesheet" href="css/base.css?v=41" />
+  <link rel="stylesheet" href="css/components.css?v=41" />
+  <link rel="stylesheet" href="css/projects.css?v=41" />
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
 </head>
 
 <body>
@@ -90,25 +96,74 @@
   <main>
 
     <!-- ============ HERO ============
-         Same component as Home/Services: full-bleed photo slideshow, same
-         six photos, same mosaic-cell dissolve
-         (js/animations.js#initHeroSlideshow). -->
-    <section class="hero">
-      <div class="hero__stage" data-hero-slideshow
-        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg">
-        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true">
+         Deliberately NOT the shared .hero photo slideshow every other page
+         uses (components.css) — a dedicated dark-navy stats hero instead,
+         per the reference mockup (docs/draft/ChatGPT Image Aug 31, 2026,
+         12_51_21 AM.png): editorial headline paired with real KIPL figures
+         instead of a photo, which reads more "portfolio credentials" than
+         "brand photography" and doesn't need real jobsite photos this page
+         doesn't have yet. Page-specific (.projects-hero, css/projects.css)
+         rather than touching the shared component every other page relies
+         on. All four stats are figures already verified/used elsewhere on
+         the site (growth band below, Home's growth-trend chart, About's
+         milestones) — not new numbers invented for this mockup; the
+         reference's own "18+" project count was a placeholder from the
+         mockup generator and is replaced here with the real total (21). -->
+    <section class="projects-hero">
+      <div class="projects-hero__texture" aria-hidden="true"></div>
+      <div class="container projects-hero__inner">
+        <div class="projects-hero__intro" data-reveal-hero>
+          <p class="eyebrow">Our projects</p>
+          <h1>Delivering on Odisha's toughest industrial sites.</h1>
+          <p class="projects-hero__lead">
+            A look at what KIPL is building right now, backed by a track
+            record of completed operations, fabrication, and start-up
+            contracts across the aluminium, steel, and power sectors.
+          </p>
         </div>
-        <div class="hero__scrim" aria-hidden="true"></div>
 
-        <div class="container hero__stage-inner">
-          <div class="hero__card">
-            <p class="eyebrow" data-reveal-hero>Our work</p>
-            <h1 data-reveal-hero>Delivering on Odisha's toughest industrial sites.</h1>
-            <p class="hero__lead" data-reveal-hero>
-              A look at what KIPL is building right now, backed by a track
-              record of completed operations, fabrication, and start-up
-              contracts across the aluminium, steel, and power sectors.
-            </p>
+        <div class="projects-hero__stats" data-reveal-hero>
+          <div class="projects-hero__stat">
+            <svg class="projects-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <path
+                d="M3 19V9l8-5 8 5v10M3 19h16M3 19v-6h4v6M15 19v-6h4v6M9.5 19v-4h3v4"
+                fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
+            </svg>
+            <span class="projects-hero__stat-value">&#8377;100.82<span class="projects-hero__stat-suffix">Cr</span></span>
+            <span class="projects-hero__stat-label">FY25&ndash;26 Turnover</span>
+          </div>
+          <div class="projects-hero__stat">
+            <svg class="projects-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <circle cx="8" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.3" />
+              <path d="M2.5 18c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5" fill="none" stroke="currentColor"
+                stroke-width="1.3" stroke-linecap="round" />
+              <circle cx="15.5" cy="8" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3" />
+              <path d="M13.8 12.7c2.4.3 4.2 2.4 4.2 5" fill="none" stroke="currentColor" stroke-width="1.3"
+                stroke-linecap="round" />
+            </svg>
+            <span class="projects-hero__stat-value">1,470<span class="projects-hero__stat-suffix">+</span></span>
+            <span class="projects-hero__stat-label">Workforce Strength</span>
+          </div>
+          <div class="projects-hero__stat">
+            <svg class="projects-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <rect x="3" y="4.5" width="16" height="14" rx="1.5" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+              <path d="M3 8.5h16M7 2.5v3M15 2.5v3" fill="none" stroke="currentColor" stroke-width="1.3"
+                stroke-linecap="round" />
+            </svg>
+            <span class="projects-hero__stat-value">5<span class="projects-hero__stat-suffix">+</span></span>
+            <span class="projects-hero__stat-label">Years of Consistent Growth</span>
+          </div>
+          <div class="projects-hero__stat">
+            <svg class="projects-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <rect x="2.5" y="7.5" width="17" height="11" rx="1.5" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+              <path d="M7.5 7.5V5.8a1.6 1.6 0 0 1 1.6-1.6h3.8a1.6 1.6 0 0 1 1.6 1.6V7.5" fill="none"
+                stroke="currentColor" stroke-width="1.3" />
+              <path d="M2.5 12.5h17" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+            <span class="projects-hero__stat-value">22</span>
+            <span class="projects-hero__stat-label">Active &amp; Completed Projects</span>
           </div>
         </div>
       </div>
@@ -178,299 +233,462 @@
       </div>
     </section>
 
-    <!-- ============ CURRENTLY WORKING ON ============
-         The main event on this page: KIPL's active book of work, sourced
-         from docs/current projects.xlsx and grouped by the same five
-         domains as services.html. Two rows from that sheet are
-         deliberately excluded — a Tenon FM rental and a Hindalco Lapanga
-         sweeping vehicle, both listed under firm "ST" (Samaleswari
-         Traders, a group company, not KIPL itself). Replaces the two
-         summarized case-study cards this section used to show (Vedanta
-         Potline 1&2 / Balco Potline 3 start-up, from the older Projects
-         Print.xlsx) now that this sheet gives the real, itemized current
-         breakdown of that same work instead. Compact rows, not big
-         panels, on purpose — 17 engagements couldn't read as 17 hero
-         cards, and the point here is breadth/reliability, not a handful
-         of highlight reels. -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow" data-reveal>In progress</p>
-          <h2 class="section-head__title" data-reveal>Currently working on.</h2>
-          <p class="project-domains__intro" data-reveal>
-            17 active engagements across five domains &mdash; &#8377;205+ Cr
-            in combined contract value.
-          </p>
-        </div>
-
-        <div class="project-domain" data-reveal>
-          <h3 class="project-domain__title">Operation &amp; Maintenance</h3>
-          <div class="project-rows">
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Vedanta &mdash; Pot Room Operation</h4>
-                <p class="project-row__desc">Operational assistance &amp; redressing.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2023&ndash;26</span>
-                <span>&#8377;34.40 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Vedanta &mdash; Pot Room Operation, Plant 2</h4>
-                <p class="project-row__desc">Skimming, clamp drop, measurement crew &amp; LMV.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2024&ndash;27</span>
-                <span>&#8377;15.82 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Vedanta &mdash; Pot Room Operation, Plant 1</h4>
-                <p class="project-row__desc">Skimming, clamp drop, measurement crew &amp; LMV.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2024&ndash;27</span>
-                <span>&#8377;10.17 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Vedanta &mdash; Pot Room Operation (Pot Manager)</h4>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2025&ndash;28</span>
-                <span>&#8377;22.02 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Balco &mdash; Pot Room Operation Support</h4>
-                <p class="project-row__desc">PTM operation support.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Korba, Chhattisgarh</span>
-                <span>2025&ndash;28</span>
-                <span>&#8377;4.48 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Balco &mdash; Green Anode Plant Operation</h4>
-                <p class="project-row__desc">Bag management.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Korba, Chhattisgarh</span>
-                <span>2023&ndash;27</span>
-                <span>&#8377;2.34 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Balco &mdash; Pot Room Start-up</h4>
-              </div>
-              <div class="project-row__meta">
-                <span>Korba, Chhattisgarh</span>
-                <span>2025&ndash;26</span>
-                <span>&#8377;8.84 Cr</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-domain" data-reveal>
-          <h3 class="project-domain__title">Project Execution</h3>
-          <div class="project-rows">
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Vedanta &mdash; General Fabrication</h4>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2023&ndash;27</span>
-                <span>&#8377;13.50 Cr</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-domain" data-reveal>
-          <h3 class="project-domain__title">Material Handling</h3>
-          <div class="project-rows">
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Tata Steel &mdash; Crane Hire</h4>
-                <p class="project-row__desc">F15 &amp; F23 cranes.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Meramandali, Odisha</span>
-                <span>2023&ndash;27</span>
-                <span>&#8377;12.61 Cr</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-domain" data-reveal>
-          <h3 class="project-domain__title">Mining &amp; Logistics</h3>
-          <div class="project-rows">
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Vedanta &mdash; Jamkhani Coal Transport</h4>
-                <p class="project-row__desc">Lifting &amp; transportation of coal from Jamkhani mines.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2025&ndash;26</span>
-                <span>&#8377;13.20 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>JSW &mdash; MCL Kulda Coal Transport</h4>
-                <p class="project-row__desc">To JSW Energy (Utkal)'s 2&times;350&nbsp;MW thermal power plant.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2024&ndash;25</span>
-                <span>&#8377;15.78 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Coal &amp; Ash Transportation</h4>
-                <p class="project-row__desc">Under various transporters.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Jharsuguda, Odisha</span>
-                <span>2022&ndash;26</span>
-                <span>Variable</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-domain" data-reveal>
-          <h3 class="project-domain__title">Mechanised Cleaning</h3>
-          <div class="project-rows">
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Tata Steel &mdash; IVC Machine Hire</h4>
-              </div>
-              <div class="project-row__meta">
-                <span>Meramandali, Odisha</span>
-                <span>2024&ndash;27</span>
-                <span>&#8377;48.22 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Tata Steel &mdash; Waterjet Hire</h4>
-              </div>
-              <div class="project-row__meta">
-                <span>Meramandali, Odisha</span>
-                <span>2023&ndash;26</span>
-                <span>&#8377;2.60 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>PAPL &mdash; Vacuum Truck Hire</h4>
-                <p class="project-row__desc">3 MTPA facility.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Lanjigarh, Odisha</span>
-                <span>2026</span>
-                <span>&#8377;0.56 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>Hindalco &mdash; Cast House Sweeping</h4>
-                <p class="project-row__desc">Ride-on sweeping machine &amp; operators.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Lapanga, Odisha</span>
-                <span>2025&ndash;26</span>
-                <span>&#8377;0.24 Cr</span>
-              </div>
-            </div>
-            <div class="project-row">
-              <div class="project-row__main">
-                <h4>NTPC &mdash; Ash Dyke Road Cleaning</h4>
-                <p class="project-row__desc">Manpower deployment, ash dyke road &amp; RR Colony.</p>
-              </div>
-              <div class="project-row__meta">
-                <span>Darlipali, Odisha</span>
-                <span>2025&ndash;27</span>
-                <span>&#8377;0.58 Cr</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============ COMPLETED PROJECTS ============
-         Secondary to the section above on purpose: a compact row list, not
-         the big mosaic panels — same "still a card, but visibly lighter"
-         hierarchy move as about.html's Heads of Department tier. Proof of
-         track record, not the main pitch. -->
+    <!-- ============ FEATURED PROJECTS ============
+         Two curated engagements, cycled via js/main.js
+         #initFeaturedCarousel. Each slide is now a single card whose photo
+         (real photography, docs/source-images/projects/*-original.png,
+         optimized to frontend/assets/images/projects/*.jpg) bleeds into
+         the text panel via the same two-axis CSS mask fade services.html's
+         .service-card__media uses, rather than sitting in its own separate
+         column — see css/projects.css .featured__media for the shared
+         technique. -->
     <section class="section section--tight">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow" data-reveal>Track record</p>
-          <h2 class="section-head__title" data-reveal>Completed engagements.</h2>
-        </div>
+        <div class="featured" data-featured-carousel>
+          <div class="featured__nav">
+            <button type="button" class="featured__arrow" data-featured-prev aria-label="Previous featured project">
+              <svg viewBox="0 0 8 12" width="8" height="12" aria-hidden="true">
+                <path d="M6 1L1 6l5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+            <span class="featured__counter"><span data-featured-counter>1</span> / 2</span>
+            <button type="button" class="featured__arrow" data-featured-next aria-label="Next featured project">
+              <svg viewBox="0 0 8 12" width="8" height="12" aria-hidden="true">
+                <path d="M1 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
 
-        <div class="project-rows">
-          <div class="project-row" data-reveal>
-            <div class="project-row__main">
-              <h3>Tata Steel &mdash; Mechanised Housekeeping</h3>
-              <p class="project-row__desc">
-                Mechanised housekeeping across all plant areas using
-                industrial vacuum cleaning and sweeping machines.
+          <div class="featured__slide is-active" data-featured-slide>
+            <div class="featured__media" style="background-image: url('assets/images/projects/tata-steel-ivc.jpg');"></div>
+            <div class="featured__info" data-reveal>
+              <p class="eyebrow">Featured project</p>
+              <p class="featured__index-row">
+                <span class="featured__index">01</span>
+                <span class="featured__index-total">/ 02</span>
               </p>
-            </div>
-            <div class="project-row__meta">
-              <span>Angul, Odisha</span>
-              <span>2021&ndash;24</span>
-              <span>&#8377;30.2 Cr</span>
+              <h2>Tata Steel &mdash; IVC Machine Hire</h2>
+              <p class="featured__location">
+                <svg class="pin-icon" viewBox="0 0 14 14" width="12" height="12" aria-hidden="true">
+                  <path d="M7 13s5-4.5 5-8a5 5 0 1 0-10 0c0 3.5 5 8 5 8Z" fill="none" stroke="currentColor"
+                    stroke-width="1.3" stroke-linejoin="round" />
+                  <circle cx="7" cy="5" r="1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+                Meramandali, Odisha
+              </p>
+              <p class="featured__desc">
+                Hiring of industrial vacuum cleaning (IVC) machines for
+                mechanised housekeeping at Tata Steel's Meramandali
+                facility &mdash; KIPL's largest active engagement by value.
+              </p>
+              <div class="featured__stats">
+                <div>
+                  <span class="featured__stat-label">Client</span>
+                  <span class="featured__stat-value">Tata Steel</span>
+                </div>
+                <div>
+                  <span class="featured__stat-label">Domain</span>
+                  <span class="featured__stat-value">Mechanised Cleaning</span>
+                </div>
+                <div>
+                  <span class="featured__stat-label">Value</span>
+                  <span class="featured__stat-value">&#8377;48.22 Cr</span>
+                </div>
+                <div>
+                  <span class="featured__stat-label">Status</span>
+                  <span class="featured__stat-value">Active, 2024&ndash;27</span>
+                </div>
+              </div>
+              <a href="contact.html" class="btn btn--ghost">Discuss a similar project &rarr;</a>
             </div>
           </div>
 
-          <div class="project-row" data-reveal>
-            <div class="project-row__main">
-              <h3>Vedanta &mdash; Carbon Area Operations</h3>
-              <p class="project-row__desc">
-                Multi-year operation of the carbon plant area at Vedanta's
-                Jharsuguda smelter.
+          <div class="featured__slide" data-featured-slide>
+            <div class="featured__media" style="background-image: url('assets/images/projects/vedanta-pot-room.jpg');"></div>
+            <div class="featured__info" data-reveal>
+              <p class="eyebrow">Featured project</p>
+              <p class="featured__index-row">
+                <span class="featured__index">02</span>
+                <span class="featured__index-total">/ 02</span>
               </p>
-            </div>
-            <div class="project-row__meta">
-              <span>Jharsuguda, Odisha</span>
-              <span>2019&ndash;22</span>
-              <span>&#8377;42.8 Cr</span>
+              <h2>Vedanta &mdash; Pot Room Operation</h2>
+              <p class="featured__location">
+                <svg class="pin-icon" viewBox="0 0 14 14" width="12" height="12" aria-hidden="true">
+                  <path d="M7 13s5-4.5 5-8a5 5 0 1 0-10 0c0 3.5 5 8 5 8Z" fill="none" stroke="currentColor"
+                    stroke-width="1.3" stroke-linejoin="round" />
+                  <circle cx="7" cy="5" r="1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+                Jharsuguda, Odisha
+              </p>
+              <p class="featured__desc">
+                Operational assistance and redressing for pot room
+                operations at Vedanta's Jharsuguda aluminium smelter.
+              </p>
+              <div class="featured__stats">
+                <div>
+                  <span class="featured__stat-label">Client</span>
+                  <span class="featured__stat-value">Vedanta</span>
+                </div>
+                <div>
+                  <span class="featured__stat-label">Domain</span>
+                  <span class="featured__stat-value">Operation &amp; Maintenance</span>
+                </div>
+                <div>
+                  <span class="featured__stat-label">Value</span>
+                  <span class="featured__stat-value">&#8377;34.40 Cr</span>
+                </div>
+                <div>
+                  <span class="featured__stat-label">Status</span>
+                  <span class="featured__stat-value">Active, 2023&ndash;26</span>
+                </div>
+              </div>
+              <a href="contact.html" class="btn btn--ghost">Discuss a similar project &rarr;</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ CTA BAND ============ -->
-    <section class="cta section--tight">
+    <!-- ============ PROJECTS BY DOMAIN ============
+         Five domain groups (Operation & Maintenance, Project Execution,
+         Material Handling, Mining & Logistics, Mechanised Cleaning), each
+         showing up to 5 ACTIVE engagements sorted highest value to
+         lowest (a "Variable" value sorts last within its group). Banner
+         photos: docs/source-images/projects/<Domain>.png, cropped/
+         compressed to frontend/assets/images/projects/<slug>.jpg. The
+         filter bar up top (js/main.js#initProjectFilters) is the same
+         status-tabs + domain-chips control that used to sit above a
+         separate full card grid — that grid is gone, so it now filters
+         these groups directly: a domain chip shows/hides whole
+         [data-domain] groups, the status tabs hide individual rows
+         within whatever's still showing, and a group left with 0
+         visible rows hides itself too. -->
+    <section class="section section--tight domain-groups">
       <div class="container">
-        <div class="cta__inner" data-reveal>
-          <h2>Have a similar site or shutdown coming up?</h2>
-          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+        <div class="project-filters" data-reveal>
+          <div class="project-filters__row">
+            <div class="project-filters__status">
+              <button type="button" class="project-filters__tab is-active" data-filter-status="all">All
+                Projects</button>
+              <button type="button" class="project-filters__tab" data-filter-status="active">Active</button>
+              <button type="button" class="project-filters__tab" data-filter-status="completed">Completed</button>
+            </div>
+            <div class="project-filters__meta">
+              <span class="project-filters__count"><span data-project-count>18</span> Projects</span>
+              <span class="project-filters__divider" aria-hidden="true">&middot;</span>
+              <div class="project-filters__sort">
+                <label for="projectSort" class="visually-hidden">Sort projects</label>
+                <span aria-hidden="true">Sort by:</span>
+                <select id="projectSort" data-filter-sort>
+                  <option value="value" selected>Featured</option>
+                  <option value="az">A&ndash;Z</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="project-filters__domains">
+            <button type="button" class="project-filters__chip is-active" data-filter-domain="all">All
+              Domains</button>
+            <button type="button" class="project-filters__chip" data-filter-domain="om">Operation &amp;
+              Maintenance</button>
+            <button type="button" class="project-filters__chip" data-filter-domain="execution">Project
+              Execution</button>
+            <button type="button" class="project-filters__chip" data-filter-domain="handling">Material
+              Handling</button>
+            <button type="button" class="project-filters__chip" data-filter-domain="mining">Mining &amp;
+              Logistics</button>
+            <button type="button" class="project-filters__chip" data-filter-domain="cleaning">Mechanised
+              Cleaning</button>
+          </div>
         </div>
+
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>Explore by domain</p>
+          <h2 class="section-head__title" data-reveal>What we're working on.</h2>
+        </div>
+
+        <div class="domain-group" data-reveal data-domain="om">
+          <div class="domain-group__header">
+            <span class="domain-group__index">01</span>
+            <div class="domain-group__heading">
+              <h3>Operation &amp; Maintenance</h3>
+              <p>Keeping critical operations running.</p>
+            </div>
+            <div class="domain-group__banner">
+              <img src="assets/images/projects/operation-maintenance.jpg" alt="" loading="lazy" />
+            </div>
+          </div>
+          <div class="domain-group__list">
+            <div class="domain-row" data-status="active" data-value="34.4" data-year="2023" data-title="Vedanta — Pot Room Operation">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Pot Room Operation</p>
+                <p class="domain-row__desc">Operational assistance &amp; redressing.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2023&ndash;26</span>
+              <span class="domain-row__value">&#8377;34.40 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="22.02" data-year="2025" data-title="Vedanta — Pot Room Operation (Pot Manager)">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Pot Room Operation (Pot Manager)</p>
+                <p class="domain-row__desc">Pot management &amp; operational oversight.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2025&ndash;28</span>
+              <span class="domain-row__value">&#8377;22.02 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="15.82" data-year="2024" data-title="Vedanta — Pot Room Operation, Plant 2">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Pot Room Operation, Plant 2</p>
+                <p class="domain-row__desc">Skimming, clamp drop, measurement crew &amp; LMV.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2024&ndash;27</span>
+              <span class="domain-row__value">&#8377;15.82 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="10.17" data-year="2024" data-title="Vedanta — Pot Room Operation, Plant 1">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Pot Room Operation, Plant 1</p>
+                <p class="domain-row__desc">Skimming, clamp drop, measurement crew &amp; LMV.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2024&ndash;27</span>
+              <span class="domain-row__value">&#8377;10.17 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="8.84" data-year="2025" data-title="Balco — Pot Room Start-up">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Balco &mdash; Pot Room Start-up</p>
+                <p class="domain-row__desc">Start-up support for new pot lines.</p>
+              </div>
+              <span class="domain-row__location">Korba, Chhattisgarh</span>
+              <span class="domain-row__year">2025&ndash;26</span>
+              <span class="domain-row__value">&#8377;8.84 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group" data-reveal data-domain="execution">
+          <div class="domain-group__header">
+            <span class="domain-group__index">02</span>
+            <div class="domain-group__heading">
+              <h3>Project Execution</h3>
+              <p>From concept to completion.</p>
+            </div>
+            <div class="domain-group__banner">
+              <img src="assets/images/projects/project-execution.jpg" alt="" loading="lazy" />
+            </div>
+          </div>
+          <div class="domain-group__list">
+            <div class="domain-row" data-status="active" data-value="13.5" data-year="2023" data-title="Vedanta — General Fabrication">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; General Fabrication</p>
+                <p class="domain-row__desc">Structural fabrication &amp; erection support.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2023&ndash;27</span>
+              <span class="domain-row__value">&#8377;13.50 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0.86" data-year="2025" data-title="Vedanta — Rest-shed at Potline">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Rest-shed at Potline</p>
+                <p class="domain-row__desc">Fabrication &amp; erection.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2025&ndash;26</span>
+              <span class="domain-row__value">&#8377;86 Lakh</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0.32" data-year="2025" data-title="Vedanta — Bag Filter Housing Strainer Plate">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Bag Filter Housing Strainer Plate</p>
+                <p class="domain-row__desc">Fabrication &amp; erection.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2025&ndash;26</span>
+              <span class="domain-row__value">&#8377;32 Lakh</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0.13" data-year="2025" data-title="Vedanta — Furnace SS Base Frame">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Furnace SS Base Frame</p>
+                <p class="domain-row__desc">Fabrication &amp; erection.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2025&ndash;26</span>
+              <span class="domain-row__value">&#8377;13 Lakh</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group" data-reveal data-domain="handling">
+          <div class="domain-group__header">
+            <span class="domain-group__index">03</span>
+            <div class="domain-group__heading">
+              <h3>Material Handling</h3>
+              <p>Moving industry forward.</p>
+            </div>
+            <div class="domain-group__banner">
+              <img src="assets/images/projects/material-handling.jpg" alt="" loading="lazy" />
+            </div>
+          </div>
+          <div class="domain-group__list">
+            <div class="domain-row" data-status="active" data-value="12.61" data-year="2023" data-title="Tata Steel — Crane Hire">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Tata Steel &mdash; Crane Hire</p>
+                <p class="domain-row__desc">F15 &amp; F23 cranes.</p>
+              </div>
+              <span class="domain-row__location">Meramandali, Odisha</span>
+              <span class="domain-row__year">2023&ndash;27</span>
+              <span class="domain-row__value">&#8377;12.61 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group" data-reveal data-domain="mining">
+          <div class="domain-group__header">
+            <span class="domain-group__index">04</span>
+            <div class="domain-group__heading">
+              <h3>Mining &amp; Logistics</h3>
+              <p>Reliable movement. Real impact.</p>
+            </div>
+            <div class="domain-group__banner">
+              <img src="assets/images/projects/mining-logistics.jpg" alt="" loading="lazy" />
+            </div>
+          </div>
+          <div class="domain-group__list">
+            <div class="domain-row" data-status="active" data-value="15.78" data-year="2024" data-title="JSW — MCL Kulda Coal Transport">
+              <div class="domain-row__info">
+                <p class="domain-row__title">JSW &mdash; MCL Kulda Coal Transport</p>
+                <p class="domain-row__desc">To JSW Energy (Utkal)'s 2&times;350 MW thermal power plant.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2024&ndash;25</span>
+              <span class="domain-row__value">&#8377;15.78 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="13.2" data-year="2025" data-title="Vedanta — Jamkhani Coal Transport">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Vedanta &mdash; Jamkhani Coal Transport</p>
+                <p class="domain-row__desc">Lifting &amp; transportation of coal from Jamkhani mines.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2025&ndash;26</span>
+              <span class="domain-row__value">&#8377;13.20 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0" data-year="2022" data-title="Coal & Ash Transportation">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Coal &amp; Ash Transportation</p>
+                <p class="domain-row__desc">Under various transporters.</p>
+              </div>
+              <span class="domain-row__location">Jharsuguda, Odisha</span>
+              <span class="domain-row__year">2022&ndash;26</span>
+              <span class="domain-row__value">Variable</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="domain-group" data-reveal data-domain="cleaning">
+          <div class="domain-group__header">
+            <span class="domain-group__index">05</span>
+            <div class="domain-group__heading">
+              <h3>Mechanised Cleaning</h3>
+              <p>Cleaner sites. Safer operations.</p>
+            </div>
+            <div class="domain-group__banner">
+              <img src="assets/images/projects/mechanised-cleaning.jpg" alt="" loading="lazy" />
+            </div>
+          </div>
+          <div class="domain-group__list">
+            <div class="domain-row" data-status="active" data-value="48.22" data-year="2024" data-title="Tata Steel — IVC Machine Hire">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Tata Steel &mdash; IVC Machine Hire</p>
+                <p class="domain-row__desc">Mechanised housekeeping via industrial vacuum cleaning machines.</p>
+              </div>
+              <span class="domain-row__location">Meramandali, Odisha</span>
+              <span class="domain-row__year">2024&ndash;27</span>
+              <span class="domain-row__value">&#8377;48.22 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="2.6" data-year="2023" data-title="Tata Steel — Waterjet Hire">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Tata Steel &mdash; Waterjet Hire</p>
+                <p class="domain-row__desc">High-pressure waterjet cleaning services.</p>
+              </div>
+              <span class="domain-row__location">Meramandali, Odisha</span>
+              <span class="domain-row__year">2023&ndash;26</span>
+              <span class="domain-row__value">&#8377;2.60 Cr</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0.58" data-year="2025" data-title="NTPC — Ash Dyke Road Cleaning">
+              <div class="domain-row__info">
+                <p class="domain-row__title">NTPC &mdash; Ash Dyke Road Cleaning</p>
+                <p class="domain-row__desc">Manpower deployment, ash dyke road &amp; RR Colony.</p>
+              </div>
+              <span class="domain-row__location">Darlipali, Odisha</span>
+              <span class="domain-row__year">2025&ndash;27</span>
+              <span class="domain-row__value">&#8377;58 Lakh</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0.56" data-year="2026" data-title="PAPL — Vacuum Truck Hire">
+              <div class="domain-row__info">
+                <p class="domain-row__title">PAPL &mdash; Vacuum Truck Hire</p>
+                <p class="domain-row__desc">3 MTPA facility.</p>
+              </div>
+              <span class="domain-row__location">Lanjigarh, Odisha</span>
+              <span class="domain-row__year">2026</span>
+              <span class="domain-row__value">&#8377;56 Lakh</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+            <div class="domain-row" data-status="active" data-value="0.24" data-year="2025" data-title="Hindalco — Cast House Sweeping">
+              <div class="domain-row__info">
+                <p class="domain-row__title">Hindalco &mdash; Cast House Sweeping</p>
+                <p class="domain-row__desc">Ride-on sweeping machine &amp; operators.</p>
+              </div>
+              <span class="domain-row__location">Lapanga, Odisha</span>
+              <span class="domain-row__year">2025&ndash;26</span>
+              <span class="domain-row__value">&#8377;24 Lakh</span>
+              <a href="contact.html" class="domain-row__link" aria-label="Discuss a similar project">&rarr;</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============
+         Same full-bleed orange .cta-band component as services.html — see
+         components.css's "CTA band, full-bleed orange variant" comment for
+         why this isn't the shared .cta__inner card Home still uses.
+         Same headline/lead/rail structure, this page's own copy. -->
+    <section class="cta-band">
+      <div class="cta-band__texture" aria-hidden="true"></div>
+      <div class="container cta-band__inner">
+        <div class="cta-band__copy" data-reveal>
+          <h2 class="cta-band__title">Have a similar site or shutdown coming up?</h2>
+          <p class="cta-band__lead">
+            Tell us what you're looking to execute. We'll connect you with the
+            right KIPL team.
+          </p>
+        </div>
+        <a href="contact.html" class="btn btn--primary cta-band__btn" data-reveal>Start a conversation &rarr;</a>
+        <ul class="cta-band__rail" aria-hidden="true">
+          <li>Industry</li>
+          <li>People</li>
+          <li>Partnership</li>
+          <li>Progress</li>
+        </ul>
       </div>
     </section>
 
@@ -518,8 +736,8 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js?v=5" defer></script>
-  <script src="js/main.js?v=5" defer></script>
+  <script src="js/animations.js?v=41" defer></script>
+  <script src="js/main.js?v=41" defer></script>
 </body>
 
 </html>

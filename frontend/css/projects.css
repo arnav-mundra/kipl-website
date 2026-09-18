@@ -1,7 +1,116 @@
-/* Projects page layout: hero, growth band, domain-grouped project rows,
-   CTA band. Component-level styling (buttons, nav, hero slideshow, mosaic
-   reveal, footer, CTA band) lives in components.css — this file is purely
-   projects-page arrangement. */
+/* Projects page layout: hero, growth band, featured carousel, filterable
+   project grid, CTA band. Component-level styling (buttons, nav, mosaic
+   reveal, footer) lives in components.css — this file is purely
+   projects-page arrangement, including its own page-specific hero (not
+   the shared components.css .hero photo slideshow every other page
+   uses — see the HTML comment above .projects-hero for why). */
+
+/* ---------- Hero (page-specific, not components.css .hero) ----------
+   Dark navy + real stats instead of the shared photo slideshow every
+   other page uses — see the HTML comment above this section for why.
+   padding-block on the section itself (rather than an inner "stage" like
+   .hero__stage-inner) clears the fixed nav the same way, just without a
+   fixed-aspect-ratio photo stage to fit inside. */
+
+.projects-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-blue-900);
+  color: var(--color-white);
+  padding-block: calc(var(--nav-height) + var(--space-xl)) var(--space-2xl);
+}
+
+/* One restrained radial glow, not the busy hex-line pattern the mockup
+   used — enough to keep the navy from reading flat without competing
+   with the stats/headline for attention. */
+.projects-hero__texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(700px 480px at 92% 105%, rgba(241, 103, 38, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.projects-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.projects-hero__intro h1 {
+  margin-top: var(--space-sm);
+  color: var(--color-white);
+  font-size: clamp(2rem, 2vw + 1.4rem, 3.25rem);
+}
+
+.projects-hero__lead {
+  margin-top: var(--space-md);
+  font-size: var(--fs-body-lg);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 46ch;
+}
+
+.projects-hero__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg) var(--space-xl);
+}
+
+.projects-hero__stat:nth-child(even) {
+  padding-inline-start: var(--space-lg);
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.projects-hero__stat-icon {
+  color: var(--color-orange-100);
+}
+
+.projects-hero__stat-value {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2vw, 1.85rem);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+.projects-hero__stat-suffix {
+  font-size: 0.55em;
+  color: var(--color-orange-100);
+  margin-inline-start: 0.15em;
+}
+
+.projects-hero__stat-label {
+  display: block;
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+@media (max-width: 860px) {
+  .projects-hero__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-hero__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-hero__stat:nth-child(even) {
+    padding-inline-start: 0;
+    border-inline-start: none;
+  }
+}
 
 /* ---------- Growth band ----------
    section--dark, same background as Home's stat band — two-column
@@ -119,99 +228,590 @@
   }
 }
 
-/* ---------- Currently working on (domain groups) ----------
-   17 active engagements (docs/current projects.xlsx), grouped under the
-   same five domain names services.html uses. Compact rows, not the big
-   mosaic-panel case-study cards this section used to show — with this
-   many real line items, breadth is the point, not a couple of highlight
-   reels. Reuses .project-rows/.project-row below, which Completed
-   Engagements also uses; .project-domain is just the grouping/heading
-   wrapper around one domain's rows. */
+/* ---------- Shared: location pin icon ----------
+   Repeated inline per card/slide rather than defined once via
+   <symbol>/<use> — small enough that duplicating the markup is simpler
+   than the indirection, matching how the milestone chart's person icon
+   (about.css) is handled the same way. */
 
-.project-domains__intro {
-  margin-top: var(--space-sm);
-  color: var(--color-ink-soft);
+.pin-icon {
+  display: inline-block;
+  vertical-align: -2px;
+  margin-inline-end: 0.3em;
+  color: currentColor;
 }
 
-.project-domain + .project-domain {
-  margin-top: var(--space-xl);
+/* ---------- Featured projects (carousel) ----------
+   Two curated engagements (docs/current projects.xlsx), cycled via
+   js/main.js#initFeaturedCarousel — both slides render in full up front
+   (not synthesized from data on click), toggled with a plain .is-active
+   class, so nothing here depends on JS having run correctly to show
+   *something*. Nav controls are positioned once, absolutely, over
+   whichever slide is currently active, since both slides share the same
+   grid shape. Placeholder image panels are a flat CSS gradient (no real
+   jobsite photography yet) rather than the mosaic-reveal texture used
+   elsewhere on the site — mosaic-reveal measures its host's rendered
+   size at init, which would be wrong/zero for a slide that starts
+   display:none, so a plain gradient sidesteps that entirely rather than
+   fighting it. */
+
+.featured {
+  position: relative;
 }
 
-.project-domain__title {
-  font-family: var(--font-mono);
-  font-size: var(--fs-body);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--color-blue-500);
-}
-
-/* ---------- Completed engagements ----------
-   Deliberately lighter than the case-study cards elsewhere on the site
-   (about.css's Heads of Department tier uses the same move) — still a
-   bordered card, just visibly smaller and text-only, no mosaic panel —
-   so this reads as supporting track record, not the main pitch. Also
-   what the domain groups above reuse for their own rows. */
-
-.project-rows {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  margin-top: var(--space-lg);
-}
-
-.project-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-lg);
-  padding: var(--space-md);
+/* Single merged card, not a two-column text/photo split — same shape as
+   services.html's .service-card: the photo is an absolutely-positioned
+   layer behind the text, faded via a two-axis CSS mask
+   (.featured__media below) so it dissolves into the card under the copy
+   instead of sitting in its own boxed-off panel. */
+.featured__slide {
+  position: relative;
+  isolation: isolate;
+  display: none;
+  overflow: hidden;
+  align-items: center;
+  min-height: clamp(22rem, 30vw, 30rem);
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-white);
 }
 
-.project-row__main h3,
-.project-row__main h4 {
+.featured__slide.is-active {
+  display: flex;
+}
+
+.featured__index-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+}
+
+.featured__index {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 3vw, 3rem);
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.featured__index-total {
   font-family: var(--font-mono);
   font-size: var(--fs-body);
+  color: var(--color-ink-soft);
+}
+
+.featured__info {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 58%;
+  padding: var(--space-xl);
+}
+
+.featured__info h2 {
+  margin-top: var(--space-2xs);
+}
+
+.featured__location {
+  margin-top: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.featured__desc {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-soft);
+  max-width: 48ch;
+}
+
+.featured__stats {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-line);
+}
+
+.featured__stat-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.featured__stat-value {
+  display: block;
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
   font-weight: 600;
-  letter-spacing: 0.01em;
   color: var(--color-ink);
 }
 
-.project-row__desc {
+.featured__info .btn {
+  margin-top: var(--space-lg);
+}
+
+/* Same two-axis CSS mask services.html's .service-card__media uses: the
+   photo dissolves into the card under the text (X axis) and softens
+   against the card's rounded top/bottom edges (Y axis), rather than
+   sitting in its own separate boxed panel. */
+.featured__media {
+  position: absolute;
+  z-index: 0;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 56%;
+  overflow: hidden;
+  background-color: var(--color-blue-700);
+  background-size: cover;
+  background-position: center;
+
+  --media-fade-x: linear-gradient(to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.16) 12%,
+      rgba(0, 0, 0, 0.55) 32%,
+      rgba(0, 0, 0, 0.88) 48%,
+      #000 62%);
+  --media-fade-y: linear-gradient(to bottom,
+      transparent 0%,
+      #000 13%,
+      #000 87%,
+      transparent 100%);
+
+  -webkit-mask-image: var(--media-fade-x), var(--media-fade-y);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--media-fade-x), var(--media-fade-y);
+  mask-composite: intersect;
+}
+
+/* top: 0 + a negative-Y translate (rather than a small positive `top`)
+   straddles the nav across the image's top edge instead of sitting
+   entirely inside it. */
+.featured__nav {
+  position: absolute;
+  top: 0;
+  right: var(--space-md);
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.featured__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-ink);
+  box-shadow: 0 6px 16px -8px rgba(20, 33, 61, 0.4);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.featured__arrow:hover {
+  background: var(--color-orange-100);
+}
+
+.featured__counter {
+  padding: 0.4em 0.9em;
+  border-radius: 999px;
+  background: rgba(20, 33, 61, 0.75);
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .featured__slide {
+    display: block;
+    min-height: 0;
+  }
+
+  .featured__slide.is-active {
+    display: block;
+  }
+
+  /* Full-width photo strip on top instead of a right-edge fade behind
+     the text — there's no room for the two to overlap legibly once the
+     card stacks. */
+  .featured__media {
+    position: static;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .featured__info {
+    max-width: 100%;
+    padding: var(--space-lg);
+  }
+
+  .featured__stats {
+    grid-template-columns: repeat(2, auto);
+    row-gap: var(--space-md);
+  }
+
+  .featured__nav {
+    position: static;
+    transform: none;
+    margin-top: var(--space-md);
+    justify-content: center;
+  }
+}
+
+/* ---------- Domain groups ----------
+   Five curated lists (Operation & Maintenance, Project Execution,
+   Material Handling, Mining & Logistics, Mechanised Cleaning), each up
+   to 5 rows, sorted highest value to lowest. A banner photo sits beside
+   the heading instead of per-row images — this is a scan list, not a
+   card grid, so the photo does duty once per domain rather than once
+   per row. */
+
+.domain-groups .section-head {
+  margin-bottom: var(--space-lg);
+}
+
+.domain-groups__all-head {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-line);
+}
+
+.domain-group {
+  margin-top: var(--space-xl);
+}
+
+.domain-group:first-child {
+  margin-top: 0;
+}
+
+.domain-group.is-hidden,
+.domain-row.is-hidden {
+  display: none;
+}
+
+/* Same merged photo-into-text card as the featured carousel
+   (.featured__slide/.featured__media) — the banner photo is an
+   absolutely-positioned layer behind the index/heading, faded via the
+   same two-axis CSS mask, rather than sitting beside the text in its
+   own separate boxed panel. */
+.domain-group__header {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: clamp(8rem, 11vw, 10rem);
+  padding: var(--space-lg) var(--space-xl);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+}
+
+.domain-group__index {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.domain-group__heading {
+  position: relative;
+  z-index: 1;
+  max-width: 46%;
+}
+
+.domain-group__heading h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 1.6vw, 1.6rem);
+  color: var(--color-ink);
+}
+
+.domain-group__heading p {
   margin-top: var(--space-3xs);
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
-  max-width: 52ch;
 }
 
-.project-row__meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-3xs);
-  flex-shrink: 0;
+.domain-group__banner {
+  position: absolute;
+  z-index: 0;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 62%;
+  overflow: hidden;
+  background-color: var(--color-blue-700);
+
+  --media-fade-x: linear-gradient(to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.16) 12%,
+      rgba(0, 0, 0, 0.55) 32%,
+      rgba(0, 0, 0, 0.88) 48%,
+      #000 62%);
+  --media-fade-y: linear-gradient(to bottom,
+      transparent 0%,
+      #000 13%,
+      #000 87%,
+      transparent 100%);
+
+  -webkit-mask-image: var(--media-fade-x), var(--media-fade-y);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--media-fade-x), var(--media-fade-y);
+  mask-composite: intersect;
+}
+
+.domain-group__banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.domain-group__list {
+  margin-top: var(--space-md);
+  border-top: 1px solid var(--color-line);
+}
+
+.domain-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-sm);
+  margin-inline: calc(var(--space-sm) * -1);
+  border-bottom: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.domain-row:hover {
+  background: var(--color-surface-soft, var(--color-orange-100));
+}
+
+.domain-row__title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.domain-row__desc {
+  margin-top: var(--space-3xs);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.domain-row__location,
+.domain-row__year {
   font-family: var(--font-mono);
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
-  text-align: right;
+  white-space: nowrap;
 }
 
-.project-row__meta span:last-child {
+.domain-row__value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.domain-row__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--color-line);
+  color: var(--color-blue-500);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.domain-row:hover .domain-row__link {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateX(2px);
+}
+
+@media (max-width: 860px) {
+  /* Same treatment as .featured__slide at this width — the mask-faded
+     side photo has no room to blend with the text once it stacks, so it
+     becomes a plain full-width strip on top instead. Photo goes first
+     regardless of DOM order (it's the last child, after index/heading)
+     via `order`, matching .featured__slide's mobile stacking. */
+  .domain-group__header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .domain-group__banner {
+    order: -1;
+    position: static;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .domain-group__index,
+  .domain-group__heading {
+    max-width: 100%;
+    padding-inline: var(--space-lg);
+  }
+
+  .domain-group__index {
+    display: block;
+    padding-top: var(--space-md);
+  }
+
+  .domain-group__heading {
+    padding-bottom: var(--space-md);
+  }
+
+  .domain-row {
+    grid-template-columns: 1fr auto;
+    row-gap: var(--space-3xs);
+  }
+
+  .domain-row__location,
+  .domain-row__year {
+    display: none;
+  }
+
+  .domain-row__value {
+    text-align: right;
+  }
+
+  .domain-row__link {
+    grid-row: span 1;
+  }
+}
+
+/* ---------- Explore projects (filters + grid) ----------
+   Two rows, editorial-quiet rather than dashboard-heavy: status tabs +
+   live count/sort on one line, domain chips on their own line below.
+   Sorting is deliberately understated — plain text + a bare <select>,
+   no boxed control — since the default ("Featured") is meant to read as
+   the natural order, not as "sorted by contract value" even though that
+   is what it does underneath (js/main.js#initProjectFilters). */
+
+.project-filters {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.project-filters__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-md);
+}
+
+.project-filters__status {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.project-filters__tab {
+  padding-block: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-ink-soft);
+  border-bottom: 2px solid transparent;
+}
+
+.project-filters__tab.is-active {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-accent);
+}
+
+.project-filters__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.project-filters__divider {
+  color: var(--color-line);
+}
+
+.project-filters__sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+}
+
+.project-filters__sort select {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
   font-weight: 600;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.project-filters__domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+}
+
+.project-filters__chip {
+  padding: var(--space-2xs) var(--space-sm);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.project-filters__chip:hover {
+  border-color: var(--color-accent);
   color: var(--color-accent);
 }
 
-@media (max-width: 640px) {
-  .project-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.project-filters__chip.is-active {
+  border-color: var(--color-accent);
+  background: var(--color-orange-100);
+  color: var(--color-orange-600);
+}
 
-  .project-row__meta {
+
+@media (max-width: 640px) {
+  .project-filters__row {
     align-items: flex-start;
-    text-align: left;
   }
 }

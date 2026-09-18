@@ -1,56 +1,473 @@
-/* Home page layout: stat band, values list, services/domains list, marquee,
-   CTA band. Component-level styling (buttons, nav, hero slideshow, mosaic
-   rows, footer) lives in components.css — this file is purely home-page
-   arrangement. */
+/* Home page layout: hero overrides, stat band, services preview, sectors,
+   marquee, project teasers, growth trend, leadership teaser. Component-
+   level styling (buttons, nav, hero slideshow, mosaic rows, footer) lives
+   in components.css — this file is purely home-page arrangement. */
 
-/* ---------- Stat band ---------- */
+/* ---------- Hero (cinematic, Home-only) ----------
+   Everything here is scoped under .hero--home so About/Services/Contact
+   keep rendering the plain centered .hero__card exactly as before — see
+   the comment on index.html's hero section. Bottom-left anchored copy
+   directly on the photo instead of a floating frosted card, plus a small
+   corner rail echoing the footer's own "people, processes & performance"
+   tagline. */
+
+/* Centered, not bottom-anchored — bottom-anchoring reads fine against the
+   old ~78vh-tall stage, but against a full 100svh stage it leaves a large
+   dead gap up top with everything crammed onto the last third of the
+   screen. Centering it in the now-taller stage balances that out. */
+.hero--home .hero__stage-inner {
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
+.hero--home .hero__card {
+  max-width: 640px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.hero--home .hero__card h1 {
+  text-shadow: 0 2px 20px rgba(10, 16, 30, 0.45);
+}
+
+.hero--home .hero__lead {
+  text-shadow: 0 1px 12px rgba(10, 16, 30, 0.4);
+}
+
+/* Stronger bottom + left darkening than the shared .hero__scrim default —
+   this card has no background of its own to lean on for contrast anymore,
+   so the photo itself needs to carry more of the legibility work. */
+.hero--home .hero__scrim {
+  background:
+    linear-gradient(90deg, rgba(10, 16, 30, 0.7) 0%, rgba(10, 16, 30, 0.18) 48%, transparent 72%),
+    linear-gradient(180deg, rgba(10, 16, 30, 0.32) 0%, rgba(10, 16, 30, 0.02) 26%, rgba(10, 16, 30, 0.4) 66%, rgba(10, 16, 30, 0.82) 100%);
+}
+
+
+/* The shared .hero__stage (components.css) sizes itself to the source
+   photography's own 16:9 ratio. Home fills the full first screen with it
+   instead — the stat band and everything after only appears once the
+   visitor scrolls — so this is a straight viewport-height stage, not a
+   capped hero band. 100svh (falls back to 100vh where svh isn't
+   supported) rather than plain 100vh so mobile browsers' address-bar
+   show/hide doesn't leave a sliver of the stat band peeking in or a gap
+   under the stage. */
+.hero--home .hero__stage {
+  aspect-ratio: auto;
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
+}
+
+/* ---------- Stat band ----------
+   A slim single row (icon + value/label pair) with hairline dividers
+   between items, instead of the previous even grid — reads as a closing
+   credentials line under the hero rather than its own boxy section. */
 
 .stats__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: var(--space-md);
+}
+
+.stat {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-lg);
-  text-align: left;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  column-gap: var(--space-sm);
+  align-items: center;
+  padding-inline-end: var(--space-xl);
+  margin-inline-end: var(--space-xl);
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.stat:last-child {
+  padding-inline-end: 0;
+  margin-inline-end: 0;
+  border-inline-end: none;
+}
+
+.stat__icon {
+  grid-row: 1 / 3;
+  grid-column: 1;
+  color: var(--color-orange-100);
+  opacity: 0.85;
 }
 
 .stat__value {
-  display: block;
+  grid-column: 2;
+  grid-row: 1;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.25rem, 3vw, 3.25rem);
+  font-size: clamp(1.5rem, 1.4vw + 1rem, 2.1rem);
   color: var(--color-white);
   line-height: 1;
 }
 
 .stat__value .stat__suffix {
-  font-size: 0.5em;
+  font-size: 0.55em;
   color: var(--color-orange-100);
   margin-inline-start: 0.15em;
 }
 
 .stat__label {
-  display: block;
-  margin-top: var(--space-2xs);
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 0.2em;
   font-family: var(--font-mono);
   font-size: var(--fs-eyebrow);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
 }
 
-/* ---------- Services / domains ---------- */
+@media (max-width: 700px) {
+  .stat {
+    width: calc(50% - var(--space-md) / 2);
+    padding-inline-end: 0;
+    margin-inline-end: 0;
+    border-inline-end: none;
+  }
 
-.services .section-head {
+  .stat:nth-child(odd) {
+    margin-inline-end: var(--space-md);
+  }
+
+  .stat__label {
+    white-space: normal;
+  }
+}
+
+/* ---------- Core Values ----------
+   Two fixes, on request:
+   1. .section-head gets no override at all — flush left, same as every
+      other section-head on the page (Industries, Growth, etc.). Tried
+      centering it (both "left text in a centered box" and "fully
+      centered") in earlier rounds; this plain, un-special-cased version
+      is what actually reads as "extreme left like other titles" since
+      it's *identical* CSS to theirs, not a lookalike.
+   2. The mosaic-row-list itself no longer runs true edge-to-edge to the
+      viewport (components.css's default "full-bleed, breaks out of
+      .container on purpose" — still what Services' own instance below
+      uses). On a wide viewport, that full-bleed panel started well left
+      of where "Six domains..." and every other section's content
+      starts, reading as misaligned with the page rather than adjacent to
+      it. Bounding it to the same max-width + padding as .container lines
+      its left edge up with the heading text below (and above) it. */
+.values .mosaic-row-list {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--content-pad);
+}
+
+/* ---------- Services preview (compact tiles) ----------
+   Light section on purpose — Core Values and the old services rows above/
+   around it are dark navy, so a light band here reads as a deliberate
+   change of register rather than three dark sections in a row. Distinct
+   from services.html's own full-bleed .service-card list: small photo
+   thumbnails (same photo+tone per domain as that page, see index.html's
+   comment) with a one-line summary instead of the full description. */
+
+.service-tiles__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-lg);
+}
+
+.service-tiles__cta {
+  flex: none;
+}
+
+.service-tiles__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg) var(--space-md);
+  /* base.css's <ul>{margin/padding:0, list-style:none} reset doesn't cover
+     <ol> (used here for its native "this is an ordered set" semantics) —
+     .mosaic-row-list never needed this because its own <li> already has
+     display:grid, which drops the list-item box (and its marker) and,
+     unlike the marker, the default padding-inline-start also happens to
+     read as fine there against its full-bleed rows; these tiles need all
+     three reset directly. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-tile a {
+  display: block;
+  color: inherit;
+}
+
+.service-tile__media {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-md);
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  background-size: cover;
+  background-position: center;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.service-tile a:hover .service-tile__media {
+  transform: scale(1.03);
+}
+
+/* Above .mosaic-grid (z-index 2, injected by initMosaicReveal as a sibling
+   inside this same host) — same "give the real content z-index 3" pattern
+   as Core Values' __duotone/__scrim. A soft dark scrim under the icon so
+   it reads against any photo, bright or dark. */
+.service-tile__icon {
+  position: relative;
+  z-index: 3;
+  padding: var(--space-sm);
+  border-radius: 50%;
+  background: rgba(20, 33, 61, 0.45);
   color: var(--color-white);
 }
 
-.services .section-head .eyebrow {
-  color: var(--color-orange-100);
+.service-tile__index {
+  display: block;
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.service-tile__name {
+  margin-top: var(--space-3xs);
+  font-size: var(--fs-body-lg);
+  color: var(--color-ink);
+}
+
+.service-tile__desc {
+  margin-top: var(--space-2xs);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  max-width: 32ch;
+}
+
+@media (max-width: 860px) {
+  .service-tiles__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .service-tiles__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tighter than the shared .section rhythm (space-2xl each) on the two
+   edges that face each other — the gap between this grid ending and
+   Industries' own head starting read as too large at the full 2xl+2xl. */
+.service-tiles {
+  padding-bottom: var(--space-lg);
+}
+
+/* ---------- Industries (sectors) ----------
+   New section — see index.html's comment for why this exists alongside
+   services.html's own icon-rail .industries band rather than replacing
+   it: same five sectors, photo-panel treatment instead of icons. Matches
+   .service-tiles' own tightened edge above so the two sections read as
+   close neighbours rather than each holding the full .section rhythm. */
+
+.sectors {
+  padding-top: var(--space-lg);
+}
+
+.sectors__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-sm);
+  /* <ol>'s default UA margin/padding + marker aren't covered by base.css's
+     <ul> reset — see .service-tiles__grid's comment above. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sector-tile a {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+}
+
+.sector-tile__media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  background-size: cover;
+  background-position: center;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.sector-tile a:hover .sector-tile__media {
+  transform: scale(1.05);
+}
+
+.sector-tile__caption {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  padding: var(--space-md) var(--space-sm) var(--space-sm);
+  background: linear-gradient(0deg, rgba(10, 16, 30, 0.92) 0%, rgba(10, 16, 30, 0.55) 55%, transparent 100%);
+}
+
+.sector-tile__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-body-lg);
+}
+
+.sector-tile__desc {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 860px) {
+  .sectors__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sector-tile:nth-child(4),
+  .sector-tile:nth-child(5) {
+    grid-column: span 1;
+  }
+
+  .sector-tile a {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .sectors__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Five tiles in a 2-column grid otherwise strands the fifth alone in
+     row 3 — span it across both columns instead of leaving it orphaned. */
+  .sector-tile:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .sector-tile:last-child a {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ---------- How KIPL works (5-step process) ----------
+   New section, sitting between Industries and the client marquee — see
+   index.html's comment. A rule-topped five-column row, each step's own
+   [data-reveal] picked up by the page's existing stagger (see that
+   comment). A chevron between steps (not on the last), vertically
+   centered on the step's own text block rather than pinned to the top
+   rule, is the only new visual idea here — done with a CSS pseudo-element
+   rather than an inline SVG since it's purely decorative (aria-hidden via
+   the parent list having no other role, nothing assistive tech needs to
+   read). */
+
+.how-we-work__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.how-we-work__step {
+  position: relative;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-line);
+}
+
+.how-we-work__index {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.2vw + 1rem, 2rem);
+  color: var(--color-accent);
+}
+
+.how-we-work__name {
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.how-we-work__desc {
+  margin-top: var(--space-2xs);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+/* Centered on the step's full height (index + name + description), not
+   pinned up near the top rule — reads as sitting beside the text block as
+   a whole rather than floating above it. Bigger and heavier than before
+   for a "well defined" mark instead of a fine hairline. */
+.how-we-work__step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  inset-inline-end: calc(var(--space-lg) / -2 - 6px);
+  width: 14px;
+  height: 14px;
+  border-block-start: 3px solid var(--color-blue-500);
+  border-inline-end: 3px solid var(--color-blue-500);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+@media (max-width: 860px) {
+  .how-we-work__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-lg);
+  }
+
+  /* Arrows only make sense reading left-to-right within a row — at 2
+     columns the "next" step is often below, not beside, so they'd point
+     at nothing. */
+  .how-we-work__step::after {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .how-we-work__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- Marquee ---------- */
+/* Back to its original light section--tight — briefly made section--dark,
+   swapped back to light when Selected Projects took the dark treatment
+   instead (see index.html). */
 
-.marquee-section .container {
-  text-align: center;
+.marquee-section__head {
   margin-bottom: var(--space-lg);
 }
 
@@ -62,21 +479,54 @@
    line-draw/point-pop behavior; the CSS below only sets up the states
    that script animates between. */
 
+/* Stacked full-width, not the old 1fr/1fr side-by-side split — the chart
+   only had half the container to work with there, which read as too
+   small to actually study. Full width top-to-bottom instead: intro text,
+   then the chart box at its full, properly visible size. */
 .growth-trend__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: var(--space-2xl);
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
 }
 
 .growth-trend__lead {
   margin-top: var(--space-sm);
-  max-width: 48ch;
+  max-width: 60ch;
   color: rgba(255, 255, 255, 0.82);
 }
 
+/* One bordered box for the whole graph + its headline stat — the 178%
+   callout used to sit in the intro column on the left (its own separate
+   block); moved inside this box, to the chart's right, on request, so it
+   only ever appears once and reads as part of the chart's own card. */
+.growth-trend__chart {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  width: 100%;
+  /* A little narrower than the full container (was 100%) and centered —
+     full width read as slightly too large. */
+  max-width: 88%;
+  margin-inline: auto;
+  padding: var(--space-lg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.growth-trend__chart-main {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .growth-trend__callout {
-  margin-top: var(--space-lg);
+  flex: none;
+  padding-inline-start: var(--space-lg);
+  /* A proper, clearly-visible divider from the chart — the previous
+     0.14-alpha line all but disappeared against this box's own subtle
+     tinted background. */
+  border-inline-start: 1.5px solid rgba(255, 255, 255, 0.3);
 }
 
 .growth-trend__callout-value {
@@ -86,6 +536,7 @@
   font-size: clamp(2.25rem, 3vw, 3.25rem);
   color: var(--color-white);
   line-height: 1;
+  white-space: nowrap;
 }
 
 .growth-trend__callout-suffix {
@@ -102,11 +553,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.62);
-}
-
-.growth-trend__chart {
-  width: 100%;
-  position: relative;
+  white-space: nowrap;
 }
 
 .trend-chart {
@@ -237,9 +684,206 @@
 }
 
 @media (max-width: 860px) {
-  .growth-trend__grid {
+  .growth-trend__chart {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .growth-trend__callout {
+    padding-inline-start: 0;
+    padding-top: var(--space-md);
+    border-inline-start: none;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* ---------- Selected projects (preview) ----------
+   Light, image-led, three cards — see index.html's comment for why these
+   three and where their figures come from. Images are the same generated-
+   texture placeholder projects.html's own cards use (no photo supplied),
+   tone-cycled the same way. */
+
+/* 2 columns, matching the 2 cards now in index.html (was 3, sized for a
+   third project since dropped — with only 2 real children left, a
+   3-column template left them pinned to the left two-thirds instead of
+   filling/centering across the row). */
+.project-teasers__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg) var(--space-md);
+  /* <ol>'s default UA margin/padding + marker aren't covered by base.css's
+     <ul> reset — see .service-tiles__grid's comment above. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-teaser a {
+  display: block;
+  color: inherit;
+}
+
+.project-teaser__media {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.project-teaser a:hover .project-teaser__media {
+  transform: scale(1.03);
+}
+
+.project-teaser__body {
+  display: block;
+  margin-top: var(--space-sm);
+}
+
+.project-teaser__client {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.project-teaser__title {
+  display: block;
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.project-teaser__location {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.project-teaser__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}
+
+.project-teaser__meta span:first-child {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.project-teaser__meta span:last-child {
+  color: var(--color-accent);
+}
+
+/* Dark-mode text colors — the rules above are tuned for a light section
+   (near-black ink on white); .project-teasers is now section--dark, whose
+   own inherited white text these more-specific selectors would otherwise
+   override right back to illegible near-black. Status/value accent stays
+   orange either way, so it's not repeated here. */
+.section--dark.project-teasers .project-teaser__client {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.section--dark.project-teasers .project-teaser__title {
+  color: var(--color-white);
+}
+
+.section--dark.project-teasers .project-teaser__location {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section--dark.project-teasers .project-teaser__meta {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.section--dark.project-teasers .project-teaser__meta span:first-child {
+  color: var(--color-white);
+}
+
+@media (max-width: 860px) {
+  .project-teasers__grid {
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    max-width: 30rem;
+  }
+}
+
+/* ---------- Leadership teaser ----------
+   Portrait uses the same mosaic-reveal-photo convention as about.html's
+   .md-desk__portrait (same photo, same host contract) — a condensed
+   pointer toward that full section, not a re-run of it. */
+
+.leadership-teaser__grid {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.leadership-teaser__portrait {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  background-size: cover;
+  background-position: center top;
+  background-color: var(--color-blue-900);
+}
+
+.leadership-teaser__quote {
+  margin: var(--space-md) 0 0;
+  padding-inline-start: var(--space-md);
+  border-inline-start: 2px solid var(--color-accent);
+  max-width: 46ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1vw + 1rem, 1.625rem);
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+.leadership-teaser__name {
+  margin-top: var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.leadership-teaser__title {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.leadership-teaser__link {
+  display: inline-flex;
+  margin-top: var(--space-sm);
+  color: var(--color-accent);
+}
+
+@media (max-width: 780px) {
+  .leadership-teaser__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .leadership-teaser__portrait {
+    max-width: 22rem;
+    aspect-ratio: 4 / 5;
   }
 }
 

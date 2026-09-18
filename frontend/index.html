@@ -49,10 +49,16 @@
     href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=5" />
-  <link rel="stylesheet" href="css/base.css?v=5" />
-  <link rel="stylesheet" href="css/components.css?v=5" />
-  <link rel="stylesheet" href="css/home.css?v=5" />
+  <link rel="stylesheet" href="css/variables.css?v=41" />
+  <link rel="stylesheet" href="css/base.css?v=41" />
+  <link rel="stylesheet" href="css/components.css?v=41" />
+  <link rel="stylesheet" href="css/home.css?v=41" />
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
 </head>
 
 <body>
@@ -130,8 +136,12 @@
 
   <main>
 
-    <!-- ============ HERO ============ -->
-    <section class="hero">
+    <!-- ============ HERO ============
+         hero--home scopes every override below to Home alone (see
+         css/home.css) — About/Services/Contact share the plain .hero/
+         .hero__card component as-is (centered card), so this stays purely
+         additive rather than changing what they already render. -->
+    <section class="hero hero--home">
       <!-- Full-bleed photo slideshow, sized to the source photography's own
            aspect ratio (see css/home.css .hero__stage). data-hero-images
            lists every frame in rotation; js/animations.js#initHeroSlideshow
@@ -162,22 +172,49 @@
       </div>
     </section>
 
-    <!-- ============ STAT BAND ============ -->
+    <!-- ============ STAT BAND ============
+         Icons match the visual language projects-hero__stat already
+         established (viewBox 22x22, stroke-width 1.3) — the calendar and
+         factory shapes below are literally the same paths as that page's
+         "Years of Consistent Growth" and turnover stats, reused here
+         because they fit these two labels just as well; clock and grid
+         are new in the same style for the other two. -->
     <section class="stats section--dark section--tight">
       <div class="container stats__grid">
         <div class="stat" data-reveal>
+          <svg class="stat__icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+            <rect x="3" y="4.5" width="16" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+            <path d="M3 8.5h16M7 2.5v3M15 2.5v3" fill="none" stroke="currentColor" stroke-width="1.3"
+              stroke-linecap="round" />
+          </svg>
           <span class="stat__value">2009</span>
           <span class="stat__label">Established</span>
         </div>
         <div class="stat" data-reveal>
+          <svg class="stat__icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="1.3" />
+            <path d="M11 6.5V11l3.2 2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
           <span class="stat__value"><span data-counter-to="17">0</span><span class="stat__suffix">+</span></span>
           <span class="stat__label">Years Active</span>
         </div>
         <div class="stat" data-reveal>
+          <svg class="stat__icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+            <path d="M3 19V9l8-5 8 5v10M3 19h16M3 19v-6h4v6M15 19v-6h4v6M9.5 19v-4h3v4" fill="none"
+              stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
+          </svg>
           <span class="stat__value"><span data-counter-to="200">0</span><span class="stat__suffix">MT/mo</span></span>
           <span class="stat__label">Fabrication Capacity</span>
         </div>
         <div class="stat" data-reveal>
+          <svg class="stat__icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+            <rect x="3" y="3" width="6.5" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3" />
+            <rect x="12.5" y="3" width="6.5" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3" />
+            <rect x="3" y="12.5" width="6.5" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3" />
+            <rect x="12.5" y="12.5" width="6.5" height="6.5" rx="1" fill="none" stroke="currentColor"
+              stroke-width="1.3" />
+          </svg>
           <span class="stat__value"><span data-counter-to="6">0</span></span>
           <span class="stat__label">Service Domains</span>
         </div>
@@ -193,20 +230,34 @@
         </div>
       </div>
 
-      <!-- Full-bleed, edge-to-edge — breaks out of .container on purpose.
-           Same generated-texture treatment as the Services/domains rows
-           below (no data-mosaic-fill — see components.css .mosaic-row-list)
-           so both sections share one look, tied directly to scroll position
-           (scrub, not once) so they reassemble/undo as you scroll down/up.
-           .mosaic-row__detail (the whole eyebrow+desc+link column) fades in
-           in lockstep with the panel's pixel reveal — see animations.js
+      <!-- Same mosaic-row shape as the Services/domains rows below (see
+           components.css .mosaic-row-list), tied directly to scroll
+           position (scrub, not once) so panels reassemble/undo as you
+           scroll down/up — but bounded to the same width as .container
+           (home.css .values .mosaic-row-list) rather than that shared
+           component's own default full-bleed-to-the-viewport behavior,
+           so it lines up with the section-head above and the section
+           below instead of overhanging further left/right on wide
+           screens. Unlike Services (still generated texture — no photos
+           for that content yet), each panel here carries a real photo
+           (assets/images/core-values/) via inline background-image, the
+           same convention as About's team mosaic photos — auto-detected
+           and sliced by initMosaicReveal instead of a generated texture.
+           mosaic-row__panel--tint-orange/blue plus the __duotone/__scrim
+           children give each photo the alternating brand-color wash —
+           see components.css for the whole treatment. .mosaic-row__detail
+           (the whole eyebrow+desc+link column) fades in in lockstep with
+           the panel's pixel reveal — see animations.js
            #initMosaicRowFade. Each desc's lead phrase sits in a <strong>
            purely for typographic emphasis now (a leftover of an earlier
            per-character scramble effect that needed the split; the fade
            doesn't). -->
       <ol class="mosaic-row-list">
         <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
+          <div class="mosaic-row__panel mosaic-row__panel--tint-blue" data-mosaic-reveal data-mosaic-tone="0"
+            style="background-image:url('assets/images/core-values/ethics.jpg')">
+            <span class="mosaic-row__duotone" aria-hidden="true"></span>
+            <span class="mosaic-row__scrim" aria-hidden="true"></span>
             <span class="mosaic-row__index">01</span>
             <h3 class="mosaic-row__name">Ethics</h3>
           </div>
@@ -217,7 +268,10 @@
           </div>
         </li>
         <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="1">
+          <div class="mosaic-row__panel mosaic-row__panel--tint-orange" data-mosaic-reveal data-mosaic-tone="1"
+            style="background-image:url('assets/images/core-values/health-safety.jpg')">
+            <span class="mosaic-row__duotone" aria-hidden="true"></span>
+            <span class="mosaic-row__scrim" aria-hidden="true"></span>
             <span class="mosaic-row__index">02</span>
             <h3 class="mosaic-row__name">Health &amp; Safety</h3>
           </div>
@@ -228,7 +282,10 @@
           </div>
         </li>
         <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="2">
+          <div class="mosaic-row__panel mosaic-row__panel--tint-blue" data-mosaic-reveal data-mosaic-tone="2"
+            style="background-image:url('assets/images/core-values/quality.jpg')">
+            <span class="mosaic-row__duotone" aria-hidden="true"></span>
+            <span class="mosaic-row__scrim" aria-hidden="true"></span>
             <span class="mosaic-row__index">03</span>
             <h3 class="mosaic-row__name">Quality</h3>
           </div>
@@ -240,7 +297,10 @@
           </div>
         </li>
         <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="3">
+          <div class="mosaic-row__panel mosaic-row__panel--tint-orange" data-mosaic-reveal data-mosaic-tone="3"
+            style="background-image:url('assets/images/core-values/sustainability.jpg')">
+            <span class="mosaic-row__duotone" aria-hidden="true"></span>
+            <span class="mosaic-row__scrim" aria-hidden="true"></span>
             <span class="mosaic-row__index">04</span>
             <h3 class="mosaic-row__name">Sustainability</h3>
           </div>
@@ -253,100 +313,331 @@
       </ol>
     </section>
 
-    <!-- ============ SERVICES / DOMAINS (full-bleed mosaic rows) ============ -->
-    <section class="services section section--dark section--tight" id="services">
+    <!-- ============ SERVICES / DOMAINS (compact preview grid) ============
+         Deliberately NOT the mosaic-row-list treatment Core Values uses
+         above (or that this section itself used before) — Services.html's
+         own service-card list already carries the full descriptions in
+         that heavier full-bleed format, so repeating it here read as
+         duplicate work rather than a preview. This is a light, compact 6-
+         tile grid instead: each tile is a small crop of the exact same
+         photo+tone Services.html uses for that domain (see the id= anchors
+         below, matching services.html#<id> 1:1), so the two pages read as
+         one system without saying the same thing twice. Descriptions are
+         the existing lead sentence for each domain (see the original
+         mosaic-row copy still in git history / services.html), trimmed to
+         its first clause — a preview, not new copy. -->
+    <section class="section service-tiles" id="services">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow" data-reveal>What we do</p>
-          <h2 class="section-head__title" data-reveal>Six domains, one accountable partner</h2>
+        <div class="section-head service-tiles__head">
+          <div>
+            <p class="eyebrow" data-reveal>What we do</p>
+            <h2 class="section-head__title" data-reveal>Six domains, one accountable partner.</h2>
+          </div>
+          <a href="services.html" class="btn btn--ghost service-tiles__cta" data-reveal>View all services →</a>
         </div>
-      </div>
 
-      <!-- Same full-bleed row component as Core Values (see css/components.css
-           .mosaic-row-list), generated-texture mode, cycling data-mosaic-tone
-           0-3 across the six rows since there are more rows than tone pairs.
-           See the Core Values comment above for the detail-column fade. -->
-      <ol class="mosaic-row-list">
-        <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
-            <span class="mosaic-row__index">01</span>
-            <h3 class="mosaic-row__name">Operation &amp; Maintenance</h3>
-          </div>
-          <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>The day-to-day activities</strong> that keep every system and piece of
-              equipment performing reliably — integrating managerial, financial, and technical dimensions so your
-              facility's ecosystem works in harmony. Covers operational assistance, start-up activities, productivity
-              improvement, asset optimization, and process control.</p>
-            <a href="services.html#operation-maintenance" class="mosaic-row__link">Read more →</a>
-          </div>
-        </li>
-        <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="1">
-            <span class="mosaic-row__index">02</span>
-            <h3 class="mosaic-row__name">Project Execution</h3>
-          </div>
-          <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>End-to-end delivery</strong> against engineering design standards and
-              applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity
-              for heavy structural components, conveyor and piping systems, and pollution-control equipment.</p>
-            <a href="services.html#project-execution" class="mosaic-row__link">Read more →</a>
-          </div>
-        </li>
-        <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="2">
-            <span class="mosaic-row__index">03</span>
-            <h3 class="mosaic-row__name">Material Handling</h3>
-          </div>
-          <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Thoughtfully designed</strong> facility layouts and cost-effective flow
-              management across raw material, work-in-progress, finished goods, and scrap disposal — supported by our
-              in-house fleet of hydras, cranes, and trailers.</p>
-            <a href="services.html#material-handling" class="mosaic-row__link">Read more →</a>
-          </div>
-        </li>
-        <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="3">
-            <span class="mosaic-row__index">04</span>
-            <h3 class="mosaic-row__name">Mining &amp; Logistics</h3>
-          </div>
-          <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>A dependable, disciplined operation</strong> for high-volume mineral
-              transportation — coal, iron ore, and other bulk commodities — plus internal shifting between stockyards,
-              conveyor-feeding points, and storage bunkers with real-time monitoring.</p>
-            <a href="services.html#mining-logistics" class="mosaic-row__link">Read more →</a>
-          </div>
-        </li>
-        <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="0">
-            <span class="mosaic-row__index">05</span>
-            <h3 class="mosaic-row__name">Mechanised Cleaning</h3>
-          </div>
-          <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Advanced industrial housekeeping</strong> for facilities where
-              cleanliness and emissions compliance are non-negotiable — truck-mounted and ride-on road sweepers,
-              industrial vacuum systems, dust suppression, and high-pressure jetting.</p>
-            <a href="services.html#mechanised-cleaning" class="mosaic-row__link">Read more →</a>
-          </div>
-        </li>
-        <li class="mosaic-row">
-          <div class="mosaic-row__panel" data-mosaic-reveal data-mosaic-tone="1">
-            <span class="mosaic-row__index">06</span>
-            <h3 class="mosaic-row__name">Design &amp; Consultation</h3>
-          </div>
-          <div class="mosaic-row__detail">
-            <p class="mosaic-row__desc"><strong>Qualified engineers</strong> and domain specialists translating your
-              requirements into practical, efficient designs — feasibility studies, URS documentation, process
-              optimisation for aluminium smelter carbon plants, and structural design &amp; detailing.</p>
-            <a href="services.html#design-consultation" class="mosaic-row__link">Read more →</a>
-          </div>
-        </li>
-      </ol>
+        <ol class="service-tiles__grid">
+          <li class="service-tile">
+            <a href="services.html#operation-maintenance">
+              <span class="service-tile__media" data-mosaic-reveal data-mosaic-tone="0"
+                style="background-image:url('assets/images/domains/operation-maintenance.jpg')" aria-hidden="true">
+                <svg class="service-tile__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+                  <circle cx="15" cy="15" r="4.2" fill="none" stroke="currentColor" stroke-width="1.4" />
+                  <path
+                    d="M15 5.5v3M15 21.5v3M24.5 15h-3M8.5 15h-3M21.5 8.5l-2.1 2.1M10.6 19.4l-2.1 2.1M21.5 21.5l-2.1-2.1M10.6 10.6L8.5 8.5"
+                    fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="service-tile__index">01</span>
+              <h3 class="service-tile__name">Operation &amp; Maintenance</h3>
+              <p class="service-tile__desc">The day-to-day activities that keep every system and piece of equipment
+                performing reliably.</p>
+            </a>
+          </li>
+          <li class="service-tile">
+            <a href="services.html#project-execution">
+              <span class="service-tile__media" data-mosaic-reveal data-mosaic-tone="1"
+                style="background-image:url('assets/images/domains/project-execution.jpg')" aria-hidden="true">
+                <svg class="service-tile__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+                  <path d="M7 26V6M4 26h10M7 6h15M19 6v5" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M19 11l3 3M22 14v4" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="service-tile__index">02</span>
+              <h3 class="service-tile__name">Project Execution</h3>
+              <p class="service-tile__desc">End-to-end delivery against engineering design standards and applicable
+                codes.</p>
+            </a>
+          </li>
+          <li class="service-tile">
+            <a href="services.html#material-handling">
+              <span class="service-tile__media" data-mosaic-reveal data-mosaic-tone="2"
+                style="background-image:url('assets/images/domains/material-handling.jpg')" aria-hidden="true">
+                <svg class="service-tile__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+                  <rect x="5" y="12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linejoin="round" />
+                  <path d="M18 17h7M22 13.5L25.5 17 22 20.5" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="service-tile__index">03</span>
+              <h3 class="service-tile__name">Material Handling</h3>
+              <p class="service-tile__desc">Thoughtfully designed facility layouts and cost-effective flow
+                management.</p>
+            </a>
+          </li>
+          <li class="service-tile">
+            <a href="services.html#mining-logistics">
+              <span class="service-tile__media" data-mosaic-reveal data-mosaic-tone="3"
+                style="background-image:url('assets/images/domains/mining-logistics.jpg')" aria-hidden="true">
+                <svg class="service-tile__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+                  <path d="M3 20V10h12v10M15 13h6l4 4v3" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linejoin="round" />
+                  <path d="M3 20h1.5M25 20h-1" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linecap="round" />
+                  <circle cx="9" cy="21.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4" />
+                  <circle cx="20.5" cy="21.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4" />
+                </svg>
+              </span>
+              <span class="service-tile__index">04</span>
+              <h3 class="service-tile__name">Mining &amp; Logistics</h3>
+              <p class="service-tile__desc">A dependable, disciplined operation for high-volume mineral
+                transportation.</p>
+            </a>
+          </li>
+          <li class="service-tile">
+            <a href="services.html#mechanised-cleaning">
+              <span class="service-tile__media" data-mosaic-reveal data-mosaic-tone="0"
+                style="background-image:url('assets/images/domains/mechanised-cleaning.jpg')" aria-hidden="true">
+                <svg class="service-tile__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+                  <path d="M22 4L10 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M10 16l-5 9 3 1 3-3 3 3 3-1-3-9" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="service-tile__index">05</span>
+              <h3 class="service-tile__name">Mechanised Cleaning</h3>
+              <p class="service-tile__desc">Advanced industrial housekeeping for facilities where cleanliness is
+                non-negotiable.</p>
+            </a>
+          </li>
+          <li class="service-tile">
+            <a href="services.html#design-consultation">
+              <span class="service-tile__media" data-mosaic-reveal data-mosaic-tone="1"
+                style="background-image:url('assets/images/domains/design-consultation.jpg')" aria-hidden="true">
+                <svg class="service-tile__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+                  <path d="M15 5v4M15 5l-3 3M15 5l3 3" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M15 9L7 25h16L15 9Z" fill="none" stroke="currentColor" stroke-width="1.4"
+                    stroke-linejoin="round" />
+                  <path d="M10.5 19h9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="service-tile__index">06</span>
+              <h3 class="service-tile__name">Design &amp; Consultation</h3>
+              <p class="service-tile__desc">Qualified engineers translating your requirements into practical,
+                efficient designs.</p>
+            </a>
+          </li>
+        </ol>
+      </div>
     </section>
 
-    <!-- ============ CLIENT LOGO MARQUEE ============ -->
-    <section class="marquee-section section--tight">
+    <!-- ============ INDUSTRIES ============
+         New Home section (not on services.html, which covers the same
+         five sectors as a compact icon rail under section--dark — see
+         .industries there). This is the photo-led version the reference
+         calls for: same five sectors, real photography (assets/images/
+         industries/), same underlying facts (aluminium smelter pot rooms/
+         carbon plants and mining's coal & mineral transport are both
+         existing copy above; power/infrastructure captions name only
+         clients already in the logo marquee below — DB Power/STEAG/NTPC
+         and Dilip Buildcon/L&T Construction/Shapoorji Pallonji
+         respectively), just told as five large panels instead of an
+         icon+label row. section--dark (dark navy, on request) so it reads
+         as a beat of its own rather than blending into Services preview's
+         light section right above it. Links back to services.html's own
+         industries rail (#industries) rather than a page that doesn't
+         exist. -->
+    <section class="section section--dark sectors">
       <div class="container">
-        <p class="eyebrow" data-reveal>Clients We've Worked With</p>
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>Industries we keep moving</p>
+          <h2 class="section-head__title" data-reveal>Built for critical industries.</h2>
+        </div>
+
+        <ol class="sectors__grid">
+          <li class="sector-tile">
+            <a href="services.html#industries">
+              <span class="sector-tile__media" data-mosaic-reveal data-mosaic-tone="0"
+                style="background-image:url('assets/images/industries/aluminium.jpg')" aria-hidden="true"></span>
+              <span class="sector-tile__caption">
+                <span class="sector-tile__name">Aluminium</span>
+                <span class="sector-tile__desc">Smelter pot rooms &amp; carbon plants</span>
+              </span>
+            </a>
+          </li>
+          <li class="sector-tile">
+            <a href="services.html#industries">
+              <span class="sector-tile__media" data-mosaic-reveal data-mosaic-tone="1"
+                style="background-image:url('assets/images/industries/steel.jpg')" aria-hidden="true"></span>
+              <span class="sector-tile__caption">
+                <span class="sector-tile__name">Steel</span>
+                <span class="sector-tile__desc">Plant operations &amp; mechanised housekeeping</span>
+              </span>
+            </a>
+          </li>
+          <li class="sector-tile">
+            <a href="services.html#industries">
+              <span class="sector-tile__media" data-mosaic-reveal data-mosaic-tone="2"
+                style="background-image:url('assets/images/industries/power.jpg')" aria-hidden="true"></span>
+              <span class="sector-tile__caption">
+                <span class="sector-tile__name">Power</span>
+                <span class="sector-tile__desc">Plant support for thermal power clients</span>
+              </span>
+            </a>
+          </li>
+          <li class="sector-tile">
+            <a href="services.html#industries">
+              <span class="sector-tile__media" data-mosaic-reveal data-mosaic-tone="3"
+                style="background-image:url('assets/images/industries/mining.jpg')" aria-hidden="true"></span>
+              <span class="sector-tile__caption">
+                <span class="sector-tile__name">Mining</span>
+                <span class="sector-tile__desc">Coal &amp; mineral transport, mine to plant</span>
+              </span>
+            </a>
+          </li>
+          <li class="sector-tile">
+            <a href="services.html#industries">
+              <span class="sector-tile__media" data-mosaic-reveal data-mosaic-tone="0"
+                style="background-image:url('assets/images/industries/infrastructure.jpg')" aria-hidden="true"></span>
+              <span class="sector-tile__caption">
+                <span class="sector-tile__name">Infrastructure</span>
+                <span class="sector-tile__desc">Engineering &amp; construction support</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ HOW KIPL WORKS ============
+         New Home section, on your reference — a five-step delivery process.
+         Each step's own text is exactly what you supplied, transcribed
+         verbatim (not derived from existing site copy, since this
+         methodology framing didn't exist on the site before). Reuses the
+         page's existing [data-reveal] mechanic (js/animations.js
+         #initReveals, GSAP ScrollTrigger.batch with a stagger) for the
+         "nice effect" — same fade/slide-up already used everywhere else,
+         just staggered per step as the row scrolls into view, so it stays
+         one system rather than a bespoke new animation. -->
+    <section class="section how-we-work">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>How KIPL works</p>
+          <h2 class="section-head__title" data-reveal>A disciplined approach. Measurable results.</h2>
+        </div>
+
+        <ol class="how-we-work__grid">
+          <li class="how-we-work__step" data-reveal>
+            <span class="how-we-work__index">01</span>
+            <h3 class="how-we-work__name">Understand</h3>
+            <p class="how-we-work__desc">Requirements, site conditions, operational constraints.</p>
+          </li>
+          <li class="how-we-work__step" data-reveal>
+            <span class="how-we-work__index">02</span>
+            <h3 class="how-we-work__name">Engineer</h3>
+            <p class="how-we-work__desc">Plan, design and prepare the right solution.</p>
+          </li>
+          <li class="how-we-work__step" data-reveal>
+            <span class="how-we-work__index">03</span>
+            <h3 class="how-we-work__name">Mobilise</h3>
+            <p class="how-we-work__desc">People, equipment, materials and systems.</p>
+          </li>
+          <li class="how-we-work__step" data-reveal>
+            <span class="how-we-work__index">04</span>
+            <h3 class="how-we-work__name">Execute</h3>
+            <p class="how-we-work__desc">Safe, disciplined, measurable delivery.</p>
+          </li>
+          <li class="how-we-work__step" data-reveal>
+            <span class="how-we-work__index">05</span>
+            <h3 class="how-we-work__name">Sustain</h3>
+            <p class="how-we-work__desc">Continuous operations, maintenance and improvement.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ SELECTED PROJECTS ============
+         New Home section previewing projects.html rather than duplicating
+         all 21 — the same two highest-value engagements that page's own
+         "Featured project" carousel leads with, same figures, same
+         wording, on request trimmed from the original three (JSW) down to
+         these two. Real photography (assets/images/projects/) now that
+         it exists, replacing the generated-grain-texture placeholder
+         projects.html's own cards still use for lack of photos there.
+         section--dark (and its own dark-mode text-color overrides, see
+         home.css) — swapped with the client marquee below on request:
+         this one dark, marquee back to its original light section. -->
+    <section class="section section--dark project-teasers">
+      <div class="container">
+        <div class="section-head service-tiles__head">
+          <div>
+            <p class="eyebrow" data-reveal>Selected projects</p>
+            <h2 class="section-head__title" data-reveal>Work that speaks for itself.</h2>
+          </div>
+          <a href="projects.html" class="btn btn--ghost service-tiles__cta" data-reveal>View all projects →</a>
+        </div>
+
+        <ol class="project-teasers__grid">
+          <li class="project-teaser">
+            <a href="projects.html">
+              <span class="project-teaser__media" data-mosaic-reveal data-mosaic-tone="0"
+                style="background-image:url('assets/images/projects/tata-steel-ivc.jpg')" aria-hidden="true"></span>
+              <span class="project-teaser__body">
+                <span class="project-teaser__client">Tata Steel</span>
+                <span class="project-teaser__title">IVC Machine Hire</span>
+                <span class="project-teaser__location">Meramandali, Odisha</span>
+                <span class="project-teaser__meta">
+                  <span>&#8377;48.22 Cr</span>
+                  <span>Active, 2024&ndash;27</span>
+                </span>
+              </span>
+            </a>
+          </li>
+          <li class="project-teaser">
+            <a href="projects.html">
+              <span class="project-teaser__media" data-mosaic-reveal data-mosaic-tone="1"
+                style="background-image:url('assets/images/projects/vedanta-pot-room.jpg')" aria-hidden="true"></span>
+              <span class="project-teaser__body">
+                <span class="project-teaser__client">Vedanta</span>
+                <span class="project-teaser__title">Pot Room Operation</span>
+                <span class="project-teaser__location">Jharsuguda, Odisha</span>
+                <span class="project-teaser__meta">
+                  <span>&#8377;34.40 Cr</span>
+                  <span>Active, 2023&ndash;26</span>
+                </span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ CLIENT LOGO MARQUEE ============
+         Content/logos/JS untouched — only the header treatment changes
+         (eyebrow + real headline instead of a bare label) to match the
+         rest of the page's section-head pattern. Back to its original
+         light section--tight (no section--dark) — swapped with Selected
+         Projects above on request. -->
+    <section class="marquee-section section--tight">
+      <div class="container marquee-section__head">
+        <div>
+          <p class="eyebrow" data-reveal>Trusted across industries</p>
+          <h2 class="section-head__title" data-reveal>Our clients, our long-term partners.</h2>
+        </div>
       </div>
       <div class="marquee" id="marquee">
         <div class="marquee__track" id="marqueeTrack">
@@ -420,94 +711,150 @@
             over the last five years &mdash; and our workforce has scaled
             right alongside it, from 900 to 1,470 people.
           </p>
+        </div>
+
+        <!-- growth-trend__chart is now the one bordered "box" for both the
+             graph and its headline stat — the 178% callout used to live in
+             the intro column on the left; moved here, to the right of the
+             chart, on request, rather than existing in two places. -->
+        <div class="growth-trend__chart">
+          <div class="growth-trend__chart-main">
+            <svg viewBox="0 0 600 260" class="trend-chart" data-trend-chart role="img"
+              aria-label="Turnover line chart, FY2021-22 to FY2025-26, rising from 36.27 to 100.82 crore rupees">
+              <defs>
+                <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" class="trend-chart__stop trend-chart__stop--start" />
+                  <stop offset="100%" class="trend-chart__stop trend-chart__stop--end" />
+                </linearGradient>
+              </defs>
+
+              <line x1="24" y1="220" x2="576" y2="220" class="trend-chart__baseline" />
+
+              <path class="trend-chart__area" data-trend-area
+                d="M40,154.05 L170,127.16 L300,111.04 L430,110.24 L560,36.69 L560,220 L40,220 Z" />
+              <path class="trend-chart__line" data-trend-line
+                d="M40,154.05 L170,127.16 L300,111.04 L430,110.24 L560,36.69" />
+
+              <!-- Each point below is hoverable/focusable (js/animations.js
+                   #initTrendTooltip): a wider, invisible .trend-chart__hit
+                   circle sits over the small visible dot as a bigger, easier
+                   target, and shows a custom tooltip with that year's exact
+                   value — including the three middle years, which otherwise
+                   have no number printed anywhere on this chart. <title> is
+                   a native-tooltip/screen-reader fallback that needs no JS. -->
+              <g class="trend-chart__point" data-trend-point>
+                <circle class="trend-chart__dot" cx="40" cy="154.05" r="5" />
+                <text x="40" y="138" class="trend-chart__value">36.27</text>
+                <circle class="trend-chart__hit" data-trend-hit cx="40" cy="154.05" r="16" tabindex="0" data-r="5"
+                  data-year="FY21-22" data-value="&#8377;36.27 Cr">
+                  <title>FY21-22: &#8377;36.27 Cr</title>
+                </circle>
+              </g>
+              <g class="trend-chart__point" data-trend-point>
+                <circle class="trend-chart__dot" cx="170" cy="127.16" r="5" />
+                <circle class="trend-chart__hit" data-trend-hit cx="170" cy="127.16" r="16" tabindex="0" data-r="5"
+                  data-year="FY22-23" data-value="&#8377;51.06 Cr">
+                  <title>FY22-23: &#8377;51.06 Cr</title>
+                </circle>
+              </g>
+              <g class="trend-chart__point" data-trend-point>
+                <circle class="trend-chart__dot" cx="300" cy="111.04" r="5" />
+                <circle class="trend-chart__hit" data-trend-hit cx="300" cy="111.04" r="16" tabindex="0" data-r="5"
+                  data-year="FY23-24" data-value="&#8377;59.93 Cr">
+                  <title>FY23-24: &#8377;59.93 Cr</title>
+                </circle>
+              </g>
+              <g class="trend-chart__point" data-trend-point>
+                <circle class="trend-chart__dot" cx="430" cy="110.24" r="5" />
+                <circle class="trend-chart__hit" data-trend-hit cx="430" cy="110.24" r="16" tabindex="0" data-r="5"
+                  data-year="FY24-25" data-value="&#8377;60.37 Cr">
+                  <title>FY24-25: &#8377;60.37 Cr</title>
+                </circle>
+              </g>
+              <g class="trend-chart__point trend-chart__point--current" data-trend-point>
+                <circle class="trend-chart__dot" cx="560" cy="36.69" r="6" />
+                <text x="560" y="22" class="trend-chart__value">&#8377;100.82 Cr</text>
+                <circle class="trend-chart__hit" data-trend-hit cx="560" cy="36.69" r="16" tabindex="0" data-r="6"
+                  data-year="FY25-26" data-value="&#8377;100.82 Cr">
+                  <title>FY25-26: &#8377;100.82 Cr</title>
+                </circle>
+              </g>
+
+              <text x="40" y="240" class="trend-chart__year">FY21-22</text>
+              <text x="170" y="240" class="trend-chart__year">FY22-23</text>
+              <text x="300" y="240" class="trend-chart__year">FY23-24</text>
+              <text x="430" y="240" class="trend-chart__year">FY24-25</text>
+              <text x="560" y="240" class="trend-chart__year">FY25-26</text>
+            </svg>
+
+            <div class="trend-tooltip" data-trend-tooltip aria-hidden="true"></div>
+          </div>
+
           <div class="growth-trend__callout">
             <span class="growth-trend__callout-value"><span
                 data-counter-to="178">0</span><span class="growth-trend__callout-suffix">%</span></span>
-            <span class="growth-trend__callout-label">Turnover growth since FY21-22</span>
+            <span class="growth-trend__callout-label">Turnover growth<br />since FY21&ndash;22</span>
           </div>
-        </div>
-
-        <div class="growth-trend__chart">
-          <svg viewBox="0 0 600 260" class="trend-chart" data-trend-chart role="img"
-            aria-label="Turnover line chart, FY2021-22 to FY2025-26, rising from 36.27 to 100.82 crore rupees">
-            <defs>
-              <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" class="trend-chart__stop trend-chart__stop--start" />
-                <stop offset="100%" class="trend-chart__stop trend-chart__stop--end" />
-              </linearGradient>
-            </defs>
-
-            <line x1="24" y1="220" x2="576" y2="220" class="trend-chart__baseline" />
-
-            <path class="trend-chart__area" data-trend-area
-              d="M40,154.05 L170,127.16 L300,111.04 L430,110.24 L560,36.69 L560,220 L40,220 Z" />
-            <path class="trend-chart__line" data-trend-line
-              d="M40,154.05 L170,127.16 L300,111.04 L430,110.24 L560,36.69" />
-
-            <!-- Each point below is hoverable/focusable (js/animations.js
-                 #initTrendTooltip): a wider, invisible .trend-chart__hit
-                 circle sits over the small visible dot as a bigger, easier
-                 target, and shows a custom tooltip with that year's exact
-                 value — including the three middle years, which otherwise
-                 have no number printed anywhere on this chart. <title> is
-                 a native-tooltip/screen-reader fallback that needs no JS. -->
-            <g class="trend-chart__point" data-trend-point>
-              <circle class="trend-chart__dot" cx="40" cy="154.05" r="5" />
-              <text x="40" y="138" class="trend-chart__value">36.27</text>
-              <circle class="trend-chart__hit" data-trend-hit cx="40" cy="154.05" r="16" tabindex="0" data-r="5"
-                data-year="FY21-22" data-value="&#8377;36.27 Cr">
-                <title>FY21-22: &#8377;36.27 Cr</title>
-              </circle>
-            </g>
-            <g class="trend-chart__point" data-trend-point>
-              <circle class="trend-chart__dot" cx="170" cy="127.16" r="5" />
-              <circle class="trend-chart__hit" data-trend-hit cx="170" cy="127.16" r="16" tabindex="0" data-r="5"
-                data-year="FY22-23" data-value="&#8377;51.06 Cr">
-                <title>FY22-23: &#8377;51.06 Cr</title>
-              </circle>
-            </g>
-            <g class="trend-chart__point" data-trend-point>
-              <circle class="trend-chart__dot" cx="300" cy="111.04" r="5" />
-              <circle class="trend-chart__hit" data-trend-hit cx="300" cy="111.04" r="16" tabindex="0" data-r="5"
-                data-year="FY23-24" data-value="&#8377;59.93 Cr">
-                <title>FY23-24: &#8377;59.93 Cr</title>
-              </circle>
-            </g>
-            <g class="trend-chart__point" data-trend-point>
-              <circle class="trend-chart__dot" cx="430" cy="110.24" r="5" />
-              <circle class="trend-chart__hit" data-trend-hit cx="430" cy="110.24" r="16" tabindex="0" data-r="5"
-                data-year="FY24-25" data-value="&#8377;60.37 Cr">
-                <title>FY24-25: &#8377;60.37 Cr</title>
-              </circle>
-            </g>
-            <g class="trend-chart__point trend-chart__point--current" data-trend-point>
-              <circle class="trend-chart__dot" cx="560" cy="36.69" r="6" />
-              <text x="560" y="22" class="trend-chart__value">&#8377;100.82 Cr</text>
-              <circle class="trend-chart__hit" data-trend-hit cx="560" cy="36.69" r="16" tabindex="0" data-r="6"
-                data-year="FY25-26" data-value="&#8377;100.82 Cr">
-                <title>FY25-26: &#8377;100.82 Cr</title>
-              </circle>
-            </g>
-
-            <text x="40" y="240" class="trend-chart__year">FY21-22</text>
-            <text x="170" y="240" class="trend-chart__year">FY22-23</text>
-            <text x="300" y="240" class="trend-chart__year">FY23-24</text>
-            <text x="430" y="240" class="trend-chart__year">FY24-25</text>
-            <text x="560" y="240" class="trend-chart__year">FY25-26</text>
-          </svg>
-
-          <div class="trend-tooltip" data-trend-tooltip aria-hidden="true"></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ CTA BAND ============ -->
-    <section class="cta section--tight">
-      <div class="container">
-        <div class="cta__inner" data-reveal>
-          <h2>Let's talk about what your site needs.</h2>
-          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+    <!-- ============ LEADERSHIP TEASER ============
+         New Home section — a short introduction to the person behind KIPL
+         rather than the full About page treatment. Portrait, name, title
+         and quote are the same assets/copy as about.html#md-desk (same
+         photo, same mosaic-reveal portrait convention as .md-desk__portrait,
+         one real sentence lifted verbatim from that page's MD's-Desk copy,
+         not paraphrased), just condensed and pointed back at the full
+         section via the link below. -->
+    <section class="section leadership-teaser">
+      <div class="container leadership-teaser__grid">
+        <div class="leadership-teaser__portrait" data-mosaic-reveal
+          style="background-image:url('assets/images/team/somnath-naik.jpg')" role="img"
+          aria-label="Somnath Naik, Managing Director"></div>
+        <div class="leadership-teaser__body" data-reveal>
+          <p class="eyebrow">The people behind KIPL</p>
+          <h2 class="section-head__title">Leadership, experience, commitment.</h2>
+          <blockquote class="leadership-teaser__quote">
+            Nothing is more important than a human life, and I, as the
+            Managing Director of the company, ensure it by implementation
+            of best HSE practices.
+          </blockquote>
+          <p class="leadership-teaser__name">Somnath Naik</p>
+          <p class="leadership-teaser__title">Founder &amp; Managing Director</p>
+          <a href="about.html#our-team" class="mosaic-row__link leadership-teaser__link">Meet our team →</a>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============
+         Same full-bleed .cta-band component as services.html/projects.html
+         (see components.css) — Home used to have its own separate pale-
+         blue .cta__inner treatment here; switched to the shared band for
+         the cinematic full-bleed close the brief calls for, plus a new
+         --photo modifier (components.css, additive only — services.html
+         and projects.html keep rendering the plain gradient band exactly
+         as before). Copy/button/rail wording match what Home already had
+         (no new claims), not copied from the reference. -->
+    <section class="cta-band cta-band--photo">
+      <div class="cta-band__photo" style="background-image:url('assets/images/hero/hero-05.jpg')"
+        aria-hidden="true"></div>
+      <div class="cta-band__texture" aria-hidden="true"></div>
+      <div class="container cta-band__inner">
+        <div class="cta-band__copy" data-reveal>
+          <h2 class="cta-band__title">Let's talk about what your site needs.</h2>
+          <p class="cta-band__lead">
+            Shutdown, maintenance, fabrication, logistics, engineering —
+            tell us what you're looking to execute.
+          </p>
+        </div>
+        <a href="contact.html" class="btn btn--primary cta-band__btn" data-reveal>Start a conversation &rarr;</a>
+        <ul class="cta-band__rail" aria-hidden="true">
+          <li>Industry</li>
+          <li>People</li>
+          <li>Partnership</li>
+          <li>Progress</li>
+        </ul>
       </div>
     </section>
 
@@ -558,8 +905,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js" defer></script>
-  <script src="js/animations.js?v=5" defer></script>
-  <script src="js/main.js?v=5" defer></script>
+  <script src="js/animations.js?v=41" defer></script>
+  <script src="js/main.js?v=41" defer></script>
 </body>
 
 </html>

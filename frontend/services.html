@@ -28,10 +28,16 @@
     href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=5" />
-  <link rel="stylesheet" href="css/base.css?v=5" />
-  <link rel="stylesheet" href="css/components.css?v=5" />
-  <link rel="stylesheet" href="css/services.css?v=5" />
+  <link rel="stylesheet" href="css/variables.css?v=41" />
+  <link rel="stylesheet" href="css/base.css?v=41" />
+  <link rel="stylesheet" href="css/components.css?v=41" />
+  <link rel="stylesheet" href="css/services.css?v=41" />
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
 </head>
 
 <body>
@@ -91,195 +97,621 @@
   </header>
 
   <main>
-
     <!-- ============ HERO ============
-         Same component as Home: full-bleed photo slideshow, same six photos,
-         same mosaic-cell dissolve (js/animations.js#initHeroSlideshow). See
-         css/components.css .hero for why this now lives there, not
-         css/home.css. -->
-    <section class="hero">
-      <div class="hero__stage" data-hero-slideshow
-        data-hero-images="assets/images/hero/hero-01.jpg,assets/images/hero/hero-02.jpg,assets/images/hero/hero-03.jpg,assets/images/hero/hero-04.jpg,assets/images/hero/hero-05.jpg,assets/images/hero/hero-06.jpg">
-        <div class="hero__slide-base" style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true">
+         Page-specific dark hero, NOT the shared components.css .hero photo
+         slideshow this page used before. Deliberately the same size,
+         background and intro-left / stats-right composition as
+         projects.html's .projects-hero — the two pages are meant to read as
+         a matched pair, so .services-hero mirrors that rule set rather than
+         inventing its own proportions. Every stat is a figure already
+         stated elsewhere on this site (six domains — see the headline and
+         Home's domains section; ~200 MT/month — see Project Execution below;
+         1,470+ and 21 — see projects.html's hero), not new numbers. -->
+    <section class="services-hero">
+      <div class="services-hero__texture" aria-hidden="true"></div>
+      <div class="container services-hero__inner">
+        <div class="services-hero__intro" data-reveal-hero>
+          <p class="eyebrow">What we do</p>
+          <h1>Six domains, one accountable partner across the plant lifecycle.</h1>
+          <p class="services-hero__lead">
+            From day-one operations to major capital projects, KIPL brings mechanical
+            fabrication, logistics, and engineering design under one roof — so you
+            coordinate with one partner, not six.
+          </p>
         </div>
-        <div class="hero__scrim" aria-hidden="true"></div>
 
-        <div class="container hero__stage-inner">
-          <div class="hero__card">
-            <p class="eyebrow" data-reveal-hero>What we do</p>
-            <h1 data-reveal-hero>Six domains, one accountable partner across the plant lifecycle.</h1>
-            <p class="hero__lead" data-reveal-hero>
-              From day-one operations to major capital projects, KIPL brings mechanical
-              fabrication, logistics, and engineering design under one roof — so you
-              coordinate with one partner, not six.
-            </p>
+        <div class="services-hero__stats" data-reveal-hero>
+          <div class="services-hero__stat">
+            <svg class="services-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <rect x="2.5" y="2.5" width="7.5" height="7.5" rx="1.2" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+              <rect x="12" y="2.5" width="7.5" height="7.5" rx="1.2" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+              <rect x="2.5" y="12" width="7.5" height="7.5" rx="1.2" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+              <rect x="12" y="12" width="7.5" height="7.5" rx="1.2" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+            </svg>
+            <span class="services-hero__stat-value">6</span>
+            <span class="services-hero__stat-label">Service Domains</span>
+          </div>
+          <div class="services-hero__stat">
+            <svg class="services-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <path d="M2.5 19V9.5l5.5 3V9.5l5.5 3V6l6 3.2V19H2.5Z" fill="none" stroke="currentColor"
+                stroke-width="1.3" stroke-linejoin="round" />
+              <path d="M2.5 19h17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+            <span class="services-hero__stat-value">~200<span class="services-hero__stat-suffix">MT</span></span>
+            <span class="services-hero__stat-label">Monthly Workshop Capacity</span>
+          </div>
+          <div class="services-hero__stat">
+            <svg class="services-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <circle cx="8" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.3" />
+              <path d="M2.5 18c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5" fill="none" stroke="currentColor"
+                stroke-width="1.3" stroke-linecap="round" />
+              <circle cx="15.5" cy="8" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3" />
+              <path d="M13.8 12.7c2.4.3 4.2 2.4 4.2 5" fill="none" stroke="currentColor" stroke-width="1.3"
+                stroke-linecap="round" />
+            </svg>
+            <span class="services-hero__stat-value">1,470<span class="services-hero__stat-suffix">+</span></span>
+            <span class="services-hero__stat-label">Workforce Strength</span>
+          </div>
+          <div class="services-hero__stat">
+            <svg class="services-hero__stat-icon" viewBox="0 0 22 22" width="22" height="22" aria-hidden="true">
+              <rect x="2.5" y="7.5" width="17" height="11" rx="1.5" fill="none" stroke="currentColor"
+                stroke-width="1.3" />
+              <path d="M7.5 7.5V5.8a1.6 1.6 0 0 1 1.6-1.6h3.8a1.6 1.6 0 0 1 1.6 1.6V7.5" fill="none"
+                stroke="currentColor" stroke-width="1.3" />
+              <path d="M2.5 12.5h17" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+            <span class="services-hero__stat-value">21</span>
+            <span class="services-hero__stat-label">Active &amp; Completed Projects</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ QUICK NAV ============ -->
+    <!-- ============ QUICK NAV ============
+         Jump links to each domain below, one icon badge per link — same six
+         hrefs as before, restyled from plain text pills into icon+label
+         chips with dividers between them. No chip starts marked .is-active
+         here — that class is added purely by scrolling, via
+         js/main.js#initServiceQuicknavSpy (an IntersectionObserver watching
+         each service-card section), so the highlight only ever reflects a
+         domain actually in view: none of the six cards has scrolled into
+         the tracked band yet at the top of the page, so the strip starts
+         with nothing highlighted, same as it would if IntersectionObserver
+         weren't supported at all. -->
     <nav class="service-quicknav" aria-label="Jump to a service">
       <div class="container">
-        <div class="service-quicknav__list">
-          <a href="#operation-maintenance">Operation &amp; Maintenance</a>
-          <a href="#project-execution">Project Execution</a>
-          <a href="#material-handling">Material Handling</a>
-          <a href="#mining-logistics">Mining &amp; Logistics</a>
-          <a href="#mechanised-cleaning">Mechanised Cleaning</a>
-          <a href="#design-consultation">Design &amp; Consultation</a>
-        </div>
+        <ul class="service-quicknav__list">
+          <li>
+            <a href="#operation-maintenance" class="service-quicknav__item">
+              <span class="service-quicknav__icon" aria-hidden="true">
+                <svg viewBox="0 0 22 22" width="22" height="22">
+                  <path d="M11 8.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z" fill="none" stroke="currentColor"
+                    stroke-width="1.3" />
+                  <path
+                    d="M11 3.5v1.8M11 16.7v1.8M18.5 11h-1.8M5.3 11H3.5M16.2 5.8l-1.3 1.3M7.1 14.9l-1.3 1.3M16.2 16.2l-1.3-1.3M7.1 7.1 5.8 5.8"
+                    fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="service-quicknav__label">Operation &amp; Maintenance</span>
+            </a>
+          </li>
+          <li>
+            <a href="#project-execution" class="service-quicknav__item">
+              <span class="service-quicknav__icon" aria-hidden="true">
+                <svg viewBox="0 0 22 22" width="22" height="22">
+                  <path d="M3 15.2c0-4.6 3.6-8.2 8-8.2s8 3.6 8 8.2" fill="none" stroke="currentColor"
+                    stroke-width="1.3" stroke-linecap="round" />
+                  <path d="M1.5 15.2h19" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linecap="round" />
+                  <path d="M11 7V4.7" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="service-quicknav__label">Project Execution</span>
+            </a>
+          </li>
+          <li>
+            <a href="#material-handling" class="service-quicknav__item">
+              <span class="service-quicknav__icon" aria-hidden="true">
+                <svg viewBox="0 0 22 22" width="22" height="22">
+                  <path d="M3 19V9l8-5 8 5v10M3 19h16" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linejoin="round" />
+                  <path d="M3 19v-6h4v6M15 19v-6h4v6M9.3 19v-4.5h3.4V19" fill="none" stroke="currentColor"
+                    stroke-width="1.3" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="service-quicknav__label">Material Handling</span>
+            </a>
+          </li>
+          <li>
+            <a href="#mining-logistics" class="service-quicknav__item">
+              <span class="service-quicknav__icon" aria-hidden="true">
+                <svg viewBox="0 0 22 22" width="22" height="22">
+                  <path d="M2.2 6.5h9v8h-9z" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linejoin="round" />
+                  <path d="M11.2 9.7h3.7l3 2.8v2h-6.7z" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linejoin="round" />
+                  <circle cx="6" cy="16" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3" />
+                  <circle cx="15.3" cy="16" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+              </span>
+              <span class="service-quicknav__label">Mining &amp; Logistics</span>
+            </a>
+          </li>
+          <li>
+            <a href="#mechanised-cleaning" class="service-quicknav__item">
+              <span class="service-quicknav__icon" aria-hidden="true">
+                <svg viewBox="0 0 22 22" width="22" height="22">
+                  <path d="M14 3.5 6 15" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linecap="round" />
+                  <path d="M6 15 3 19.5l6-2.2Z" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linejoin="round" />
+                  <path d="M12.2 6.3l3 2.1M13.6 4.3l3 2.1" fill="none" stroke="currentColor" stroke-width="1.3"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="service-quicknav__label">Mechanised Cleaning</span>
+            </a>
+          </li>
+          <li>
+            <a href="#design-consultation" class="service-quicknav__item">
+              <span class="service-quicknav__icon" aria-hidden="true">
+                <svg viewBox="0 0 22 22" width="22" height="22">
+                  <rect x="5" y="3.2" width="12" height="15.6" rx="1.4" fill="none" stroke="currentColor"
+                    stroke-width="1.3" />
+                  <path d="M7.8 7.8h6.4M7.8 11.2h6.4M7.8 14.6h4" fill="none" stroke="currentColor"
+                    stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="service-quicknav__label">Design &amp; Consultation</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </nav>
 
-    <!-- ============ DOMAIN BLOCKS ============
-         Alternating panel/content pairs, each panel driven by the shared
-         mosaic-reveal mechanic (see css/components.css .mosaic-grid,
-         js/animations.js#initMosaicReveal) via [data-mosaic-reveal]. -->
-    <section class="section">
+    <!-- ============ WHAT WE DO / DOMAIN BLOCKS ============
+         Six wide horizontal service cards. Same six domains, same titles,
+         same lead copy and same detail bullets as the alternating
+         panel/content blocks this replaces — a presentation change only.
+
+         IMAGE SLOTS: each card's .service-card__media carries a real photo
+         via an inline background-image — one of the six site-wide hero
+         photos (assets/images/hero/), reused here rather than shot
+         specifically per domain, paired by what each photo actually shows
+         (hands-on maintenance work, structural fabrication/erection,
+         conveyor material flow, rail-wagon loading, heavy mining gear,
+         a wide stockyard view) rather than assigned arbitrarily. Swap in
+         dedicated service photography later by changing the url() on the
+         relevant card — nothing else moves.
+
+         Each host also carries [data-mosaic-reveal], the shared mechanic
+         from js/animations.js#initMosaicReveal: since the host already has
+         a real url() background (not the plain CSS gradient below, which
+         is only the no-JS/reduced-motion fallback), the mechanic slices
+         *this* photo into its reveal grid instead of generating a texture.
+         That slicing preserves the photo's own aspect ratio (a "cover" fit,
+         computed once each image's natural size is known) rather than
+         stretching it to the card's own proportions.
+
+         The left-edge fade into the card (css/services.css
+         .service-card__media, a two-axis CSS mask) is applied to the media
+         host itself, so it fades whatever the host shows and never depends
+         on the photo's own colours. -->
+    <section class="section services-list">
       <div class="container">
 
-        <div class="service-block" id="operation-maintenance">
-          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="0">
-            <span class="service-block__index">01</span>
+        <div class="services-list__head">
+          <div data-reveal>
+            <p class="eyebrow">What we do</p>
+            <h2 class="services-list__title">Our services.</h2>
           </div>
-          <div class="service-block__content">
-            <p class="eyebrow">Domain 01</p>
-            <h2>Operation &amp; Maintenance</h2>
-            <p class="service-block__lead">
-              The day-to-day activities that keep every system and piece of
-              equipment performing reliably — integrating managerial, financial,
-              and technical dimensions so your facility's ecosystem works in
-              harmony.
-            </p>
-            <ul class="service-block__list">
-              <li>Operational assistance &amp; start-up activities</li>
-              <li>Productivity improvement programs</li>
-              <li>Asset optimization</li>
-              <li>Process control</li>
-            </ul>
-            <a href="contact.html" class="service-block__link">Get a quote →</a>
-          </div>
+          <p class="services-list__intro" data-reveal>
+            End-to-end industrial support for the aluminum, steel, coal, and power
+            operations that keep Odisha running — delivered by one accountable
+            partner across all six domains.
+          </p>
         </div>
 
-        <div class="service-block service-block--reverse" id="project-execution">
-          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="1">
-            <span class="service-block__index">02</span>
-          </div>
-          <div class="service-block__content">
-            <p class="eyebrow">Domain 02</p>
-            <h2>Project Execution</h2>
-            <p class="service-block__lead">
-              End-to-end delivery against engineering design standards and
-              applicable codes — backed by our own fabrication workshop in
-              Jharsuguda, running at ~200 MT/month capacity.
-            </p>
-            <ul class="service-block__list">
-              <li>Heavy structural components</li>
-              <li>Conveyor and piping systems</li>
-              <li>Pollution-control equipment</li>
-              <li>In-house fabrication workshop, ~200 MT/month capacity</li>
-            </ul>
-            <a href="contact.html" class="service-block__link">Get a quote →</a>
-          </div>
-        </div>
+        <div class="services-list__cards">
 
-        <div class="service-block" id="material-handling">
-          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="2">
-            <span class="service-block__index">03</span>
+        <article class="service-card" id="operation-maintenance">
+          <div class="service-card__media" data-mosaic-reveal data-mosaic-tone="0"
+            style="background-image:url('assets/images/hero/hero-02.jpg')" aria-hidden="true"></div>
+          <div class="service-card__body">
+            <span class="service-card__index" aria-hidden="true">01</span>
+            <div class="service-card__text">
+              <h3 class="service-card__title">Operation &amp; Maintenance</h3>
+              <p class="service-card__lead">
+                The day-to-day activities that keep every system and piece of
+                equipment performing reliably — integrating managerial, financial,
+                and technical dimensions so your facility's ecosystem works in
+                harmony.
+              </p>
+              <ul class="service-card__list">
+                <li>Operational assistance &amp; start-up activities</li>
+                <li>Productivity improvement programs</li>
+                <li>Asset optimization</li>
+                <li>Process control</li>
+              </ul>
+            </div>
           </div>
-          <div class="service-block__content">
-            <p class="eyebrow">Domain 03</p>
-            <h2>Material Handling</h2>
-            <p class="service-block__lead">
-              Thoughtfully designed facility layouts and cost-effective flow
-              management across raw material, work-in-progress, finished goods,
-              and scrap disposal.
-            </p>
-            <ul class="service-block__list">
-              <li>Raw material &amp; WIP flow management</li>
-              <li>Finished goods handling</li>
-              <li>Scrap disposal</li>
-              <li>In-house fleet — hydras, cranes &amp; trailers</li>
-            </ul>
-            <a href="contact.html" class="service-block__link">Get a quote →</a>
-          </div>
-        </div>
+          <a class="service-card__action" href="contact.html">
+            <span class="service-card__action-label">Get a quote</span>
+            <span class="service-card__action-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M5 12h13M12.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="visually-hidden">about Operation &amp; Maintenance</span>
+          </a>
+        </article>
 
-        <div class="service-block service-block--reverse" id="mining-logistics">
-          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="3">
-            <span class="service-block__index">04</span>
+        <article class="service-card" id="project-execution">
+          <div class="service-card__media" data-mosaic-reveal data-mosaic-tone="1"
+            style="background-image:url('assets/images/hero/hero-01.jpg')" aria-hidden="true"></div>
+          <div class="service-card__body">
+            <span class="service-card__index" aria-hidden="true">02</span>
+            <div class="service-card__text">
+              <h3 class="service-card__title">Project Execution</h3>
+              <p class="service-card__lead">
+                End-to-end delivery against engineering design standards and
+                applicable codes — backed by our own fabrication workshop in
+                Jharsuguda, running at ~200 MT/month capacity.
+              </p>
+              <ul class="service-card__list">
+                <li>Heavy structural components</li>
+                <li>Conveyor and piping systems</li>
+                <li>Pollution-control equipment</li>
+                <li>In-house fabrication workshop, ~200 MT/month capacity</li>
+              </ul>
+            </div>
           </div>
-          <div class="service-block__content">
-            <p class="eyebrow">Domain 04</p>
-            <h2>Mining &amp; Logistics</h2>
-            <p class="service-block__lead">
-              A dependable, disciplined operation for high-volume mineral
-              transportation — coal, iron ore, and other bulk commodities —
-              plus internal shifting with real-time monitoring.
-            </p>
-            <ul class="service-block__list">
-              <li>High-volume mineral transportation (coal, iron ore &amp; bulk commodities)</li>
-              <li>Stockyard-to-conveyor shifting</li>
-              <li>Storage bunker logistics</li>
-              <li>Real-time monitoring</li>
-            </ul>
-            <a href="contact.html" class="service-block__link">Get a quote →</a>
-          </div>
-        </div>
+          <a class="service-card__action" href="contact.html">
+            <span class="service-card__action-label">Get a quote</span>
+            <span class="service-card__action-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M5 12h13M12.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="visually-hidden">about Project Execution</span>
+          </a>
+        </article>
 
-        <div class="service-block" id="mechanised-cleaning">
-          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="0">
-            <span class="service-block__index">05</span>
+        <article class="service-card" id="material-handling">
+          <div class="service-card__media" data-mosaic-reveal data-mosaic-tone="2"
+            style="background-image:url('assets/images/hero/hero-06.jpg')" aria-hidden="true"></div>
+          <div class="service-card__body">
+            <span class="service-card__index" aria-hidden="true">03</span>
+            <div class="service-card__text">
+              <h3 class="service-card__title">Material Handling</h3>
+              <p class="service-card__lead">
+                Thoughtfully designed facility layouts and cost-effective flow
+                management across raw material, work-in-progress, finished goods,
+                and scrap disposal.
+              </p>
+              <ul class="service-card__list">
+                <li>Raw material &amp; WIP flow management</li>
+                <li>Finished goods handling</li>
+                <li>Scrap disposal</li>
+                <li>In-house fleet — hydras, cranes &amp; trailers</li>
+              </ul>
+            </div>
           </div>
-          <div class="service-block__content">
-            <p class="eyebrow">Domain 05</p>
-            <h2>Mechanised Cleaning</h2>
-            <p class="service-block__lead">
-              Advanced industrial housekeeping for facilities where cleanliness
-              and emissions compliance are non-negotiable.
-            </p>
-            <ul class="service-block__list">
-              <li>Truck-mounted &amp; ride-on road sweepers</li>
-              <li>Industrial vacuum systems</li>
-              <li>Dust suppression</li>
-              <li>High-pressure jetting</li>
-            </ul>
-            <a href="contact.html" class="service-block__link">Get a quote →</a>
-          </div>
-        </div>
+          <a class="service-card__action" href="contact.html">
+            <span class="service-card__action-label">Get a quote</span>
+            <span class="service-card__action-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M5 12h13M12.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="visually-hidden">about Material Handling</span>
+          </a>
+        </article>
 
-        <div class="service-block service-block--reverse" id="design-consultation">
-          <div class="service-block__panel" data-mosaic-reveal data-mosaic-tone="1">
-            <span class="service-block__index">06</span>
+        <article class="service-card" id="mining-logistics">
+          <div class="service-card__media" data-mosaic-reveal data-mosaic-tone="3"
+            style="background-image:url('assets/images/hero/hero-04.jpg')" aria-hidden="true"></div>
+          <div class="service-card__body">
+            <span class="service-card__index" aria-hidden="true">04</span>
+            <div class="service-card__text">
+              <h3 class="service-card__title">Mining &amp; Logistics</h3>
+              <p class="service-card__lead">
+                A dependable, disciplined operation for high-volume mineral
+                transportation — coal, iron ore, and other bulk commodities —
+                plus internal shifting with real-time monitoring.
+              </p>
+              <ul class="service-card__list">
+                <li>High-volume mineral transportation (coal, iron ore &amp; bulk commodities)</li>
+                <li>Stockyard-to-conveyor shifting</li>
+                <li>Storage bunker logistics</li>
+                <li>Real-time monitoring</li>
+              </ul>
+            </div>
           </div>
-          <div class="service-block__content">
-            <p class="eyebrow">Domain 06</p>
-            <h2>Design &amp; Consultation</h2>
-            <p class="service-block__lead">
-              Qualified engineers and domain specialists translating your
-              requirements into practical, efficient designs.
-            </p>
-            <ul class="service-block__list">
-              <li>Feasibility studies</li>
-              <li>URS documentation</li>
-              <li>Process optimisation for aluminium smelter carbon plants</li>
-              <li>Structural design &amp; detailing</li>
-            </ul>
-            <a href="contact.html" class="service-block__link">Get a quote →</a>
+          <a class="service-card__action" href="contact.html">
+            <span class="service-card__action-label">Get a quote</span>
+            <span class="service-card__action-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M5 12h13M12.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="visually-hidden">about Mining &amp; Logistics</span>
+          </a>
+        </article>
+
+        <article class="service-card" id="mechanised-cleaning">
+          <div class="service-card__media" data-mosaic-reveal data-mosaic-tone="0"
+            style="background-image:url('assets/images/hero/hero-03.jpg')" aria-hidden="true"></div>
+          <div class="service-card__body">
+            <span class="service-card__index" aria-hidden="true">05</span>
+            <div class="service-card__text">
+              <h3 class="service-card__title">Mechanised Cleaning</h3>
+              <p class="service-card__lead">
+                Advanced industrial housekeeping for facilities where cleanliness
+                and emissions compliance are non-negotiable.
+              </p>
+              <ul class="service-card__list">
+                <li>Truck-mounted &amp; ride-on road sweepers</li>
+                <li>Industrial vacuum systems</li>
+                <li>Dust suppression</li>
+                <li>High-pressure jetting</li>
+              </ul>
+            </div>
           </div>
+          <a class="service-card__action" href="contact.html">
+            <span class="service-card__action-label">Get a quote</span>
+            <span class="service-card__action-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M5 12h13M12.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="visually-hidden">about Mechanised Cleaning</span>
+          </a>
+        </article>
+
+        <article class="service-card" id="design-consultation">
+          <div class="service-card__media" data-mosaic-reveal data-mosaic-tone="1"
+            style="background-image:url('assets/images/hero/hero-05.jpg')" aria-hidden="true"></div>
+          <div class="service-card__body">
+            <span class="service-card__index" aria-hidden="true">06</span>
+            <div class="service-card__text">
+              <h3 class="service-card__title">Design &amp; Consultation</h3>
+              <p class="service-card__lead">
+                Qualified engineers and domain specialists translating your
+                requirements into practical, efficient designs.
+              </p>
+              <ul class="service-card__list">
+                <li>Feasibility studies</li>
+                <li>URS documentation</li>
+                <li>Process optimisation for aluminium smelter carbon plants</li>
+                <li>Structural design &amp; detailing</li>
+              </ul>
+            </div>
+          </div>
+          <a class="service-card__action" href="contact.html">
+            <span class="service-card__action-label">Get a quote</span>
+            <span class="service-card__action-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M5 12h13M12.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="visually-hidden">about Design &amp; Consultation</span>
+          </a>
+        </article>
+
         </div>
 
       </div>
     </section>
 
-    <!-- ============ CTA BAND ============ -->
-    <section class="cta section--tight">
-      <div class="container">
-        <div class="cta__inner" data-reveal>
-          <h2>Let's scope your next shutdown, project, or plant upgrade.</h2>
-          <a href="contact.html" class="btn btn--primary">Start a conversation</a>
+    <!-- ============ INDUSTRIES WE SERVE ============
+         Replaces the earlier four-item "sectors" band. Mining and
+         Infrastructure join the four sectors the site already names
+         (aluminium, steel, coal, power): Mining is one of the six domains
+         above and absorbs coal here, and Infrastructure is where the
+         Dilip Buildcon / Shapoorji Pallonji / L&T Construction clients on
+         Home's logo marquee sit. Labels and icons are orange, per the
+         reference direction. -->
+    <section class="industries section--dark" id="industries">
+      <div class="industries__texture" aria-hidden="true"></div>
+      <div class="container industries__inner">
+        <div class="industries__head">
+          <div data-reveal>
+            <p class="eyebrow">Industries we serve</p>
+            <h2 class="industries__title">Built for complex industrial environments.</h2>
+          </div>
+          <p class="industries__lead" data-reveal>
+            Our six domains support critical operations across the sectors that
+            drive Odisha's economy — with a strong focus on long-term partnerships
+            and reliable execution.
+          </p>
         </div>
+
+        <ul class="industries__rail" data-reveal>
+          <li class="industries__item">
+            <svg class="industries__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+              <path d="M3 12.5l6-3.5 6 3.5-6 3.5-6-3.5Z" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M15 19.5l6-3.5 6 3.5-6 3.5-6-3.5Z" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M3 12.5v4l6 3.5v-4M15 12.5l6-3.5M9 20v3.5" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+            </svg>
+            <span>Aluminium</span>
+          </li>
+          <li class="industries__item">
+            <svg class="industries__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+              <path d="M10 5h10l-2.8 8.2a4.4 4.4 0 1 1-4.4 0L10 5Z" fill="none" stroke="currentColor"
+                stroke-width="1.4" stroke-linejoin="round" />
+              <path d="M11 26h8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            </svg>
+            <span>Steel</span>
+          </li>
+          <li class="industries__item">
+            <svg class="industries__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+              <path d="M17 3L8 16.5h6L13 27l9-13.5h-6L17 3Z" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+            </svg>
+            <span>Power</span>
+          </li>
+          <li class="industries__item">
+            <svg class="industries__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+              <path d="M3 18.5V12h9l3 3.5h5.5V18.5" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M20.5 18.5H27v-4l-4-1" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <circle cx="8" cy="21" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <circle cx="21" cy="21" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4" />
+            </svg>
+            <span>Mining</span>
+          </li>
+          <li class="industries__item">
+            <svg class="industries__icon" viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+              <path d="M3 20h24M6 20V11l9-5 9 5v9" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M11 20v-5h8v5M3 24h24" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" stroke-linecap="round" />
+            </svg>
+            <span>Infrastructure</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ WHY KIPL ============
+         Five reasons, each tied to something already stated on this site:
+         Health & Safety is one of the four core values (Home / About),
+         1,470+ and 21 are the same figures as this page's hero, the fleet
+         and the ~200 MT/month workshop come from the Material Handling and
+         Project Execution cards above, and the named clients all appear in
+         Home's logo marquee and on the Projects page. No new claims. -->
+    <section class="why section">
+      <div class="container">
+        <div class="why__head">
+          <div data-reveal>
+            <p class="eyebrow">Why KIPL</p>
+            <h2 class="why__title">A partner for what keeps industry moving.</h2>
+          </div>
+          <p class="why__lead" data-reveal>
+            We combine people, equipment and operational expertise to deliver
+            reliable, long-term solutions for our clients.
+          </p>
+          <div class="why__action" data-reveal>
+            <a href="about.html#our-story" class="btn btn--primary">Our Approach &rarr;</a>
+          </div>
+        </div>
+
+        <ul class="why__grid">
+          <li class="why__item" data-reveal>
+            <svg class="why__icon" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+              <path d="M14 3.5l8.5 3.2v7c0 5-3.6 9.2-8.5 10.8C9.1 22.9 5.5 18.7 5.5 13.7v-7L14 3.5Z" fill="none"
+                stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+              <path d="M10.5 14l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="why__item-title">Safety First</h3>
+            <p class="why__item-text">
+              Health &amp; Safety is one of our four core values — we are relentless
+              in keeping people safe from harm.
+            </p>
+          </li>
+          <li class="why__item" data-reveal>
+            <svg class="why__icon" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+              <circle cx="10.5" cy="9" r="3.6" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <path d="M3.5 22.5c0-3.9 3.1-7 7-7s7 3.1 7 7" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" />
+              <circle cx="19.5" cy="10.5" r="2.8" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <path d="M17.5 16c3.4.3 6 3.2 6 6.5" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" />
+            </svg>
+            <h3 class="why__item-title">Experienced Teams</h3>
+            <p class="why__item-text">
+              A workforce of 1,470+, grown steadily since 2009, deployed across
+              Odisha's most demanding sites.
+            </p>
+          </li>
+          <li class="why__item" data-reveal>
+            <svg class="why__icon" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+              <path d="M2.5 18V11h9l3 3.5h5V18" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M19.5 18H25v-3.5l-3.5-1" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <circle cx="7.5" cy="20.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <circle cx="19.5" cy="20.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4" />
+            </svg>
+            <h3 class="why__item-title">Right Equipment</h3>
+            <p class="why__item-text">
+              An in-house fleet of hydras, cranes and trailers, plus a ~200 MT/month
+              fabrication workshop.
+            </p>
+          </li>
+          <li class="why__item" data-reveal>
+            <svg class="why__icon" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+              <path d="M3.5 24h21" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              <rect x="5" y="15" width="4.5" height="9" rx="1" fill="none" stroke="currentColor" stroke-width="1.4" />
+              <rect x="11.75" y="10" width="4.5" height="14" rx="1" fill="none" stroke="currentColor"
+                stroke-width="1.4" />
+              <rect x="18.5" y="5" width="4.5" height="19" rx="1" fill="none" stroke="currentColor"
+                stroke-width="1.4" />
+            </svg>
+            <h3 class="why__item-title">Proven Execution</h3>
+            <p class="why__item-text">
+              21 active and completed contracts across the aluminium, steel, coal
+              and power sectors.
+            </p>
+          </li>
+          <li class="why__item" data-reveal>
+            <svg class="why__icon" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+              <path d="M2.5 12.5l4-4 5 4.5 3-1 6.5 6" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M14.5 12l4-3.5 7 4.5-4 5" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+              <path d="M11.5 13l-3 3.5 2.5 2 2.5-2.5" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linejoin="round" />
+            </svg>
+            <h3 class="why__item-title">Long-term Partnerships</h3>
+            <p class="why__item-text">
+              Repeat engagements with Vedanta, Tata Steel, JSW and NTPC, some
+              running for years.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============
+         This page no longer uses the shared components.css .cta band (Home
+         still does, untouched) — the reference calls for a full-bleed
+         orange field here, which is a different component, not a restyle of
+         the shared one. The word rail on the right is decorative, hence
+         aria-hidden. -->
+    <section class="cta-band">
+      <div class="cta-band__texture" aria-hidden="true"></div>
+      <div class="container cta-band__inner">
+        <div class="cta-band__copy" data-reveal>
+          <h2 class="cta-band__title">Have an industrial requirement?</h2>
+          <p class="cta-band__lead">
+            Tell us what you're looking to execute. We'll connect you with the
+            right KIPL team.
+          </p>
+        </div>
+        <a href="contact.html" class="btn btn--primary cta-band__btn" data-reveal>Discuss a Project &rarr;</a>
+        <ul class="cta-band__rail" aria-hidden="true">
+          <li>Industry</li>
+          <li>People</li>
+          <li>Partnership</li>
+          <li>Progress</li>
+        </ul>
       </div>
     </section>
 
@@ -327,8 +759,8 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js?v=5" defer></script>
-  <script src="js/main.js?v=5" defer></script>
+  <script src="js/animations.js?v=41" defer></script>
+  <script src="js/main.js?v=41" defer></script>
 </body>
 
 </html>

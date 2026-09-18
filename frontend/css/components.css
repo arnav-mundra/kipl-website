@@ -607,6 +607,51 @@ html.nav-transition-cover .page-transition {
   /* Fallback if JS/canvas can't run: a plain brand-toned gradient so it
      still reads as intentional, not an empty panel. */
   background: linear-gradient(155deg, var(--color-blue-500), var(--color-blue-900));
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------- Core Values photo panels ----------
+   Real photography (assets/images/core-values/) for these four panels only
+   — the Services/domains rows below keep the generated grain texture (no
+   photos for that content yet) — so this lives as an addition on top of
+   the shared rule above rather than changing it. The photo itself is set
+   inline via background-image on the panel (same convention as About's
+   team mosaic photos, e.g. .md-desk__portrait in about.html), which
+   initMosaicReveal auto-detects and slices instead of generating a
+   texture. Two overlay layers sit on top of the sliced photo, both
+   z-index 3 (above .mosaic-grid's z-index 2) but before __index/__name in
+   markup so text still paints above both:
+     1. __duotone — mix-blend-mode: color, full brand-color coverage, so
+        each photo reads as one duotone tone instead of its own raw stock
+        color. Alternates blue/orange per row (--tint-orange modifier) so
+        all four read as one branded set.
+     2. __scrim — normal-blend fine diagonal grain (same texture as
+        .cta-band__texture) plus a fade toward the detail column's own
+        navy (--color-bg-dark), so the photo dissolves into it instead of
+        a hard seam down the middle of the row. */
+
+.mosaic-row__duotone,
+.mosaic-row__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.mosaic-row__duotone {
+  mix-blend-mode: color;
+  background: var(--color-blue-700);
+}
+
+.mosaic-row__panel--tint-orange .mosaic-row__duotone {
+  background: var(--color-orange-600);
+}
+
+.mosaic-row__scrim {
+  background-image:
+    repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 7px),
+    linear-gradient(90deg, transparent 45%, var(--color-bg-dark) 102%);
 }
 
 .mosaic-row__index {
@@ -751,6 +796,130 @@ html.nav-transition-cover .page-transition {
     flex-direction: column;
     align-items: flex-start;
     padding: var(--space-lg);
+  }
+}
+
+/* ---------- CTA band, full-bleed orange variant ----------
+   A second CTA treatment, sitting alongside .cta__inner above rather than
+   replacing it: a full-bleed burnt-orange field with a diagonal-grain
+   texture, built for Services and reused as-is on Projects, and now Home
+   too (its final CTA) — same "originally one page, now shared" path as
+   .cta__inner itself. A page picks whichever of the two suits it, they're
+   not different states of one component. */
+
+.cta-band {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--space-xl);
+  color: var(--color-white);
+  background: linear-gradient(100deg,
+      var(--color-blue-900) 0%,
+      #2E1711 26%,
+      #8A3316 58%,
+      var(--color-orange-600) 88%,
+      var(--color-orange-500) 100%);
+}
+
+/* Fine diagonal grain so the gradient doesn't read as flat vinyl — the
+   same "generated texture, no image file" approach as the mosaic panels. */
+.cta-band__texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 7px),
+    radial-gradient(80% 140% at 8% 50%, rgba(20, 33, 61, 0.55), transparent 62%);
+}
+
+/* ---------- CTA band, photo modifier (Home only) ----------
+   Additive only — .cta-band with no modifier (Services/Projects) renders
+   exactly as before. --photo layers a real photo under the same gradient
+   + grain, darkened enough that the existing white text/button still sit
+   comfortably on top, for the cinematic full-bleed close the Home redesign
+   calls for. .cta-band__photo's background-image is set inline per page
+   (same convention as .hero__slide-base). */
+.cta-band--photo {
+  background: var(--color-blue-900);
+}
+
+.cta-band--photo .cta-band__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.cta-band--photo .cta-band__texture {
+  z-index: 1;
+  opacity: 0.85;
+  background-image:
+    repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 7px),
+    linear-gradient(100deg,
+      rgba(20, 33, 61, 0.88) 0%,
+      rgba(46, 23, 17, 0.55) 30%,
+      rgba(138, 51, 22, 0.35) 60%,
+      rgba(205, 88, 32, 0.28) 100%);
+}
+
+.cta-band--photo .cta-band__inner {
+  z-index: 2;
+}
+
+.cta-band__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-lg) var(--space-xl);
+}
+
+.cta-band__copy {
+  flex: 1 1 22rem;
+}
+
+.cta-band__title {
+  color: var(--color-white);
+  font-size: clamp(1.75rem, 1.8vw + 1rem, 2.5rem);
+  line-height: 1.1;
+  max-width: 18ch;
+}
+
+.cta-band__lead {
+  margin-top: var(--space-sm);
+  color: rgba(255, 255, 255, 0.84);
+  max-width: 44ch;
+}
+
+.cta-band__btn {
+  flex: none;
+}
+
+.cta-band__rail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  padding-inline-start: var(--space-lg);
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 860px) {
+  .cta-band__rail {
+    padding-inline-start: 0;
+    border-inline-start: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-md);
   }
 }
 
