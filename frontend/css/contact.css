@@ -49,14 +49,40 @@
   font-family: inherit;
 }
 
-/* Submitting opens the visitor's own email client rather than sending
-   silently (no backend exists to receive a real POST — see README) — this
-   sets that expectation up front instead of surprising them after the
-   click. */
+/* Without the CMS server, submitting opens the visitor's own email client
+   rather than sending silently — this sets that expectation up front.
+   js/main.js swaps the wording when the server is reachable. */
 .form-note {
   margin-top: var(--space-sm);
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
+}
+
+/* Honeypot: off-screen rather than display:none, which some bots skip. */
+.form-field--hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-status {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.form-status--ok {
+  background: #e3f5ea;
+  color: #14653a;
+}
+
+.form-status--error {
+  background: #fde7e5;
+  color: #8a241c;
 }
 
 /* ---------- Info + map ---------- */

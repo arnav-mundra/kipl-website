@@ -40,10 +40,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=42" />
-  <link rel="stylesheet" href="css/base.css?v=42" />
-  <link rel="stylesheet" href="css/components.css?v=42" />
-  <link rel="stylesheet" href="css/contact.css?v=42" />
+  <link rel="stylesheet" href="css/variables.css?v=43" />
+  <link rel="stylesheet" href="css/base.css?v=43" />
+  <link rel="stylesheet" href="css/components.css?v=43" />
+  <link rel="stylesheet" href="css/contact.css?v=43" />
 
   <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
@@ -134,12 +134,11 @@
       <div class="container">
         <div class="contact-grid">
 
-          <!-- Submitting builds a mailto: link from the field values and
-               hands off to the visitor's own email client (js/main.js
-               #initContactForm) — there's no backend yet to receive a real
-               submission (see README), so this is deliberately honest about
-               what actually happens rather than looking like a silent
-               server-side send. -->
+          <!-- Submitting posts to the CMS server's /api/enquiries when it is
+               running (js/main.js #initContactForm); on a purely static host
+               with no backend it falls back to building a mailto: link from
+               the field values and handing off to the visitor's own email
+               client, so the form always does something honest. -->
           <form id="contactForm" novalidate>
             <div class="form-field">
               <label for="ctName">Name</label>
@@ -157,8 +156,17 @@
               <label for="ctMessage">Message</label>
               <textarea id="ctMessage" name="message" required></textarea>
             </div>
+            <!-- Spam traps: real visitors never see/fill the honeypot, and `ts`
+                 records when the page loaded (see js/main.js #initContactForm
+                 and backend/src/enquiries.js). -->
+            <div class="form-field form-field--hp" aria-hidden="true">
+              <label for="ctWebsite">Leave this field empty</label>
+              <input type="text" id="ctWebsite" name="website" tabindex="-1" autocomplete="off" />
+            </div>
+            <input type="hidden" name="ts" value="" />
             <button type="submit" class="btn btn--primary">Send message</button>
             <p class="form-note">Opens your email app with this pre-filled — hit send there to reach us.</p>
+            <p class="form-status" id="contactStatus" role="status" aria-live="polite" hidden></p>
           </form>
 
           <div>
@@ -265,7 +273,7 @@
   <!-- GSAP + ScrollTrigger (CDN, no build step) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="js/animations.js?v=42" defer></script>
-  <script src="js/main.js?v=42" defer></script>
+  <script src="js/animations.js?v=43" defer></script>
+  <script src="js/main.js?v=43" defer></script>
 </body>
 </html>

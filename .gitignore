@@ -1,3 +1,8 @@
 .claude/
 docs/draft/
 frontend/draft/
+
+node_modules/
+backend/data/
+backend/dist/
+backend/.env

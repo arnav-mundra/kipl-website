@@ -122,27 +122,88 @@
     var form = document.getElementById("contactForm");
     if (!form) return;
 
+    var note = form.querySelector(".form-note");
+    var status = document.getElementById("contactStatus");
+    var button = form.querySelector('button[type="submit"]');
+    var mailto = form.getAttribute("data-mailto") || "info@kipl.co";
+    var serverUp = null; // null = not checked yet
+
+    // Time trap for the spam filter: when did the visitor land on the form?
+    if (form.elements.ts) form.elements.ts.value = String(Date.now());
+
+    // With the CMS server running the form posts a real enquiry; on a plain
+    // static host there is no /api, so it falls back to the mail client.
+    fetch("/api/health", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        serverUp = !!(j && j.ok);
+        if (serverUp && note) note.textContent = "We reply to every message directly by email.";
+      })
+      .catch(function () { serverUp = false; });
+
+    function say(kind, text) {
+      if (!status) return;
+      status.hidden = false;
+      status.className = "form-status form-status--" + kind;
+      status.textContent = text;
+    }
+
+    function openMailClient(fields) {
+      var subject = "Enquiry from " + (fields.name || "KIPL website");
+      var body = [
+        "Name: " + fields.name,
+        "Phone: " + (fields.phone || "-"),
+        "Email: " + fields.email,
+        "",
+        fields.message,
+      ].join("\n");
+      window.location.href =
+        "mailto:" + mailto +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      var name = form.elements.name.value.trim();
-      var phone = form.elements.phone.value.trim();
-      var email = form.elements.email.value.trim();
-      var message = form.elements.message.value.trim();
+      var fields = {
+        name: form.elements.name.value.trim(),
+        phone: form.elements.phone.value.trim(),
+        email: form.elements.email.value.trim(),
+        message: form.elements.message.value.trim(),
+        website: form.elements.website ? form.elements.website.value : "",
+        ts: form.elements.ts ? form.elements.ts.value : "",
+      };
 
-      var subject = "Enquiry from " + (name || "KIPL website");
-      var body = [
-        "Name: " + name,
-        "Phone: " + (phone || "-"),
-        "Email: " + email,
-        "",
-        message,
-      ].join("\n");
+      if (!fields.name || !fields.email || !fields.message) {
+        say("error", "Please fill in your name, email and message.");
+        return;
+      }
+      if (serverUp === false) { openMailClient(fields); return; }
 
-      window.location.href =
-        "mailto:info@kipl.co" +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+      if (button) button.disabled = true;
+      fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      })
+        .then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (data) { return { r: r, data: data }; });
+        })
+        .then(function (res) {
+          if (res.r.ok) {
+            say("ok", "Thank you — your message has been sent. We'll reply by email shortly.");
+            form.reset();
+            if (form.elements.ts) form.elements.ts.value = String(Date.now());
+          } else if (res.r.status === 404 || res.r.status === 405) {
+            serverUp = false; // static host with no /api
+            openMailClient(fields);
+          } else {
+            say("error", res.data.error || "Sorry, that didn't go through. Please try again or email us directly.");
+          }
+        })
+        .catch(function () { openMailClient(fields); })
+        .then(function () { if (button) button.disabled = false; });
     });
   }
 
