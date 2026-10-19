@@ -12,6 +12,7 @@
     "seed:content": "node scripts/build-seed.js",
     "seed:users": "node scripts/seed-users.js",
     "export:static": "node scripts/export-static.js",
+    "optimize:images": "node scripts/optimize-images.js",
     "test": "node --test \"test/*.test.js\""
   },
   "dependencies": {

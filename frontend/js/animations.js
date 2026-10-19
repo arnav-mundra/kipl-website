@@ -935,11 +935,28 @@
     var base = stage.querySelector(".hero__slide-base");
     if (!base) return;
 
-    // Warm the cache so a dissolve never reveals a half-loaded image.
-    urls.forEach(function (url) {
+    // Warm the cache so a dissolve never reveals a half-loaded image — but one
+    // photo at a time, and only once the page itself has finished loading, so
+    // five more large images never compete with the first frame, the CSS/JS or
+    // the rest of the page for bandwidth (this was most of the slow first load
+    // on weak connections). Frame 0 is already painted via the inline style.
+    var loaded = [true];
+    function preloadFrom(i) {
+      if (i >= urls.length) return;
       var img = new Image();
-      img.src = url;
-    });
+      var next = function (ok) {
+        loaded[i] = ok;
+        preloadFrom(i + 1);
+      };
+      img.onload = function () { next(true); };
+      img.onerror = function () { next(false); };
+      img.src = urls[i];
+    }
+    function startPreload() {
+      window.setTimeout(function () { preloadFrom(1); }, 400);
+    }
+    if (document.readyState === "complete") startPreload();
+    else window.addEventListener("load", startPreload);
 
     // No motion: hold on the first frame already painted via inline style.
     if (!hasGsap || prefersReducedMotion) return;
@@ -989,7 +1006,16 @@
 
     window.setInterval(function () {
       if (isHidden) return;
-      current = (current + 1) % urls.length;
+      // Advance to the next photo that has actually loaded; if the next one is
+      // still downloading (or failed), hold the current frame and try again.
+      var next = -1;
+      for (var step = 1; step < urls.length; step++) {
+        var candidate = (current + step) % urls.length;
+        if (loaded[candidate] === true) { next = candidate; break; }
+        if (loaded[candidate] === undefined) break; // still loading in order — wait
+      }
+      if (next < 0) return;
+      current = next;
       dissolveTo(current);
     }, cycleMs);
   }

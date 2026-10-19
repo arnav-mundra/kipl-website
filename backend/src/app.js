@@ -1,6 +1,7 @@
 "use strict";
 
 const crypto = require("crypto");
+const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const config = require("./config");
@@ -15,10 +16,13 @@ const pageCache = new Map(); // file -> { html, etag }
 content.hooks.onPublish = () => pageCache.clear();
 
 function renderPublished(file) {
+  // Also invalidate when the page's own HTML file changes (e.g. after a deploy
+  // or a local edit), not just when content is published.
+  const mtime = fs.statSync(path.join(config.FRONTEND_DIR, file)).mtimeMs;
   const hit = pageCache.get(file);
-  if (hit) return hit;
+  if (hit && hit.mtime === mtime) return hit;
   const html = renderPage(file, content.snapshot("published"));
-  const entry = { html, etag: '"' + crypto.createHash("sha1").update(html).digest("base64url") + '"' };
+  const entry = { html, mtime, etag: '"' + crypto.createHash("sha1").update(html).digest("base64url") + '"' };
   pageCache.set(file, entry);
   return entry;
 }
@@ -106,7 +110,8 @@ function createApp() {
   // Raw page sources and work-in-progress concepts are never served as files
   // (case-insensitive, since Windows file systems ignore case).
   app.use((req, res, next) => (/\.html?$/i.test(req.path) || /^\/draft(\/|$)/i.test(req.path) ? res.status(404).send("Not found") : next()));
-  app.use(express.static(config.FRONTEND_DIR, { index: false, dotfiles: "ignore", extensions: false }));
+  // Images/CSS/JS are cached for a day (css/js carry ?v= cache-busters); HTML is never served from here.
+  app.use(express.static(config.FRONTEND_DIR, { index: false, dotfiles: "ignore", extensions: false, maxAge: "1d" }));
 
   app.use((_req, res) => res.status(404).type("text").send("Not found"));
   return app;
