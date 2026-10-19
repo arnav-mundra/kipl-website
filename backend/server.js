@@ -6,6 +6,7 @@ const db = require("./src/db");
 const content = require("./src/content");
 const audit = require("./src/audit");
 const backup = require("./src/backup");
+const { createInitialAccounts } = require("./src/bootstrap");
 const { createApp } = require("./src/app");
 
 function start() {
@@ -13,6 +14,9 @@ function start() {
   db.load();
 
   if (content.seedIfEmpty()) console.log("Installed the starting content (a copy of the current website).");
+
+  const created = createInitialAccounts();
+  if (created.length) console.log(`Created starting accounts from environment variables: ${created.join(", ")}. Sign in and change the passwords.`);
 
   if (!db.data.users.length) {
     console.warn(

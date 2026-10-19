@@ -62,7 +62,7 @@ npm install
 # never from a file in the repo):
 KIPL_OWNER_PASSWORD=… KIPL_EDITOR_PASSWORD=… KIPL_HR_PASSWORD=… npm run seed:users
 npm start          # http://localhost:4000/  and  http://localhost:4000/admin/
-npm test           # 55 tests: auth, roles, draft/publish, rendering, media, spam, backups
+npm test           # 58 tests: auth, roles, draft/publish, rendering, media, spam, backups
 ```
 
 The first start installs the starting content (a copy of what the static
@@ -139,6 +139,24 @@ functions can't persist `data/`. Two ways to run the public site:
    published content into `backend/dist/` (pages + assets + uploads); deploy
    that folder. Re-export after each publish. On a static host the contact
    form falls back to opening the visitor's email app.
+
+#### Deploying to Render (one blueprint)
+
+`render.yaml` at the repo root describes the whole service: Node web service
+in the Singapore region, `rootDir: backend`, a 1 GB persistent disk at
+`/var/data`, HTTPS, health check, and auto-deploy on push. (Persistent disks
+need a paid instance — `starter` is configured.)
+
+1. Render dashboard → **New → Blueprint** → choose this repository (grant
+   Render access to the private repo when asked).
+2. Render prompts for `KIPL_OWNER_PASSWORD`, `KIPL_EDITOR_PASSWORD` and
+   `KIPL_HR_PASSWORD`. Pick fresh passwords — they are not stored in the repo.
+   On the very first start (no accounts yet) the server creates the three
+   accounts from them; afterwards the variables are ignored, so changing them
+   later does not reset anyone (use `seed:users -- --reset` for that).
+3. Open `https://<service>.onrender.com/admin/`, sign in, change the passwords.
+4. Add `kipl.co` / `www.kipl.co` under **Settings → Custom Domains** and update
+   DNS as Render instructs.
 
 ## Deployment (Vercel)
 

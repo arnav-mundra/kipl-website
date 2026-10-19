@@ -21,11 +21,7 @@ const db = require("../src/db");
 const auth = require("../src/auth");
 const config = require("../src/config");
 
-const ACCOUNTS = [
-  { username: "owner", name: "Owner", role: "owner", env: "KIPL_OWNER_PASSWORD" },
-  { username: "editor", name: "Editor", role: "editor", env: "KIPL_EDITOR_PASSWORD" },
-  { username: "hr", name: "HR", role: "hr", env: "KIPL_HR_PASSWORD" },
-];
+const { ACCOUNTS } = require("../src/bootstrap");
 
 db.load();
 

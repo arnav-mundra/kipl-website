@@ -1,0 +1,42 @@
+# Render Blueprint — creates the KIPL website + admin panel as one web service
+# with a persistent disk (the admin keeps its database and uploads there).
+#
+# Use: Render dashboard -> New -> Blueprint -> pick this repository. Render
+# reads this file, asks you for the three starting passwords below (they are
+# NOT stored in the repo), and builds everything. See README "Admin panel & CMS".
+#
+# Cost note: a persistent disk needs a paid instance ("starter" and up).
+services:
+  - type: web
+    name: kipl-website
+    runtime: node
+    region: singapore        # closest Render region to Odisha
+    plan: starter            # persistent disks aren't available on the free plan
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true         # redeploy on every push to the default branch
+    disk:
+      name: kipl-data
+      mountPath: /var/data   # database, uploads and daily backups live here
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY     # Render terminates HTTPS in front of the app
+        value: "true"
+      - key: KIPL_DATA_DIR
+        value: /var/data
+      - key: SITE_ORIGIN
+        value: https://kipl.co
+      # Starting passwords — Render prompts for these when the blueprint is
+      # created. Used only on the very first start, when no accounts exist yet.
+      - key: KIPL_OWNER_PASSWORD
+        sync: false
+      - key: KIPL_EDITOR_PASSWORD
+        sync: false
+      - key: KIPL_HR_PASSWORD
+        sync: false
