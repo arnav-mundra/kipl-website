@@ -645,7 +645,7 @@
       ],
       "tileDescription": "The day-to-day activities that keep every system and piece of equipment performing reliably.",
       "tagline": "Keeping critical operations running.",
-      "servicesImage": "assets/images/hero/hero-02.jpg",
+      "servicesImage": "",
       "tileImage": "assets/images/domains/operation-maintenance.jpg",
       "bannerImage": "assets/images/projects/operation-maintenance.jpg",
       "showOnProjects": true
