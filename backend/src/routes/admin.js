@@ -10,6 +10,7 @@ const content = require("../content");
 const media = require("../media");
 const enquiries = require("../enquiries");
 const backup = require("../backup");
+const sitePublish = require("../sitepublish");
 const { RESOURCES } = require("../schemas");
 const { ROLES, canContent, can, summary } = require("../permissions");
 const { titleOf } = require("../validate");
@@ -18,6 +19,11 @@ const router = express.Router();
 
 const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 const ip = (req) => req.ip || "";
+/** When hosted, push what was just published to the live site and report how that went. */
+async function withSite(req, result) {
+  if (sitePublish.enabled()) result.site = await sitePublish.sync(req.user);
+  return result;
+}
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: config.MAX_UPLOAD_BYTES, files: 10 } });
 
 // The restore endpoint carries a whole backup, so it brings its own larger parser.
@@ -142,13 +148,14 @@ function guardType(req, res, next) {
 
 router.get("/pending", (req, res) => res.json({ pending: content.pendingFor(req.user) }));
 
-router.post("/publish-all", (req, res) => {
+router.post("/publish-all", wrap(async (req, res) => {
   const result = content.publishAll(req.user, (type) => canContent(req.user, type));
   if (result.published.length) {
     audit.log(req.user, "publish", "all", "", `Published ${result.published.length} change${result.published.length > 1 ? "s" : ""}`, ip(req));
+    await withSite(req, result);
   }
   res.json(result);
-});
+}));
 
 router.get("/content/:type", guardType, (req, res) => {
   const { type } = req.params;
@@ -186,13 +193,13 @@ router.delete("/content/:type/:id", guardType, (req, res) => {
   res.json(result);
 });
 
-router.post("/content/:type/:id/publish", guardType, (req, res) => {
+router.post("/content/:type/:id/publish", guardType, wrap(async (req, res) => {
   const { type, id } = req.params;
   const before = content.get(type, id);
   const result = content.publish(type, id, req.user);
   audit.log(req.user, "publish", type, id, `Published “${before.title}”`, ip(req));
-  res.json(result);
-});
+  res.json(await withSite(req, result));
+}));
 
 router.post("/content/:type/:id/discard", guardType, (req, res) => {
   const { type, id } = req.params;
@@ -214,13 +221,13 @@ router.get("/content/:type/:id/versions", guardType, (req, res) => {
   res.json({ versions: content.versions(req.params.type, req.params.id) });
 });
 
-router.post("/content/:type/:id/restore", guardType, (req, res) => {
+router.post("/content/:type/:id/restore", guardType, wrap(async (req, res) => {
   const { type, id } = req.params;
   const { index, publishNow } = req.body || {};
   const item = content.restoreVersion(type, id, Number(index), req.user, !!publishNow);
   audit.log(req.user, "restore", type, id, `Restored an earlier version of “${item.title}”${publishNow ? " and published it" : " to draft"}`, ip(req));
-  res.json({ item });
-});
+  res.json(publishNow ? await withSite(req, { item }) : { item });
+}));
 
 router.post("/content/:type/reorder", guardType, (req, res) => {
   const { type } = req.params;
@@ -265,11 +272,11 @@ router.post(
   })
 );
 
-router.delete("/media/:id", auth.requireCapability("media"), (req, res) => {
-  const rec = media.remove(req.params.id);
+router.delete("/media/:id", auth.requireCapability("media"), wrap(async (req, res) => {
+  const rec = await media.remove(req.params.id);
   audit.log(req.user, "delete", "media", rec.id, `Deleted image ${rec.name}`, ip(req));
   res.json({ ok: true });
-});
+}));
 
 /* ------------------------------------------------------------------ */
 /* Enquiries                                                           */
@@ -399,23 +406,26 @@ router.get("/backup", adminOnly, (req, res) => {
   res.send(JSON.stringify(backup.snapshot(), null, 2));
 });
 
-router.get("/backups", adminOnly, (req, res) => res.json({ backups: backup.list() }));
+router.get("/backups", adminOnly, wrap(async (req, res) => res.json({ backups: await backup.list() })));
 
-router.post("/backups", adminOnly, (req, res) => {
-  const name = backup.writeBackup("manual");
+router.post("/backups", adminOnly, wrap(async (req, res) => {
+  const name = await backup.writeBackup("manual");
   audit.log(req.user, "backup", "backup", name, "Created a backup on the server", ip(req));
-  res.status(201).json({ name, backups: backup.list() });
-});
+  res.status(201).json({ name, backups: await backup.list() });
+}));
 
-router.get("/backups/:name", adminOnly, (req, res) => {
-  res.download(backup.readBackup(req.params.name));
-});
+router.get("/backups/:name", adminOnly, wrap(async (req, res) => {
+  const json = await backup.readBackup(req.params.name);
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="${req.params.name}"`);
+  res.send(json);
+}));
 
-router.post("/backup/restore", adminOnly, express.json({ limit: "30mb" }), (req, res) => {
-  const result = backup.restore((req.body || {}).backup);
+router.post("/backup/restore", adminOnly, express.json({ limit: "30mb" }), wrap(async (req, res) => {
+  const result = await backup.restore((req.body || {}).backup);
   audit.log(req.user, "restore", "backup", "", `Restored content from a backup (${result.docs} records). Safety copy: ${result.safetyBackup}`, ip(req));
-  res.json(result);
-});
+  res.json(await withSite(req, result));
+}));
 
 /* ------------------------------------------------------------------ */
 /* Errors                                                              */

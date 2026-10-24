@@ -18,7 +18,7 @@ const path = require("path");
 const { execFileSync } = require("child_process");
 const config = require("../src/config");
 const db = require("../src/db");
-const content = require("../src/content");
+const { buildSiteContent } = require("../src/sitepublish");
 
 const noPush = process.argv.includes("--no-push");
 const noGit = process.argv.includes("--no-git");
@@ -35,11 +35,8 @@ if (!db.data.docs.length) {
   process.exit(1);
 }
 
-const snapshot = content.snapshot("published");
-const json = JSON.stringify(snapshot, null, 2) + "\n";
-
-// Only the uploaded images that published content actually references.
-const used = new Set(json.match(/uploads\/[A-Za-z0-9_\-. /]+\.(?:jpe?g|png|webp)/gi) || []);
+// The published content, and only the uploaded images it actually references.
+const { json, uploads: used } = buildSiteContent();
 
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, "content.json"), json);

@@ -53,6 +53,13 @@ window.addEventListener("auth:expired", () => {
   if (state.user) renderLogin("Your session has ended. Please sign in again.");
 });
 
+// Hosted admin: after a publish the server pushes the content to the live site (api.js relays it).
+window.addEventListener("site:publish", (e) => {
+  const site = e.detail;
+  if (!site.ok) toast(`Saved, but the live website couldn't be updated: ${site.error}. Try publishing again in a minute.`, "error");
+  else if (site.changed) toast("The live website is updating — changes appear on kipl.co in about a minute.", "ok");
+});
+
 /* ------------------------------------------------------------------ */
 /* Shell                                                               */
 /* ------------------------------------------------------------------ */

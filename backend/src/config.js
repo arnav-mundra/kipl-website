@@ -28,6 +28,7 @@ module.exports = {
   FRONTEND_DIR: process.env.KIPL_FRONTEND_DIR ? path.resolve(process.env.KIPL_FRONTEND_DIR) : path.join(ROOT_DIR, "frontend"),
   ADMIN_DIR: path.join(BACKEND_DIR, "admin"),
   SEED_DIR: path.join(BACKEND_DIR, "seed"),
+  SITE_CONTENT_DIR: path.join(ROOT_DIR, "site-content"),
   DATA_DIR,
   UPLOAD_DIR: path.join(DATA_DIR, "uploads"),
   BACKUP_DIR: path.join(DATA_DIR, "backups"),

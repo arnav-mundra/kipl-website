@@ -26,52 +26,90 @@ function snapshot() {
     docs: db.data.docs,
     media: db.data.media,
     enquiries: db.data.enquiries,
-    note: "Uploaded image files live in data/uploads and are not included in this JSON file — back that folder up too.",
+    note: "Uploaded image files are not included in this JSON file — they live in data/uploads (or the repository's media/ folder when hosted); back them up too.",
   };
 }
 
-function ensureDir() {
-  fs.mkdirSync(config.BACKUP_DIR, { recursive: true });
+/*
+ * Server-side backups are files in data/backups — or, on serverless hosting
+ * (db.remote), Redis keys: an index plus one key per backup. Same names and
+ * listing either way.
+ */
+const INDEX_KEY = "kipl:backups";
+const backupKey = (name) => "kipl:backup:" + name;
+
+async function remoteIndex() {
+  const json = await db.remote.command("GET", INDEX_KEY);
+  return json ? JSON.parse(json) : [];
 }
 
-function writeBackup(label) {
-  ensureDir();
+const store = {
+  async write(name, json) {
+    if (!db.remote) {
+      fs.mkdirSync(config.BACKUP_DIR, { recursive: true });
+      fs.writeFileSync(path.join(config.BACKUP_DIR, name), json);
+      return;
+    }
+    await db.remote.command("SET", backupKey(name), json);
+    const index = await remoteIndex();
+    index.push({ name, bytes: Buffer.byteLength(json), at: new Date().toISOString() });
+    await db.remote.command("SET", INDEX_KEY, JSON.stringify(index));
+  },
+  async remove(name) {
+    if (!db.remote) {
+      try { fs.unlinkSync(path.join(config.BACKUP_DIR, name)); } catch (_) { /* ignore */ }
+      return;
+    }
+    await db.remote.command("DEL", backupKey(name));
+    const index = (await remoteIndex()).filter((b) => b.name !== name);
+    await db.remote.command("SET", INDEX_KEY, JSON.stringify(index));
+  },
+  async list() {
+    if (db.remote) return remoteIndex();
+    fs.mkdirSync(config.BACKUP_DIR, { recursive: true });
+    return fs
+      .readdirSync(config.BACKUP_DIR)
+      .filter((f) => /^kipl-backup-.*\.json$/.test(f))
+      .map((name) => {
+        const st = fs.statSync(path.join(config.BACKUP_DIR, name));
+        return { name, bytes: st.size, at: st.mtime.toISOString() };
+      });
+  },
+  async read(name) {
+    if (db.remote) return db.remote.command("GET", backupKey(name));
+    const file = path.join(config.BACKUP_DIR, name);
+    return fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
+  },
+};
+
+async function writeBackup(label) {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const name = `kipl-backup-${label}-${stamp}.json`;
-  fs.writeFileSync(path.join(config.BACKUP_DIR, name), JSON.stringify(snapshot()));
-  prune();
+  await store.write(name, JSON.stringify(snapshot()));
+  await prune();
   return name;
 }
 
-function prune() {
-  const autos = list().filter((b) => b.name.includes("-auto-"));
-  autos.slice(KEEP_AUTO).forEach((b) => {
-    try { fs.unlinkSync(path.join(config.BACKUP_DIR, b.name)); } catch (_) { /* ignore */ }
-  });
+async function prune() {
+  const autos = (await list()).filter((b) => b.name.includes("-auto-"));
+  for (const b of autos.slice(KEEP_AUTO)) await store.remove(b.name);
 }
 
-function list() {
-  ensureDir();
-  return fs
-    .readdirSync(config.BACKUP_DIR)
-    .filter((f) => /^kipl-backup-.*\.json$/.test(f))
-    .map((name) => {
-      const st = fs.statSync(path.join(config.BACKUP_DIR, name));
-      return { name, bytes: st.size, at: st.mtime.toISOString() };
-    })
-    .sort((a, b) => (a.at < b.at ? 1 : -1));
+async function list() {
+  return (await store.list()).sort((a, b) => (a.at < b.at ? 1 : -1));
 }
 
-function readBackup(name) {
+/** The backup's JSON text. */
+async function readBackup(name) {
   if (!/^kipl-backup-[A-Za-z0-9._-]+\.json$/.test(name)) throw new BackupError("Invalid backup name", 400);
-  const file = path.join(config.BACKUP_DIR, name);
-  if (!fs.existsSync(file)) throw new BackupError("Backup not found", 404);
-  return file;
+  const json = await store.read(name);
+  if (json == null) throw new BackupError("Backup not found", 404);
+  return json;
 }
 
 /** Take an automatic backup if the newest one is older than a day. */
-function autoBackup() {
-  const newest = list().find((b) => b.name.includes("-auto-"));
+async function autoBackup() {
+  const newest = (await list()).find((b) => b.name.includes("-auto-"));
   if (newest && Date.now() - new Date(newest.at).getTime() < 24 * 3600 * 1000) return null;
   return writeBackup("auto");
 }
@@ -80,7 +118,7 @@ function autoBackup() {
  * Replace the website content with a backup. Everything is validated before
  * anything changes, and a safety backup of the current state is written first.
  */
-function restore(input) {
+async function restore(input) {
   if (!input || input.format !== "kipl-backup" || !Array.isArray(input.docs)) {
     throw new BackupError("That doesn't look like a KIPL backup file.");
   }
@@ -99,7 +137,7 @@ function restore(input) {
   }
   if (problems.length) throw new BackupError("Backup is invalid: " + problems.slice(0, 5).join("; "));
 
-  const safety = writeBackup("pre-restore");
+  const safety = await writeBackup("pre-restore");
   db.data.docs = input.docs;
   db.data.media = Array.isArray(input.media) ? input.media : [];
   db.data.enquiries = Array.isArray(input.enquiries) ? input.enquiries : [];

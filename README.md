@@ -128,9 +128,11 @@ audit log, enquiries), `uploads/` (images) and `backups/` (an automatic daily
 JSON backup, last 14 kept). Back up `db.json` **and** `uploads/`. Set
 `KIPL_DATA_DIR` to keep data outside the code folder.
 
-The admin needs a host that can run Node **and** keep files on disk (a VPS,
-Render/Railway/Fly with a persistent disk, …) — Vercel's serverless
-functions can't persist `data/`. Two ways to run the public site:
+On a normal Node host the admin keeps `data/` on disk (a VPS,
+Render/Railway/Fly with a persistent disk, …). On Vercel it runs serverless
+instead, with its data in Redis and images in this repo (`media/`) — see "Hosted admin
+on Vercel" below; that is how kipl.co runs. Two ways to run the public site
+from a Node host:
 
 1. **Node serves everything** (simplest): point the domain at the backend; it
    serves the site and `/admin/` together, and the contact form posts
@@ -139,6 +141,52 @@ functions can't persist `data/`. Two ways to run the public site:
    published content into `backend/dist/` (pages + assets + uploads); deploy
    that folder. Re-export after each publish. On a static host the contact
    form falls back to opening the visitor's email app.
+
+#### Hosted admin on Vercel (kipl.co/admin)
+
+The live setup. The public site stays static on Vercel; the admin's API runs
+as one Vercel Function (`api/server.js`) only while someone uses it.
+
+- **Admin panel** — `backend/admin/` is copied to `/admin/` by the build
+  (`export-static.js --with-admin`); `vercel.json` rewrites `/api/admin/*`,
+  `/preview/*` and draft `/uploads/*` to the function.
+- **Data** — the whole database is one Redis key (Upstash, via Vercel's
+  Marketplace). Each request loads it (only a revision id when unchanged) and
+  saves before replying; writes are compare-and-set, so a lost race returns
+  409 instead of overwriting (`src/db.js`, `src/serverless.js`). Login
+  lockout counters and server backups live there too.
+- **Images** — each upload (image + thumbnail) is committed to this repo under
+  `media/uploads/` through the GitHub API (`src/uploads.js`, `src/github.js`).
+  `vercel.json`'s `ignoreCommand` skips the site rebuild for commits that only
+  touch `media/`. Publishing copies the images in use into
+  `site-content/uploads/` (same git blobs, nothing re-uploaded). Uploads are
+  public in the repo even before they're published. The admin scales photos
+  over 3.5 MB down in the browser, since a Vercel request is limited to 4.5 MB.
+- **Publishing** — after every publish the function commits `site-content/`
+  (content.json + the uploaded images published content uses) to GitHub
+  through its API (`src/sitepublish.js`); Vercel then rebuilds the site, live
+  in about a minute. Only changed files are committed.
+- **First run** — with an empty database it installs the content from
+  `site-content/content.json` (the live site) and creates the accounts whose
+  `KIPL_*_PASSWORD` variable is set.
+- **Daily cron** (`/api/cron`, 06:00 IST) — automatic backup, plus any due
+  scheduled publishing. Scheduled items also go out whenever anyone opens the
+  admin.
+
+Environment variables (Vercel → Settings → Environment Variables):
+
+| Variable | Value |
+|---|---|
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | added by the Upstash Redis integration |
+| `KIPL_GITHUB_TOKEN` | fine-grained GitHub token, this repo only, **Contents: Read and write** |
+| `KIPL_GITHUB_REPO` | `arnav-mundra/kipl-website` |
+| `KIPL_GITHUB_AUTHOR_EMAIL` | optional; a GitHub-linked email for the commits |
+| `KIPL_OWNER_PASSWORD` | starting Owner password (first run only — change it after signing in) |
+| `CRON_SECRET` | any long random string (Vercel sends it to the cron job) |
+| `TRUST_PROXY` | `true` |
+
+Once the hosted admin is in use, edit content there, not in a local copy, and
+`git pull` before changing code: the admin commits `site-content/` to `main`.
 
 #### Free workflow: admin on your PC, public site on Vercel
 
@@ -182,13 +230,14 @@ need a paid instance — `starter` is configured.)
 
 ## Deployment (Vercel)
 
-The site is a plain static build with no build command, but the actual
-files live in `frontend/`, not the repo root — so `vercel.json` sets
-`outputDirectory: "frontend"` to tell Vercel where to serve from. Without
-this, Vercel serves the repo root by default, finds no `index.html` there,
-and every route 404s. `.vercelignore` excludes `docs/` (~50MB of
-full-resolution source images that are reference material, never meant to
-be deployed) to keep uploads fast.
+`vercel.json` builds the static site into `dist-site/` (`export-static.js
+--snapshot ../site-content --with-admin`: the pages rendered from the
+published content, plus `frontend/` assets and the admin panel's files) and
+serves that, with the admin API as the `api/server.js` function — see "Hosted
+admin on Vercel" above. If a build fails, Vercel keeps serving the last good
+deployment. `.vercelignore` excludes `docs/` (~50MB of full-resolution source
+images that are reference material, never meant to be deployed) to keep
+uploads fast.
 
 ## Local preview
 

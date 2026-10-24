@@ -73,7 +73,20 @@ function createUser({ username, name, role, password, initialPassword = false })
 
 /* ---------------- login throttling ---------------- */
 
-const attempts = new Map(); // key -> { count, first }
+// key -> { count, first }. Kept in memory on a normal server; on serverless
+// hosting (db.remote) each request may land on a fresh instance, so the
+// counters live in the database instead.
+const memoryAttempts = new Map();
+const attempts = {
+  table() { return db.remote ? (db.data.throttle = db.data.throttle || {}) : null; },
+  get(k) { const t = this.table(); return t ? t[k] : memoryAttempts.get(k); },
+  set(k, v) { const t = this.table(); if (!t) return memoryAttempts.set(k, v); t[k] = v; db.save(); },
+  delete(k) {
+    const t = this.table();
+    if (!t) return memoryAttempts.delete(k);
+    if (k in t) { delete t[k]; db.save(); }
+  },
+};
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_PER_USER = 5;
 const MAX_PER_IP = 25;
@@ -92,7 +105,7 @@ function recent(key) {
 function bump(key) {
   const rec = attempts.get(key);
   if (!rec || Date.now() - rec.first > WINDOW_MS) attempts.set(key, { count: 1, first: Date.now() });
-  else rec.count++;
+  else { rec.count++; attempts.set(key, rec); }
 }
 
 function lockedOut(ip, username) {

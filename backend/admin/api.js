@@ -27,6 +27,7 @@ async function request(method, url, body, isForm) {
     }
     throw new ApiError((data && data.error) || `Request failed (${res.status})`, res.status, data && data.details);
   }
+  if (data && data.site) window.dispatchEvent(new CustomEvent("site:publish", { detail: data.site }));
   return data;
 }
 

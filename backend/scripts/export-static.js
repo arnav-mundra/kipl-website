@@ -6,6 +6,7 @@
  *   npm run export:static                      # from the local CMS database -> backend/dist/
  *   npm run export:static -- ../out            # ...to a folder of your choice
  *   node scripts/export-static.js --snapshot ../site-content ../dist-site
+ *   …add --with-admin to include the admin panel's files under admin/
  *
  * With --snapshot DIR it renders from DIR/content.json (+ DIR/uploads) — the
  * committed copy of the published content that `npm run publish:site` writes —
@@ -72,7 +73,11 @@ if (snapshot) {
   }
 }
 
-// 3. Uploaded images (thumbnails are admin-only).
+// 3. --with-admin: the admin panel's static files, for hosting it at /admin/
+//    next to the site (Vercel; its API runs as a function — see api/server.js).
+if (args.includes("--with-admin")) fs.cpSync(config.ADMIN_DIR, path.join(out, "admin"), { recursive: true });
+
+// 4. Uploaded images (thumbnails are admin-only).
 if (fs.existsSync(uploadsDir)) {
   fs.cpSync(uploadsDir, path.join(out, "uploads"), {
     recursive: true,

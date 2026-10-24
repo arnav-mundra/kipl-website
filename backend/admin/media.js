@@ -3,6 +3,28 @@ import { h, clear, modal, toast, spinner, confirmDialog, fmtBytes, fmtDate, debo
 
 const url = (p) => "/" + p;
 
+// The hosted admin accepts at most ~4.5 MB per request, so bigger photos are
+// scaled down in the browser first (the server resizes to 2400px wide anyway).
+const SHRINK_ABOVE = 3.5 * 1024 * 1024;
+
+async function shrink(file, maxWidth) {
+  if (file.size <= SHRINK_ABOVE || typeof createImageBitmap !== "function") return file;
+  try {
+    const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+    const scale = Math.min(1, maxWidth / bmp.width);
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bmp.width * scale);
+    canvas.height = Math.round(bmp.height * scale);
+    canvas.getContext("2d").drawImage(bmp, 0, 0, canvas.width, canvas.height);
+    const type = file.type === "image/jpeg" ? "image/jpeg" : "image/webp"; // webp keeps transparency
+    const blob = await new Promise((r) => canvas.toBlob(r, type, 0.9));
+    if (!blob) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, "") + (type === "image/jpeg" ? ".jpg" : ".webp"), { type });
+  } catch (_) {
+    return file; // let the server report it
+  }
+}
+
 /**
  * Image browser shared by the Media page ("manage" mode) and the image picker
  * dialog ("pick" mode). Returns { el, reload }.
@@ -67,20 +89,26 @@ export function mediaBrowser({ mode = "manage", purpose = "photo", onPick, canUp
   }
 
   async function upload(files) {
+    files = [...files];
     if (!files.length) return;
-    const fd = new FormData();
-    fd.append("purpose", purpose);
-    [...files].forEach((f) => fd.append("files", f));
-    status.textContent = "Uploading…";
-    try {
-      const res = await api.upload("/media", fd);
-      if (res.items.length) toast(`Uploaded ${res.items.length} image${res.items.length > 1 ? "s" : ""}.`, "ok");
-      (res.errors || []).forEach((er) => toast(`${er.name}: ${er.error}`, "error"));
-      if (mode === "pick" && res.items.length === 1) { onPick(res.items[0].path); return; }
-    } catch (e) {
-      toast(e.message, "error");
-      if (e.details && e.details.errors) e.details.errors.forEach((er) => toast(`${er.name}: ${er.error}`, "error"));
+    const items = [];
+    // One file per request keeps each request under the hosting size limit.
+    for (const [i, f] of files.entries()) {
+      status.textContent = files.length > 1 ? `Uploading ${i + 1} of ${files.length}…` : "Uploading…";
+      const fd = new FormData();
+      fd.append("purpose", purpose);
+      fd.append("files", await shrink(f, purpose === "logo" ? 800 : 2400));
+      try {
+        const res = await api.upload("/media", fd);
+        items.push(...res.items);
+        (res.errors || []).forEach((er) => toast(`${er.name}: ${er.error}`, "error"));
+      } catch (e) {
+        if (e.details && e.details.errors) e.details.errors.forEach((er) => toast(`${er.name}: ${er.error}`, "error"));
+        else toast(`${f.name}: ${e.status === 413 ? "That file is too large." : e.message}`, "error");
+      }
     }
+    if (items.length) toast(`Uploaded ${items.length} image${items.length > 1 ? "s" : ""}.`, "ok");
+    if (mode === "pick" && items.length === 1) { onPick(items[0].path); return; }
     load();
   }
 

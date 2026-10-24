@@ -10,6 +10,11 @@ const content = require("./content");
 const enquiries = require("./enquiries");
 const { renderPage, isPage } = require("./render");
 const adminRouter = require("./routes/admin");
+const db = require("./db");
+const backup = require("./backup");
+const media = require("./media");
+const uploads = require("./uploads");
+const serverless = require("./serverless");
 
 /** Rendered-page cache for the public site; cleared whenever anything is published. */
 const pageCache = new Map(); // file -> { html, etag }
@@ -39,6 +44,24 @@ function createApp() {
   });
 
   app.get("/api/health", (_req, res) => res.json({ ok: true }));
+
+  // Serverless hosting: load/save the database around each request (see serverless.js).
+  if (db.remote) app.use(serverless.middleware());
+
+  /* ---- daily job when hosted (Vercel Cron): backup + any due scheduled publishing ---- */
+  app.get("/api/cron", async (req, res) => {
+    if (!process.env.CRON_SECRET || req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    try {
+      const published = await serverless.runScheduled();
+      const backupName = await backup.autoBackup();
+      res.json({ ok: true, published: published.length, backup: backupName });
+    } catch (err) {
+      console.error("[cron]", err);
+      res.status(500).json({ error: "Cron run failed" });
+    }
+  });
 
   /* ---- public contact form ---- */
   app.post("/api/enquiries", express.json({ limit: "50kb" }), (req, res) => {
@@ -104,7 +127,22 @@ function createApp() {
   });
 
   /* ---- uploaded images ---- */
-  app.use("/uploads", express.static(config.UPLOAD_DIR, { maxAge: "7d", dotfiles: "ignore", index: false, fallthrough: true }));
+  // Hosted, the files live in the GitHub repo (uploads.js); the live site has
+  // its published copies as static files, so this only serves drafts' images
+  // and thumbnails.
+  if (uploads.remote()) {
+    app.get("/uploads/*", async (req, res, next) => {
+      try {
+        const p = "uploads/" + req.params[0];
+        const bytes = media.findByPath(p) ? await media.read(p) : null;
+        if (!bytes) return next();
+        res.setHeader("Cache-Control", "public, max-age=604800, immutable");
+        res.type(path.extname(p)).send(bytes);
+      } catch (err) { next(err); }
+    });
+  } else {
+    app.use("/uploads", express.static(config.UPLOAD_DIR, { maxAge: "7d", dotfiles: "ignore", index: false, fallthrough: true }));
+  }
 
   /* ---- everything else in frontend/ (css, js, images, robots, sitemap…) ---- */
   // Raw page sources and work-in-progress concepts are never served as files

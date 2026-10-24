@@ -6,6 +6,7 @@ const sharp = require("sharp");
 const db = require("./db");
 const config = require("./config");
 const content = require("./content");
+const uploads = require("./uploads");
 
 const ALLOWED_FORMATS = new Set(["jpeg", "png", "webp"]);
 const MAX_PIXELS = 60 * 1000 * 1000;
@@ -60,14 +61,9 @@ async function saveUpload(buffer, originalName, purpose, user) {
 
   const d = new Date();
   const rel = `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${slug(originalName)}-${id}.${ext}`;
-  const abs = path.join(config.UPLOAD_DIR, rel);
-  fs.mkdirSync(path.dirname(abs), { recursive: true });
-  fs.writeFileSync(abs, data);
-
   const thumbRel = `_thumbs/${id}.webp`;
-  const thumbAbs = path.join(config.UPLOAD_DIR, thumbRel);
-  fs.mkdirSync(path.dirname(thumbAbs), { recursive: true });
-  await sharp(data).resize({ width: 480, height: 480, fit: "inside", withoutEnlargement: true }).webp({ quality: 72 }).toFile(thumbAbs);
+  const thumb = await sharp(data).resize({ width: 480, height: 480, fit: "inside", withoutEnlargement: true }).webp({ quality: 72 }).toBuffer();
+  await uploads.put([{ rel, data }, { rel: thumbRel, data: thumb }], `Upload image ${rel}${user ? ` (${user.username})` : ""}`);
 
   const record = {
     id,
@@ -126,17 +122,24 @@ function list({ q, source } = {}) {
   return rows;
 }
 
-function remove(id) {
+/** The media record owning an "uploads/…" path (the image or its thumbnail). */
+function findByPath(p) {
+  return db.data.media.find((m) => m.path === p || m.thumb === p) || null;
+}
+
+/** File contents for an "uploads/…" path, or null. */
+async function read(p) {
+  return uploads.get(p.replace(/^uploads\//, ""));
+}
+
+async function remove(id) {
   const rec = db.data.media.find((m) => m.id === id);
   if (!rec) throw new MediaError("Not found (built-in site images can't be deleted).", 404);
   const usage = content.findImageUsage(rec.path);
   if (usage.length) {
     throw new MediaError("This image is still in use: " + usage.map((u) => u.title).slice(0, 5).join(", "), 409, usage);
   }
-  for (const rel of [rec.path, rec.thumb]) {
-    const abs = path.join(config.UPLOAD_DIR, rel.replace(/^uploads\//, ""));
-    try { fs.unlinkSync(abs); } catch (_) { /* already gone */ }
-  }
+  await uploads.remove([rec.path, rec.thumb].map((p) => p.replace(/^uploads\//, "")), `Delete image ${rec.path}`);
   db.data.media.splice(db.data.media.indexOf(rec), 1);
   db.save();
   return rec;
@@ -146,4 +149,4 @@ function diskUsage() {
   return db.data.media.reduce((sum, m) => sum + (m.bytes || 0), 0);
 }
 
-module.exports = { MediaError, saveUpload, list, remove, diskUsage };
+module.exports = { MediaError, saveUpload, list, remove, read, findByPath, diskUsage };

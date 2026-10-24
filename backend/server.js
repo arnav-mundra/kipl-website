@@ -36,9 +36,7 @@ function start() {
   }, 30000).unref();
 
   // Automatic daily backup (kept for 14 days).
-  const tick = () => {
-    try { backup.autoBackup(); } catch (err) { console.error("[backup]", err); }
-  };
+  const tick = () => backup.autoBackup().catch((err) => console.error("[backup]", err));
   tick();
   setInterval(tick, 3600 * 1000).unref();
 

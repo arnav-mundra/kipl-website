@@ -400,10 +400,13 @@ function seedFile() {
   return path.join(config.SEED_DIR, "content.json");
 }
 
-/** Install the bundled starting content (a copy of what the static site shows). */
-function seedIfEmpty() {
+/**
+ * Install the bundled starting content (a copy of what the static site shows),
+ * or another file in the same shape — e.g. site-content/content.json, the
+ * published snapshot, which is how a hosted admin starts from the live site.
+ */
+function seedIfEmpty(file = seedFile()) {
   if (db.data.docs.length) return false;
-  const file = seedFile();
   if (!fs.existsSync(file)) return false;
   const seed = JSON.parse(fs.readFileSync(file, "utf8"));
   const stamp = now();
