@@ -1,0 +1,969 @@
+{
+  "figures": {
+    "established": 2009,
+    "yearsActive": null,
+    "fabricationCapacity": 200,
+    "totalProjects": 22,
+    "series": [
+      {
+        "label": "FY21-22",
+        "turnover": 36.27,
+        "workforce": 900
+      },
+      {
+        "label": "FY22-23",
+        "turnover": 51.06,
+        "workforce": 1100
+      },
+      {
+        "label": "FY23-24",
+        "turnover": 59.93,
+        "workforce": 1250
+      },
+      {
+        "label": "FY24-25",
+        "turnover": 60.37,
+        "workforce": 1360
+      },
+      {
+        "label": "FY25-26",
+        "turnover": 100.82,
+        "workforce": 1470
+      }
+    ]
+  },
+  "people": {
+    "md": {
+      "name": "Somnath Naik",
+      "title": "Managing Director",
+      "teaserTitle": "Founder & Managing Director",
+      "photo": "assets/images/team/somnath-naik.jpg",
+      "paragraphs": [
+        "Workmen are an integral part of this company. They work day in and day out to make sure that their company remains in good shape and they themselves sustain and grow along with the company. Hence, it becomes my duty to appreciate these workmen and encourage them. Nothing is more important than a human life, and I, as the Managing Director of the company, ensure it by implementation of best HSE practices. At the same time, we ensure our workmen give 100% of their efforts at the workplace.",
+        "We are committed to our responsibility towards society through Corporate Social Responsibility (CSR). \"Healthy Workforce builds Healthy Work Environment in Company\" — we implement the best practice in the areas of health & safety for all our employees.",
+        "The employees, being the most valuable assets of the Company, are continuously trained to keep pace with the fast-changing technological advancements. We would like to establish ourselves in the market as a Quality Service Organisation, for which each one of you — who is associated or gets associated with us — plays a vital role."
+      ],
+      "signoff": "— Somnath Naik, Managing Director",
+      "teaserQuote": "Nothing is more important than a human life, and I, as the Managing Director of the company, ensure it by implementation of best HSE practices."
+    },
+    "vision": "Be the most admired Engineering Services company in Odisha by achieving extraordinary results for our customers and building satisfying careers for our people.",
+    "mission": "Achieve service leadership by building a customer-centric environment and generate a sense of belonging and respect in the mind of the customer by providing an unbelievable service experience.",
+    "coreValues": [
+      {
+        "name": "Ethics",
+        "tagline": "Integrity first",
+        "lead": "We believe",
+        "text": "ethics is the backbone of an establishment. We are uncompromising in our integrity, honesty, and fairness.",
+        "image": "assets/images/core-values/ethics.jpg"
+      },
+      {
+        "name": "Health & Safety",
+        "tagline": "People before output",
+        "lead": "Health is wealth",
+        "text": "and life is invaluable. We are relentless in keeping people safe from harm and providing a healthy work environment.",
+        "image": "assets/images/core-values/health-safety.jpg"
+      },
+      {
+        "name": "Quality",
+        "tagline": "Right, the first time",
+        "lead": "We are passionate",
+        "text": "about excellence and doing our work right the first time. Our reputation depends on the value we deliver, in the eyes of every customer and community.",
+        "image": "assets/images/core-values/quality.jpg"
+      },
+      {
+        "name": "Sustainability",
+        "tagline": "Built to last",
+        "lead": "We improve",
+        "text": "the quality of life in the communities where we work by respecting local cultures, engaging local people, and protecting the environment.",
+        "image": "assets/images/core-values/sustainability.jpg"
+      }
+    ]
+  },
+  "site": {
+    "contact": {
+      "addressLines": [
+        "Plot No. 100, Boxi Chowk,",
+        "Beherapat, Jharsuguda,",
+        "Odisha – 768202"
+      ],
+      "phone": "+91 91784 70789",
+      "email": "info@kipl.co",
+      "hoursLines": [
+        "Mon–Sat: 9:30 AM – 6:00 PM",
+        "Closed Sundays & 2nd Saturday"
+      ],
+      "mapQuery": "Kainsara Infraprojects Private Limited, Plot No. 100, Boxi Chowk, Jharsuguda, Odisha"
+    },
+    "footer": {
+      "tagline": "Kainsara Infraprojects Pvt Ltd — your partner in people, processes & performance since 2009.",
+      "cin": "U63000OR2009PTC011167",
+      "msme": "UDYAM-OD-14-0000152"
+    },
+    "hero": {
+      "eyebrow": "Est. 2009 · Jharsuguda, Odisha",
+      "headline": "Engineering reliability into every shift, every site, every ton moved.",
+      "lead": "KIPL keeps aluminum, steel, coal, and power operations across Odisha running — from mechanical fabrication and plant maintenance to mine-to-plant logistics that can't afford downtime.",
+      "images": [
+        "assets/images/hero/hero-01.jpg",
+        "assets/images/hero/hero-02.jpg",
+        "assets/images/hero/hero-03.jpg",
+        "assets/images/hero/hero-04.jpg",
+        "assets/images/hero/hero-05.jpg",
+        "assets/images/hero/hero-06.jpg"
+      ]
+    },
+    "projectsPage": {
+      "maxPerDomain": 5
+    }
+  },
+  "projects": [
+    {
+      "id": "p01",
+      "client": "Vedanta",
+      "title": "Pot Room Operation",
+      "description": "Operational assistance & redressing.",
+      "domain": "operation-maintenance",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 34.4,
+      "valueLabel": "",
+      "yearStart": 2023,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": true,
+      "featuredOrder": 2,
+      "featuredImage": "assets/images/projects/vedanta-pot-room.jpg",
+      "featuredDescription": "Operational assistance and redressing for pot room operations at Vedanta's Jharsuguda aluminium smelter."
+    },
+    {
+      "id": "p02",
+      "client": "Vedanta",
+      "title": "Pot Room Operation (Pot Manager)",
+      "description": "Pot management & operational oversight.",
+      "domain": "operation-maintenance",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 22.02,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2028,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p03",
+      "client": "Vedanta",
+      "title": "Pot Room Operation, Plant 2",
+      "description": "Skimming, clamp drop, measurement crew & LMV.",
+      "domain": "operation-maintenance",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 15.82,
+      "valueLabel": "",
+      "yearStart": 2024,
+      "yearEnd": 2027,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p04",
+      "client": "Vedanta",
+      "title": "Pot Room Operation, Plant 1",
+      "description": "Skimming, clamp drop, measurement crew & LMV.",
+      "domain": "operation-maintenance",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 10.17,
+      "valueLabel": "",
+      "yearStart": 2024,
+      "yearEnd": 2027,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p05",
+      "client": "Balco",
+      "title": "Pot Room Start-up",
+      "description": "Start-up support for new pot lines.",
+      "domain": "operation-maintenance",
+      "location": "Korba, Chhattisgarh",
+      "status": "active",
+      "valueCr": 8.84,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p06",
+      "client": "Vedanta",
+      "title": "General Fabrication",
+      "description": "Structural fabrication & erection support.",
+      "domain": "project-execution",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 13.5,
+      "valueLabel": "",
+      "yearStart": 2023,
+      "yearEnd": 2027,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p07",
+      "client": "Vedanta",
+      "title": "Rest-shed at Potline",
+      "description": "Fabrication & erection.",
+      "domain": "project-execution",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 0.86,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p08",
+      "client": "Vedanta",
+      "title": "Bag Filter Housing Strainer Plate",
+      "description": "Fabrication & erection.",
+      "domain": "project-execution",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 0.32,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p09",
+      "client": "Vedanta",
+      "title": "Furnace SS Base Frame",
+      "description": "Fabrication & erection.",
+      "domain": "project-execution",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 0.13,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p10",
+      "client": "Tata Steel",
+      "title": "Crane Hire",
+      "description": "F15 & F23 cranes.",
+      "domain": "material-handling",
+      "location": "Meramandali, Odisha",
+      "status": "active",
+      "valueCr": 12.61,
+      "valueLabel": "",
+      "yearStart": 2023,
+      "yearEnd": 2027,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p11",
+      "client": "JSW",
+      "title": "MCL Kulda Coal Transport",
+      "description": "To JSW Energy (Utkal)'s 2×350 MW thermal power plant.",
+      "domain": "mining-logistics",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 15.78,
+      "valueLabel": "",
+      "yearStart": 2024,
+      "yearEnd": 2025,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p12",
+      "client": "Vedanta",
+      "title": "Jamkhani Coal Transport",
+      "description": "Lifting & transportation of coal from Jamkhani mines.",
+      "domain": "mining-logistics",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": 13.2,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p13",
+      "client": "",
+      "title": "Coal & Ash Transportation",
+      "description": "Under various transporters.",
+      "domain": "mining-logistics",
+      "location": "Jharsuguda, Odisha",
+      "status": "active",
+      "valueCr": null,
+      "valueLabel": "Variable",
+      "yearStart": 2022,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p14",
+      "client": "Tata Steel",
+      "title": "IVC Machine Hire",
+      "description": "Mechanised housekeeping via industrial vacuum cleaning machines.",
+      "domain": "mechanised-cleaning",
+      "location": "Meramandali, Odisha",
+      "status": "active",
+      "valueCr": 48.22,
+      "valueLabel": "",
+      "yearStart": 2024,
+      "yearEnd": 2027,
+      "visible": true,
+      "priority": 0,
+      "featured": true,
+      "featuredOrder": 1,
+      "featuredImage": "assets/images/projects/tata-steel-ivc.jpg",
+      "featuredDescription": "Hiring of industrial vacuum cleaning (IVC) machines for mechanised housekeeping at Tata Steel's Meramandali facility — KIPL's largest active engagement by value."
+    },
+    {
+      "id": "p15",
+      "client": "Tata Steel",
+      "title": "Waterjet Hire",
+      "description": "High-pressure waterjet cleaning services.",
+      "domain": "mechanised-cleaning",
+      "location": "Meramandali, Odisha",
+      "status": "active",
+      "valueCr": 2.6,
+      "valueLabel": "",
+      "yearStart": 2023,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p16",
+      "client": "NTPC",
+      "title": "Ash Dyke Road Cleaning",
+      "description": "Manpower deployment, ash dyke road & RR Colony.",
+      "domain": "mechanised-cleaning",
+      "location": "Darlipali, Odisha",
+      "status": "active",
+      "valueCr": 0.58,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2027,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p17",
+      "client": "PAPL",
+      "title": "Vacuum Truck Hire",
+      "description": "3 MTPA facility.",
+      "domain": "mechanised-cleaning",
+      "location": "Lanjigarh, Odisha",
+      "status": "active",
+      "valueCr": 0.56,
+      "valueLabel": "",
+      "yearStart": 2026,
+      "yearEnd": null,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p18",
+      "client": "Hindalco",
+      "title": "Cast House Sweeping",
+      "description": "Ride-on sweeping machine & operators.",
+      "domain": "mechanised-cleaning",
+      "location": "Lapanga, Odisha",
+      "status": "active",
+      "valueCr": 0.24,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2026,
+      "visible": true,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p19",
+      "client": "Balco",
+      "title": "Pot Room Operation Support",
+      "description": "",
+      "domain": "operation-maintenance",
+      "location": "Korba, Chhattisgarh",
+      "status": "active",
+      "valueCr": 4.48,
+      "valueLabel": "",
+      "yearStart": 2025,
+      "yearEnd": 2028,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p20",
+      "client": "Balco",
+      "title": "Green Anode Plant Operation",
+      "description": "",
+      "domain": "operation-maintenance",
+      "location": "Korba, Chhattisgarh",
+      "status": "active",
+      "valueCr": 2.34,
+      "valueLabel": "",
+      "yearStart": 2023,
+      "yearEnd": 2027,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p21",
+      "client": "Vedanta",
+      "title": "Carbon Area Operations",
+      "description": "",
+      "domain": "operation-maintenance",
+      "location": "Jharsuguda, Odisha",
+      "status": "completed",
+      "valueCr": 42.8,
+      "valueLabel": "",
+      "yearStart": 2019,
+      "yearEnd": 2022,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p22",
+      "client": "Balco",
+      "title": "Carbon Area Operation",
+      "description": "",
+      "domain": "operation-maintenance",
+      "location": "Korba, Chhattisgarh",
+      "status": "completed",
+      "valueCr": 4.24,
+      "valueLabel": "",
+      "yearStart": 2021,
+      "yearEnd": 2024,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p23",
+      "client": "Balco",
+      "title": "Potline 1 & 2 Operation",
+      "description": "",
+      "domain": "operation-maintenance",
+      "location": "Korba, Chhattisgarh",
+      "status": "completed",
+      "valueCr": 4.24,
+      "valueLabel": "",
+      "yearStart": 2021,
+      "yearEnd": 2024,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p24",
+      "client": "Tata Steel",
+      "title": "Mechanised Housekeeping",
+      "description": "",
+      "domain": "mechanised-cleaning",
+      "location": "Angul, Odisha",
+      "status": "completed",
+      "valueCr": 30.2,
+      "valueLabel": "",
+      "yearStart": 2021,
+      "yearEnd": 2024,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p25",
+      "client": "Dilip Buildcon",
+      "title": "Admin Building Construction",
+      "description": "",
+      "domain": "project-execution",
+      "location": "Sundargarh, Odisha",
+      "status": "completed",
+      "valueCr": 1.12,
+      "valueLabel": "",
+      "yearStart": 2024,
+      "yearEnd": 2025,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p26",
+      "client": "Simar Infra",
+      "title": "FGD Fabrication & Erection",
+      "description": "",
+      "domain": "project-execution",
+      "location": "Belpahar, Odisha",
+      "status": "completed",
+      "valueCr": 0.9,
+      "valueLabel": "",
+      "yearStart": 2022,
+      "yearEnd": 2023,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    },
+    {
+      "id": "p27",
+      "client": "McNally Bharat",
+      "title": "Hopper Fabrication (CHP)",
+      "description": "",
+      "domain": "project-execution",
+      "location": "Sundargarh, Odisha",
+      "status": "completed",
+      "valueCr": 0.85,
+      "valueLabel": "",
+      "yearStart": 2019,
+      "yearEnd": 2021,
+      "visible": false,
+      "priority": 0,
+      "featured": false,
+      "featuredOrder": 0,
+      "featuredImage": "",
+      "featuredDescription": ""
+    }
+  ],
+  "domains": [
+    {
+      "id": "operation-maintenance",
+      "name": "Operation & Maintenance",
+      "order": 10,
+      "lead": "The day-to-day activities that keep every system and piece of equipment performing reliably — integrating managerial, financial, and technical dimensions so your facility's ecosystem works in harmony.",
+      "bullets": [
+        "Operational assistance & start-up activities",
+        "Productivity improvement programs",
+        "Asset optimization",
+        "Process control"
+      ],
+      "tileDescription": "The day-to-day activities that keep every system and piece of equipment performing reliably.",
+      "tagline": "Keeping critical operations running.",
+      "servicesImage": "assets/images/hero/hero-02.jpg",
+      "tileImage": "assets/images/domains/operation-maintenance.jpg",
+      "bannerImage": "assets/images/projects/operation-maintenance.jpg",
+      "showOnProjects": true
+    },
+    {
+      "id": "project-execution",
+      "name": "Project Execution",
+      "order": 20,
+      "lead": "End-to-end delivery against engineering design standards and applicable codes — backed by our own fabrication workshop in Jharsuguda, running at ~200 MT/month capacity.",
+      "bullets": [
+        "Heavy structural components",
+        "Conveyor and piping systems",
+        "Pollution-control equipment",
+        "In-house fabrication workshop, ~200 MT/month capacity"
+      ],
+      "tileDescription": "End-to-end delivery against engineering design standards and applicable codes.",
+      "tagline": "From concept to completion.",
+      "servicesImage": "assets/images/hero/hero-01.jpg",
+      "tileImage": "assets/images/domains/project-execution.jpg",
+      "bannerImage": "assets/images/projects/project-execution.jpg",
+      "showOnProjects": true
+    },
+    {
+      "id": "material-handling",
+      "name": "Material Handling",
+      "order": 30,
+      "lead": "Thoughtfully designed facility layouts and cost-effective flow management across raw material, work-in-progress, finished goods, and scrap disposal.",
+      "bullets": [
+        "Raw material & WIP flow management",
+        "Finished goods handling",
+        "Scrap disposal",
+        "In-house fleet — hydras, cranes & trailers"
+      ],
+      "tileDescription": "Thoughtfully designed facility layouts and cost-effective flow management.",
+      "tagline": "Moving industry forward.",
+      "servicesImage": "assets/images/hero/hero-06.jpg",
+      "tileImage": "assets/images/domains/material-handling.jpg",
+      "bannerImage": "assets/images/projects/material-handling.jpg",
+      "showOnProjects": true
+    },
+    {
+      "id": "mining-logistics",
+      "name": "Mining & Logistics",
+      "order": 40,
+      "lead": "A dependable, disciplined operation for high-volume mineral transportation — coal, iron ore, and other bulk commodities — plus internal shifting with real-time monitoring.",
+      "bullets": [
+        "High-volume mineral transportation (coal, iron ore & bulk commodities)",
+        "Stockyard-to-conveyor shifting",
+        "Storage bunker logistics",
+        "Real-time monitoring"
+      ],
+      "tileDescription": "A dependable, disciplined operation for high-volume mineral transportation.",
+      "tagline": "Reliable movement. Real impact.",
+      "servicesImage": "assets/images/hero/hero-04.jpg",
+      "tileImage": "assets/images/domains/mining-logistics.jpg",
+      "bannerImage": "assets/images/projects/mining-logistics.jpg",
+      "showOnProjects": true
+    },
+    {
+      "id": "mechanised-cleaning",
+      "name": "Mechanised Cleaning",
+      "order": 50,
+      "lead": "Advanced industrial housekeeping for facilities where cleanliness and emissions compliance are non-negotiable.",
+      "bullets": [
+        "Truck-mounted & ride-on road sweepers",
+        "Industrial vacuum systems",
+        "Dust suppression",
+        "High-pressure jetting"
+      ],
+      "tileDescription": "Advanced industrial housekeeping for facilities where cleanliness is non-negotiable.",
+      "tagline": "Cleaner sites. Safer operations.",
+      "servicesImage": "assets/images/hero/hero-03.jpg",
+      "tileImage": "assets/images/domains/mechanised-cleaning.jpg",
+      "bannerImage": "assets/images/projects/mechanised-cleaning.jpg",
+      "showOnProjects": true
+    },
+    {
+      "id": "design-consultation",
+      "name": "Design & Consultation",
+      "order": 60,
+      "lead": "Qualified engineers and domain specialists translating your requirements into practical, efficient designs.",
+      "bullets": [
+        "Feasibility studies",
+        "URS documentation",
+        "Process optimisation for aluminium smelter carbon plants",
+        "Structural design & detailing"
+      ],
+      "tileDescription": "Qualified engineers translating your requirements into practical, efficient designs.",
+      "tagline": "",
+      "servicesImage": "assets/images/hero/hero-05.jpg",
+      "tileImage": "assets/images/domains/design-consultation.jpg",
+      "bannerImage": "",
+      "showOnProjects": false
+    }
+  ],
+  "team": [
+    {
+      "id": "t01",
+      "name": "Somnath Naik",
+      "title": "Managing Director",
+      "tier": "leadership",
+      "bio": "Founded the organization in 2009 with a vision to contribute to Odisha's industrial growth. Guided by strong values and a people-first philosophy, he has built a culture of trust, collaboration, and long-term relationships. His commitment to zero-harm principles ensures the highest standards of Health, Safety, and Environment, driving sustainable growth while fostering inclusivity and respect across the organization.",
+      "photo": "assets/images/team/somnath-naik.jpg",
+      "order": 10,
+      "visible": true
+    },
+    {
+      "id": "t02",
+      "name": "Jyotirmoy Patel",
+      "title": "Director",
+      "tier": "leadership",
+      "bio": "An accomplished business leader with over 25 years of industry experience, he holds an MBA and has served in senior roles at Pidilite, Wipro, and UltraTech Cement. Known for strategic leadership, stakeholder trust, and sustainable growth, he drives organizational success through collaboration, sound decision-making, and long-term value creation.",
+      "photo": "assets/images/team/jyotirmoy-patel.jpg",
+      "order": 20,
+      "visible": true
+    },
+    {
+      "id": "t03",
+      "name": "Sushil Mundra",
+      "title": "Chief Executive Officer",
+      "tier": "leadership",
+      "bio": "A dynamic leader with over 25 years of experience in operations, finance, and MIS. An MBA in Finance, he has served Grasim Industries, UltraTech Cement, and Value Labs. Known for driving operational and financial excellence, he leads high-performing teams, optimizes performance, and strengthens governance delivering results with strong business acumen and innovative thinking.",
+      "photo": "assets/images/team/sushil-mundra.jpg",
+      "order": 30,
+      "visible": true
+    },
+    {
+      "id": "t04",
+      "name": "Mojjada Ramesh",
+      "title": "HOD – Operation",
+      "tier": "hod",
+      "bio": "",
+      "photo": "assets/images/team/mojjada-ramesh.jpg",
+      "order": 40,
+      "visible": true
+    },
+    {
+      "id": "t05",
+      "name": "Ajit Patel",
+      "title": "HOD – HR & Admin",
+      "tier": "hod",
+      "bio": "",
+      "photo": "assets/images/team/ajit-patel.jpg",
+      "order": 50,
+      "visible": true
+    },
+    {
+      "id": "t06",
+      "name": "Mahesh Khandelwal",
+      "title": "HOD – Finance & Commercial",
+      "tier": "hod",
+      "bio": "",
+      "photo": "",
+      "order": 60,
+      "visible": true
+    }
+  ],
+  "clients": [
+    {
+      "id": "c01",
+      "name": "UltraTech Cement",
+      "logo": "assets/images/logos/ultratech-cement.png",
+      "order": 10,
+      "visible": true
+    },
+    {
+      "id": "c02",
+      "name": "BALCO",
+      "logo": "assets/images/logos/balco.png",
+      "order": 20,
+      "visible": true
+    },
+    {
+      "id": "c03",
+      "name": "DB Power Ltd",
+      "logo": "assets/images/logos/db-power.png",
+      "order": 30,
+      "visible": true
+    },
+    {
+      "id": "c04",
+      "name": "Monnet Steel Power Mining",
+      "logo": "assets/images/logos/monnet.png",
+      "order": 40,
+      "visible": true
+    },
+    {
+      "id": "c05",
+      "name": "Vedanta",
+      "logo": "assets/images/logos/vedanta.png",
+      "order": 50,
+      "visible": true
+    },
+    {
+      "id": "c06",
+      "name": "NTPC",
+      "logo": "assets/images/logos/ntpc.png",
+      "order": 60,
+      "visible": true
+    },
+    {
+      "id": "c07",
+      "name": "L&T Construction",
+      "logo": "assets/images/logos/lt-construction.png",
+      "order": 70,
+      "visible": true
+    },
+    {
+      "id": "c08",
+      "name": "L&T Power",
+      "logo": "assets/images/logos/lt-power.png",
+      "order": 80,
+      "visible": true
+    },
+    {
+      "id": "c09",
+      "name": "Dilip Buildcon Limited",
+      "logo": "assets/images/logos/dilip-buildcon.png",
+      "order": 90,
+      "visible": true
+    },
+    {
+      "id": "c10",
+      "name": "Lloyd Insulations",
+      "logo": "assets/images/logos/lloyd-insulations.png",
+      "order": 100,
+      "visible": true
+    },
+    {
+      "id": "c11",
+      "name": "Tata Steel",
+      "logo": "assets/images/logos/tata-steel.png",
+      "order": 110,
+      "visible": true
+    },
+    {
+      "id": "c12",
+      "name": "Shapoorji Pallonji",
+      "logo": "assets/images/logos/shapoorji-pallonji.png",
+      "order": 120,
+      "visible": true
+    },
+    {
+      "id": "c13",
+      "name": "Hindalco",
+      "logo": "assets/images/logos/hindalco.png",
+      "order": 130,
+      "visible": true
+    },
+    {
+      "id": "c14",
+      "name": "JSW",
+      "logo": "assets/images/logos/jsw.png",
+      "order": 140,
+      "visible": true
+    },
+    {
+      "id": "c15",
+      "name": "OSL Group",
+      "logo": "assets/images/logos/osl-group.png",
+      "order": 150,
+      "visible": true
+    },
+    {
+      "id": "c16",
+      "name": "Siemens",
+      "logo": "assets/images/logos/siemens.png",
+      "order": 160,
+      "visible": true
+    },
+    {
+      "id": "c17",
+      "name": "Toshiba",
+      "logo": "assets/images/logos/toshiba.png",
+      "order": 170,
+      "visible": true
+    },
+    {
+      "id": "c18",
+      "name": "Kirloskar",
+      "logo": "assets/images/logos/kirloskar.png",
+      "order": 180,
+      "visible": true
+    },
+    {
+      "id": "c19",
+      "name": "STEAG",
+      "logo": "assets/images/logos/steag.png",
+      "order": 190,
+      "visible": true
+    },
+    {
+      "id": "c20",
+      "name": "TRL Krosaki Refractories",
+      "logo": "assets/images/logos/trl-krosaki.png",
+      "order": 200,
+      "visible": true
+    },
+    {
+      "id": "c21",
+      "name": "Quess Corp",
+      "logo": "assets/images/logos/quess.png",
+      "order": 210,
+      "visible": true
+    },
+    {
+      "id": "c22",
+      "name": "Western Carriers",
+      "logo": "assets/images/logos/western-carriers.png",
+      "order": 220,
+      "visible": true
+    },
+    {
+      "id": "c23",
+      "name": "UPL / REL / NTPC",
+      "logo": "assets/images/logos/upl-rel-ntpc.png",
+      "order": 230,
+      "visible": true
+    }
+  ]
+}

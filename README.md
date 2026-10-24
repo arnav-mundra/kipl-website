@@ -62,7 +62,7 @@ npm install
 # never from a file in the repo):
 KIPL_OWNER_PASSWORD=… KIPL_EDITOR_PASSWORD=… KIPL_HR_PASSWORD=… npm run seed:users
 npm start          # http://localhost:4000/  and  http://localhost:4000/admin/
-npm test           # 58 tests: auth, roles, draft/publish, rendering, media, spam, backups
+npm test           # 60 tests: auth, roles, draft/publish, rendering, media, spam, backups
 ```
 
 The first start installs the starting content (a copy of what the static
@@ -139,6 +139,28 @@ functions can't persist `data/`. Two ways to run the public site:
    published content into `backend/dist/` (pages + assets + uploads); deploy
    that folder. Re-export after each publish. On a static host the contact
    form falls back to opening the visitor's email app.
+
+#### Free workflow: admin on your PC, public site on Vercel
+
+No server hosting needed. The admin runs only on your own computer; the public
+site stays on Vercel and is rebuilt from a committed copy of your published
+content.
+
+1. `cd backend && npm start`, open `http://localhost:4000/admin/`, edit, and
+   **Publish** (drafts stay private).
+2. Run **`npm run publish:site`** in `backend/`. It saves the published
+   content and the uploaded images it uses into `site-content/`, commits that
+   folder and pushes. (`-- --no-push` commits only; `-- --no-git` just writes
+   the files.)
+3. Vercel runs the build in `vercel.json` (`export-static.js --snapshot
+   ../site-content`), which renders the pages from `site-content/`, and
+   deploys. If a build ever fails, Vercel keeps serving the last good version.
+
+Notes: your database (`backend/data/`) lives only on your PC — back it up
+(Backups & export). Make sure `git config user.email` is your GitHub email.
+The contact form on Vercel opens the visitor's email app (there is no server to
+receive enquiries). Editing `frontend/` code needs no extra step — it is picked
+up by the same Vercel build.
 
 #### Deploying to Render (one blueprint)
 

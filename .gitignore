@@ -6,3 +6,4 @@ node_modules/
 backend/data/
 backend/dist/
 backend/.env
+dist-site/
