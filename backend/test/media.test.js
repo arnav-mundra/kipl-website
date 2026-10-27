@@ -89,7 +89,7 @@ test("an uploaded image can be used in content, and can't be deleted while in us
   assert.equal(member.status, 201);
   await hr.post(`${A}/content/team/${member.data.item.id}/publish`);
 
-  const page = await (await fetch(ctx.base + "/about.html")).text();
+  const page = await (await fetch(ctx.base + "/about")).text();
   assert.ok(page.includes(`url('${up.path}')`), "photo is on the public page");
 
   const blocked = await hr.del(`${A}/media/${up.id}`);

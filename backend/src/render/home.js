@@ -42,10 +42,10 @@ function patchHome($, c) {
   /* ---- services tiles ---- */
   replaceCountWord($(".service-tiles h2.section-head__title"), domains.length);
   syncList($, $(".service-tiles__grid"), ".service-tile", domains, {
-    keyOfNode: ($li) => ($li.find("a").attr("href") || "").replace("services.html#", ""),
+    keyOfNode: ($li) => ($li.find("a").attr("href") || "").replace(/^\/?services(\.html)?#/, ""),
     keyOfItem: (d) => d.id,
     fill($li, d, i, isNew) {
-      $li.find("a").attr("href", `services.html#${d.id}`);
+      $li.find("a").attr("href", `/services#${d.id}`);
       const $media = $li.find(".service-tile__media");
       $media.attr("data-mosaic-tone", i % 4);
       setBg($media, d.tileImage);

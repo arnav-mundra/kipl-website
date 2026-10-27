@@ -23,7 +23,7 @@ const has = (html, re, msg) => assert.ok(re.test(html), `${msg || "expected page
 const lacks = (html, re, msg) => assert.ok(!re.test(html), `${msg || "expected page NOT to match"}: ${re}`);
 
 test("public pages render from the seeded content", async () => {
-  const projects = await page("projects.html");
+  const projects = await page("projects");
   has(projects, /Vedanta — Pot Room Operation/);
   has(projects, /₹34\.40 Cr/);
   has(projects, /data-domain="operation-maintenance"/);
@@ -33,10 +33,21 @@ test("public pages render from the seeded content", async () => {
   has(home, /Engineering reliability into every shift/);
   has(home, /data-counter-to="178"/, "growth percentage is computed from the series");
 
-  const services = await page("services.html");
+  const services = await page("services");
   has(services, /id="mechanised-cleaning"/);
-  has(await page("about.html"), /Jyotirmoy Patel/);
-  has(await page("contact.html"), /info@kipl\.co/);
+  has(await page("about"), /Jyotirmoy Patel/);
+  has(await page("contact"), /info@kipl\.co/);
+});
+
+test("pages live at clean addresses; old .html links redirect there", async () => {
+  for (const [from, to] of [["/projects.html", "/projects"], ["/index.html", "/"], ["/about.html?x=1", "/about?x=1"]]) {
+    const r = await site.raw("GET", from);
+    assert.equal(r.status, 301, from);
+    assert.equal(r.headers.get("location"), to, from);
+  }
+  assert.equal((await site.raw("GET", "/index")).status, 404, "home only lives at /");
+  has(await page(""), /href="\/services"/, "nav links use clean addresses");
+  assert.equal((await owner.raw("GET", "/preview/projects")).status, 200, "preview accepts clean names too");
 });
 
 test("raw page sources and drafts folders are never served as files", async () => {
@@ -50,7 +61,7 @@ test("an edit is a draft until published, and the preview shows it", async () =>
   const id = data.item.id;
   assert.equal(data.item.status, "new");
 
-  lacks(await page("projects.html"), /Draft Only/);
+  lacks(await page("projects"), /Draft Only/);
   const preview = await owner.raw("GET", "/preview/projects.html");
   has(preview.data, /Draft Only/);
   has(preview.data, /Draft preview — not live/);
@@ -59,13 +70,13 @@ test("an edit is a draft until published, and the preview shows it", async () =>
   const pub = await owner.post(`${A}/content/projects/${id}/publish`);
   assert.equal(pub.status, 200);
   assert.equal(pub.data.item.status, "live");
-  has(await page("projects.html"), /Acme — Draft Only/);
+  has(await page("projects"), /Acme — Draft Only/);
 
   // Editing again leaves the live copy alone.
   const edit = await owner.put(`${A}/content/projects/${id}`, { data: projectPayload({ client: "Acme", title: "Renamed", priority: 90 }) });
   assert.equal(edit.data.item.status, "changed");
-  has(await page("projects.html"), /Draft Only/);
-  lacks(await page("projects.html"), /Renamed/);
+  has(await page("projects"), /Draft Only/);
+  lacks(await page("projects"), /Renamed/);
 
   // Discard returns the draft to what's live.
   const discard = await owner.post(`${A}/content/projects/${id}/discard`);
@@ -84,10 +95,10 @@ test("deleting a live item takes effect only on publish", async () => {
   await owner.post(`${A}/content/projects/${id}/publish`);
   const del = await owner.del(`${A}/content/projects/${id}`);
   assert.equal(del.data.immediate, false);
-  has(await page("projects.html"), /Short Lived/, "still live until published");
+  has(await page("projects"), /Short Lived/, "still live until published");
   const pub = await owner.post(`${A}/content/projects/${id}/publish`);
   assert.equal(pub.data.removed, true);
-  lacks(await page("projects.html"), /Short Lived/);
+  lacks(await page("projects"), /Short Lived/);
   assert.equal((await owner.get(`${A}/content/projects/${id}`)).status, 404);
 
   // An unpublished draft is simply removed.
@@ -132,11 +143,11 @@ test("a domain can't be deleted while projects use it, and projects need a publi
 
   const all = await owner.post(`${A}/publish-all`);
   assert.deepEqual(all.data.failed, []);
-  const services = await page("services.html");
+  const services = await page("services");
   has(services, /id="test-domain"/);
   has(services, /<li>One<\/li>/);
-  has(await page("projects.html"), /data-domain="test-domain"/);
-  has(await page(""), /services\.html#test-domain/);
+  has(await page("projects"), /data-domain="test-domain"/);
+  has(await page(""), /\/services#test-domain/);
 });
 
 test("projects: sorted by priority then value, capped per domain, featured drives the carousel", async () => {
@@ -150,7 +161,7 @@ test("projects: sorted by priority then value, capped per domain, featured drive
   await owner.put(`${A}/content/site/site`, { data: siteDoc });
   await owner.post(`${A}/publish-all`);
 
-  const html = await page("projects.html");
+  const html = await page("projects");
   const group = html.split('data-domain="material-handling"')[1].split('data-domain="')[0];
   const order = [...group.matchAll(/domain-row__title">([^<]+)</g)].map((m) => m[1]);
   assert.deepEqual(order, ["Cap — Cap D", "Tata Steel — Crane Hire", "Cap — Cap B"], "priority first, then value; capped at 3");
@@ -160,7 +171,7 @@ test("projects: sorted by priority then value, capped per domain, featured drive
   const feat = await owner.put(`${A}/content/projects/${ids[1]}`, { data: projectPayload({ domain: "material-handling", client: "Cap", title: "Cap B", valueCr: 5, featured: true, featuredOrder: 0, featuredDescription: "Carousel text", featuredImage: "assets/images/projects/vedanta-pot-room.jpg" }) });
   assert.equal(feat.status, 200);
   await owner.post(`${A}/publish-all`);
-  const html2 = await page("projects.html");
+  const html2 = await page("projects");
   assert.equal((html2.match(/data-featured-slide/g) || []).length, 3);
   has(html2, /Carousel text/);
   has(html2, /<span data-featured-counter="">1<\/span> \/ 3/);
@@ -173,7 +184,7 @@ test("with no featured projects the carousel and home teasers disappear", async 
     await owner.put(`${A}/content/projects/${it.id}`, { data: Object.assign({}, it.data, { featured: false }) });
   }
   await owner.post(`${A}/publish-all`);
-  lacks(await page("projects.html"), /data-featured-carousel/);
+  lacks(await page("projects"), /data-featured-carousel/);
   lacks(await page(""), /project-teasers/);
 });
 
@@ -190,13 +201,13 @@ test("company figures drive every chart and headline number", async () => {
   has(home, /data-counter-to="451"/, "(200-36.27)/36.27 ≈ 451.4 → 451%");
   has(home, /₹200 Cr/);
   has(home, /data-counter-to="250"/);
-  const about = await page("about.html");
+  const about = await page("about");
   has(about, /2,000 today/);
   has(about, /data-turnover="₹200 Cr"/);
-  const projects = await page("projects.html");
+  const projects = await page("projects");
   has(projects, />30</, "total projects stat");
   has(projects, /more than doubled|more than tripled|grown by/);
-  const services = await page("services.html");
+  const services = await page("services");
   has(services, /30 active and completed/);
   has(services, /~250 MT\/month/);
 });
@@ -209,7 +220,7 @@ test("people: MD message, mission/vision and core values", async () => {
   const r = await owner.put(`${A}/content/people/people`, { data: people });
   assert.equal(r.status, 200);
   await owner.post(`${A}/publish-all`);
-  const about = await page("about.html");
+  const about = await page("about");
   has(about, /A brand new vision statement\./);
   has(about, /<p>First paragraph\.<\/p>/);
   has(about, /Always improving\./);
@@ -222,7 +233,7 @@ test("team and client logos: visibility and ordering", async () => {
   const t = await owner.post(`${A}/content/team`, { name: "Zed Newhire", title: "Chief Tester", tier: "leadership", bio: "Tests things.", visible: true });
   const hidden = await owner.post(`${A}/content/team`, { name: "Hidden Person", title: "Ghost", tier: "hod", visible: false });
   await owner.post(`${A}/publish-all`);
-  let about = await page("about.html");
+  let about = await page("about");
   has(about, /Zed Newhire/);
   lacks(about, /Hidden Person/);
 
@@ -230,7 +241,7 @@ test("team and client logos: visibility and ordering", async () => {
   const ids = items.map((i) => i.id);
   await owner.post(`${A}/content/team/reorder`, { ids: [t.data.item.id, ...ids.filter((x) => x !== t.data.item.id)] });
   await owner.post(`${A}/publish-all`);
-  about = await page("about.html");
+  about = await page("about");
   assert.ok(about.indexOf('team-card__name">Zed Newhire') < about.indexOf('team-card__name">Somnath Naik'), "reordered to the front");
   assert.ok(hidden.data.item.id);
 
@@ -256,14 +267,14 @@ test("site-wide settings update the footer on every page, the contact page and J
   assert.equal(r.status, 200);
   await owner.post(`${A}/publish-all`);
 
-  for (const f of ["", "services.html", "projects.html", "about.html", "contact.html"]) {
+  for (const f of ["", "services", "projects", "about", "contact"]) {
     const html = await page(f);
     assert.match(html, /tel:\+919999911111/, f);
     assert.match(html, /mailto:hello@kipl\.co/, f);
     assert.match(html, /1 New Road/, f);
     assert.match(html, /CIN: CIN-TEST-1/, f);
   }
-  const contact = await page("contact.html");
+  const contact = await page("contact");
   has(contact, /Mon–Fri: 10 – 5/);
   has(contact, /q=KIPL%20New%20Office/);
   has(contact, /data-mailto="hello@kipl\.co"/);
@@ -299,7 +310,7 @@ test("version history and one-click restore", async () => {
   const prior = versions.find((v) => v.data.vision === original || v.data.vision !== "Version two of the vision.");
   const restored = await owner.post(`${A}/content/people/people/restore`, { index: prior.index, publishNow: true });
   assert.equal(restored.status, 200);
-  lacks(await page("about.html"), /Version two of the vision\./);
+  lacks(await page("about"), /Version two of the vision\./);
 });
 
 test("scheduled publishing goes live when the time arrives", async () => {
@@ -330,7 +341,7 @@ test("rendering survives deleting everything optional", async () => {
   const hod = (await owner.get(`${A}/content/team`)).data.items.filter((i) => i.data.tier === "hod");
   for (const it of hod) await owner.put(`${A}/content/team/${it.id}`, { data: Object.assign({}, it.data, { visible: false }) });
   await owner.post(`${A}/publish-all`);
-  const about = await page("about.html");
+  const about = await page("about");
   lacks(about, /hod-grid/);
   lacks(about, /Heads of Department/);
 });

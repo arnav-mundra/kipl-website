@@ -241,14 +241,18 @@ uploads fast.
 
 ## Local preview
 
-No build step — just serve `frontend/` as static files:
+Run the backend, which serves the site at its real clean addresses
+(`/projects`, not `/projects.html`):
 
 ```bash
-cd frontend
-python -m http.server 8791
+cd backend
+npm start
 ```
 
-Then open `http://localhost:8791`.
+Then open `http://localhost:4000`. A plain static server
+(`python -m http.server` in `frontend/`) still shows each page, but
+clicking the nav links 404s there — it doesn't know `/projects` means
+`projects.html`.
 
 **Cache-busting while developing:** every `<link rel="stylesheet">` and
 `<script src>` pointing at `css/` or `js/` carries a shared `?v=N` query
@@ -280,6 +284,14 @@ nav-transition-cover handoff — copy it from `services.html` or
 concerns of its own but does carry the Home-only preloader markup), the
 `.page-transition` div right after `<body>`, and the same `?v=N` on its
 own `css/`/`js/` links (see "Cache-busting while developing" above).
+
+**Page addresses are clean:** pages are served at `/`, `/services`,
+`/projects`, `/about`, `/contact` — never `/projects.html`. Link to
+pages that way (`href="/projects"`, `href="/about#our-team"`). Old
+`.html` addresses still work: they redirect permanently (Vercel's
+`cleanUrls` in `vercel.json`; the Express server does the same in
+`backend/src/app.js`). A new page also needs adding to `PAGES` in
+`backend/src/render/index.js` and to `frontend/sitemap.xml`.
 
 About's dropdown (Mission & Vision / MD's Desk / Our Team) is a
 reference pattern worth reusing if a future page needs the same

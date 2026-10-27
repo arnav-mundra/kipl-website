@@ -8,7 +8,7 @@ const config = require("./config");
 const auth = require("./auth");
 const content = require("./content");
 const enquiries = require("./enquiries");
-const { renderPage, isPage } = require("./render");
+const { renderPage, isPage, pageFile, pagePath } = require("./render");
 const adminRouter = require("./routes/admin");
 const db = require("./db");
 const backup = require("./backup");
@@ -95,10 +95,12 @@ function createApp() {
   );
 
   /* ---- draft preview (signed-in users only) ---- */
-  app.get("/preview/:file", auth.attachUser, (req, res) => {
+  // Accepts both /preview/projects and /preview/projects.html (the admin links use the latter).
+  app.get("/preview/:file?", auth.attachUser, (req, res) => {
     if (!req.user) return res.redirect("/admin/");
-    const file = req.params.file;
-    if (!isPage(file)) return res.status(404).send("Not found");
+    const name = req.params.file || "";
+    const file = isPage(name) ? name : pageFile(name);
+    if (!file) return res.status(404).send("Not found");
     try {
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("X-Robots-Tag", "noindex, nofollow");
@@ -110,9 +112,16 @@ function createApp() {
   });
 
   /* ---- the public site: static pages with CMS content filled in ---- */
+  // Pages live at clean addresses (/projects); old /projects.html links redirect
+  // there permanently, same as Vercel's cleanUrls does for the static build.
   app.get("/:page?", (req, res, next) => {
-    const file = req.params.page || "index.html";
-    if (!isPage(file)) return next();
+    const name = req.params.page || "";
+    if (isPage(name)) {
+      const q = req.originalUrl.indexOf("?");
+      return res.redirect(301, pagePath(name) + (q >= 0 ? req.originalUrl.slice(q) : ""));
+    }
+    const file = pageFile(name);
+    if (!file) return next();
     try {
       const { html, etag } = renderPublished(file);
       res.setHeader("Cache-Control", "no-cache");

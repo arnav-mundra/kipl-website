@@ -33,20 +33,20 @@ test("restore brings content back, and makes a safety copy first", async () => {
 
   const p = await owner.post(A + "/content/projects", projectPayload({ client: "Temp", title: "Added After Backup", priority: 90 }));
   await owner.post(`${A}/content/projects/${p.data.item.id}/publish`);
-  assert.match(await page("projects.html"), /Added After Backup/);
+  assert.match(await page("projects"), /Added After Backup/);
 
   const restored = await owner.post(A + "/backup/restore", { backup: snap });
   assert.equal(restored.status, 200);
   assert.match(restored.data.safetyBackup, /pre-restore/);
   assert.ok(fs.existsSync(path.join(config.BACKUP_DIR, restored.data.safetyBackup)));
 
-  assert.doesNotMatch(await page("projects.html"), /Added After Backup/, "live site reflects the restore immediately");
+  assert.doesNotMatch(await page("projects"), /Added After Backup/, "live site reflects the restore immediately");
   assert.equal((await owner.get(`${A}/content/projects/${p.data.item.id}`)).status, 404);
 
   // …and the safety copy lets you undo the restore.
   const safety = JSON.parse(fs.readFileSync(path.join(config.BACKUP_DIR, restored.data.safetyBackup), "utf8"));
   assert.equal((await owner.post(A + "/backup/restore", { backup: safety })).status, 200);
-  assert.match(await page("projects.html"), /Added After Backup/);
+  assert.match(await page("projects"), /Added After Backup/);
 });
 
 test("invalid or tampered backups are refused and change nothing", async () => {

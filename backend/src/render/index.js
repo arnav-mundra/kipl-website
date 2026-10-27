@@ -42,6 +42,18 @@ function isPage(file) {
   return Object.prototype.hasOwnProperty.call(PAGES, file);
 }
 
+/** The source file behind a page's public address: "" -> index.html, "projects" -> projects.html. */
+function pageFile(slug) {
+  if (slug === "index") return null; // home lives at "/" only
+  const file = (slug || "index") + ".html";
+  return isPage(file) ? file : null;
+}
+
+/** A page's public address: index.html -> "/", projects.html -> "/projects". */
+function pagePath(file) {
+  return file === "index.html" ? "/" : "/" + file.replace(/\.html$/, "");
+}
+
 const PREVIEW_BADGE =
   '<div style="position:fixed;left:12px;bottom:12px;z-index:2147483647;padding:8px 14px;border-radius:999px;' +
   'background:#14213d;color:#fff;font:600 13px/1.2 system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35);' +
@@ -68,4 +80,4 @@ function renderPage(file, content, opts = {}) {
   return $.html();
 }
 
-module.exports = { renderPage, isPage, PAGES: Object.keys(PAGES) };
+module.exports = { renderPage, isPage, pageFile, pagePath, PAGES: Object.keys(PAGES) };
