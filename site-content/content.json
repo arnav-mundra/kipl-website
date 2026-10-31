@@ -957,13 +957,6 @@
       "logo": "assets/images/logos/western-carriers.png",
       "order": 220,
       "visible": true
-    },
-    {
-      "id": "c23",
-      "name": "UPL / REL / NTPC",
-      "logo": "assets/images/logos/upl-rel-ntpc.png",
-      "order": 230,
-      "visible": true
     }
   ]
 }
