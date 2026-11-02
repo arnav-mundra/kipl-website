@@ -12,6 +12,7 @@ export const state = {
 
 export const canMedia = () => !!(state.user && state.user.permissions.media);
 export const canEnquiries = () => !!(state.user && state.user.permissions.enquiries);
+export const canApplications = () => !!(state.user && state.user.permissions.applications);
 export const isOwner = () => !!(state.user && state.user.permissions.admin);
 
 export async function refreshPending() {

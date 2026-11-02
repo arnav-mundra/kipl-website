@@ -9,6 +9,7 @@ const ALL_CONTENT = Object.keys(RESOURCES);
  *   content: content resources it may edit and publish
  *   media:   upload / browse the media library
  *   enquiries: read and manage contact-form enquiries
+ *   applications: read and manage job applications from the Careers page
  *   admin:   users, audit log, backups/restore
  */
 const ROLES = {
@@ -18,6 +19,7 @@ const ROLES = {
     content: ALL_CONTENT,
     media: true,
     enquiries: true,
+    applications: true,
     admin: true,
   },
   editor: {
@@ -26,14 +28,16 @@ const ROLES = {
     content: ALL_CONTENT,
     media: true,
     enquiries: true,
+    applications: false,
     admin: false,
   },
   hr: {
     label: "HR",
-    description: "Manages team members and uploads photos.",
+    description: "Manages team members, uploads photos and handles job applications.",
     content: ["team"],
     media: true,
     enquiries: false,
+    applications: true,
     admin: false,
   },
 };
@@ -55,7 +59,7 @@ function can(user, capability) {
 function summary(user) {
   const r = roleOf(user);
   if (!r) return null;
-  return { role: user.role, label: r.label, content: r.content, media: r.media, enquiries: r.enquiries, admin: r.admin };
+  return { role: user.role, label: r.label, content: r.content, media: r.media, enquiries: r.enquiries, applications: r.applications, admin: r.admin };
 }
 
 module.exports = { ROLES, canContent, can, summary };

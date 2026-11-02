@@ -132,4 +132,4 @@ function exportCsv() {
   );
 }
 
-module.exports = { submit, list, update, remove, counts, exportCsv, toCsv, STATUSES };
+module.exports = { submit, list, update, remove, counts, exportCsv, toCsv, STATUSES, clean, rateLimited, EMAIL, MIN_FILL_MS };

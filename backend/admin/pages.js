@@ -1,6 +1,6 @@
 import { api } from "./api.js";
 import { h, clear, spinner, toast, modal, confirmDialog, promptDialog, statusBadge, fmtDate, ago, fmtBytes, debounce } from "./ui.js";
-import { state, go, refreshPending, canMedia, canEnquiries, isOwner } from "./state.js";
+import { state, go, refreshPending, canMedia, canEnquiries, canApplications, isOwner } from "./state.js";
 import { mediaBrowser } from "./media.js";
 
 const head = (title, sub, ...actions) =>
@@ -36,6 +36,7 @@ export async function dashboardView(root) {
   if (c.team !== undefined) tiles.push(tile(c.team, "Team members", "#/c/team"));
   if (c.clients !== undefined) tiles.push(tile(c.clients, "Client logos", "#/c/clients"));
   if (c.enquiries) tiles.push(tile(c.enquiries.new, `New enquiries (${c.enquiries.total} total)`, "#/enquiries"));
+  if (c.applications) tiles.push(tile(c.applications.new, `New job applications (${c.applications.total} total)`, "#/applications"));
   if (c.media) tiles.push(tile(c.media.files, `Uploaded images · ${fmtBytes(c.media.bytes)}`, "#/media"));
 
   const pendingRows = d.pending.map((p) =>
@@ -193,6 +194,91 @@ export async function enquiriesView(root) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Job applications                                                    */
+/* ------------------------------------------------------------------ */
+
+const APP_STATUSES = ["new", "shortlisted", "interviewed", "hired", "rejected", "spam"];
+
+export async function applicationsView(root) {
+  if (!canApplications()) { clear(root).append(h("div", { class: "empty" }, "You don't have access to job applications.")); return; }
+  let status = "";
+  let fields = [];
+  const q = h("input", { type: "search", placeholder: "Search name, position, skills…", "aria-label": "Search" });
+  const tabs = h("div", { class: "row" });
+  const body = h("div");
+  let counts = {};
+
+  async function load() {
+    clear(body).append(spinner());
+    try {
+      const res = await api.get(`/applications?status=${status}&q=${encodeURIComponent(q.value)}`);
+      counts = res.counts;
+      fields = res.fields;
+      paintTabs();
+      const tbody = h("tbody");
+      if (!res.items.length) tbody.append(h("tr", null, h("td", { colspan: 6, class: "empty" }, "No applications here.")));
+      res.items.forEach((a) => tbody.append(h("tr", null,
+        h("td", { class: "muted small", style: { whiteSpace: "nowrap" } }, ago(a.at)),
+        h("td", null, h("a", { class: "cell-title", href: "#", onclick: (ev) => { ev.preventDefault(); detail(a); } }, a.name)),
+        h("td", null, a.position),
+        h("td", { class: "muted" }, a.qualification),
+        h("td", { class: "muted" }, `${a.experience} yrs`),
+        h("td", null, h("span", { class: "badge " + (a.status === "new" ? "badge--orange" : "badge--grey") }, a.status))
+      )));
+      clear(body).append(h("div", { class: "table-wrap" }, h("table", null,
+        h("thead", null, h("tr", null, h("th", null, "Received"), h("th", null, "Name"), h("th", null, "Position"), h("th", null, "Qualification"), h("th", null, "Experience"), h("th", null, "Status"))), tbody)));
+    } catch (e) { clear(body).append(errBox(e)); }
+  }
+
+  function paintTabs() {
+    clear(tabs);
+    [["", `All open (${counts.total || 0})`], ["new", `New (${counts.new || 0})`], ["shortlisted", `Shortlisted (${counts.shortlisted || 0})`],
+      ["hired", `Hired (${counts.hired || 0})`], ["rejected", `Rejected (${counts.rejected || 0})`], ["spam", `Spam (${counts.spam || 0})`]].forEach(([v, label]) => {
+      tabs.append(h("button", { class: "btn btn--small" + (status === v ? " btn--navy" : ""), type: "button", onclick: () => { status = v; load(); } }, label));
+    });
+  }
+
+  function detail(a) {
+    const sel = h("select", null, APP_STATUSES.map((s) => h("option", { value: s, selected: s === a.status }, s)));
+    const notes = h("textarea", { placeholder: "Internal notes (not visible to the applicant)" });
+    notes.value = a.notes || "";
+    const rows = [h("dt", null, "Received"), h("dd", null, fmtDate(a.at))];
+    fields.forEach((f) => {
+      const v = a[f.key];
+      rows.push(h("dt", null, f.label), h("dd", { style: { whiteSpace: "pre-wrap" } },
+        f.key === "email" ? h("a", { href: `mailto:${v}` }, v) : f.key === "phone" ? h("a", { href: `tel:${v}` }, v) : v || "—"));
+    });
+    const m = modal(`Application from ${a.name}`, h("div", { class: "stack" },
+      h("div", { class: "row" },
+        h("a", { class: "btn btn--primary", href: `/api/admin/applications/${a.id}/resume`, download: "" }, `Download resume (${a.resume.ext.toUpperCase()}, ${fmtBytes(a.resume.bytes)})`)),
+      h("dl", { class: "kv" }, rows),
+      h("label", { class: "field" }, h("span", { class: "field__label" }, "Status"), sel),
+      h("label", { class: "field" }, h("span", { class: "field__label" }, "Notes"), notes)
+    ), {
+      wide: true,
+      footer: [
+        h("button", { class: "btn btn--danger", type: "button", onclick: async () => {
+          if (!(await confirmDialog("Delete this application and its resume permanently?", { confirmText: "Delete", danger: true }))) return;
+          try { await api.del(`/applications/${a.id}`); m.close(); load(); } catch (er) { toast(er.message, "error"); }
+        } }, "Delete"),
+        h("span", { class: "grow" }),
+        h("button", { class: "btn", type: "button", onclick: () => m.close() }, "Close"),
+        h("button", { class: "btn btn--primary", type: "button", onclick: async () => {
+          try { await api.patch(`/applications/${a.id}`, { status: sel.value, notes: notes.value }); m.close(); toast("Saved.", "ok"); load(); } catch (er) { toast(er.message, "error"); }
+        } }, "Save"),
+      ],
+    });
+  }
+
+  q.addEventListener("input", debounce(load, 250));
+  clear(root).append(
+    head("Job applications", "Applications sent through the Careers page, with each applicant's resume.", h("a", { class: "btn", href: "/api/admin/export/applications.csv", download: "" }, "Export CSV")),
+    h("div", { class: "card" }, h("div", { class: "card__head" }, tabs, h("div", { style: { minWidth: "220px" } }, q)), body)
+  );
+  load();
+}
+
+/* ------------------------------------------------------------------ */
 /* Users (owner)                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -291,7 +377,7 @@ export async function auditView(root) {
   const limit = 50;
   const q = h("input", { type: "search", placeholder: "Search the log…", "aria-label": "Search" });
   const action = h("select", { "aria-label": "Action" }, h("option", { value: "" }, "Any action"),
-    ["login", "login-failed", "create", "update", "delete", "publish", "discard", "schedule", "restore", "reorder", "upload", "export", "backup", "password", "enquiry"].map((a) => h("option", { value: a }, a)));
+    ["login", "login-failed", "create", "update", "delete", "publish", "discard", "schedule", "restore", "reorder", "upload", "export", "backup", "password", "enquiry", "application"].map((a) => h("option", { value: a }, a)));
   const tbody = h("tbody");
   const pager = h("div", { class: "row row--end", style: { padding: "12px 18px" } });
 

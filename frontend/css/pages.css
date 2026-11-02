@@ -1,0 +1,568 @@
+/* Careers + Gallery page layouts. Shared components (hero, nav, footer,
+   buttons, section heads) live in components.css / base.css. */
+
+/* ---------- Hero (same navy band as services-hero / projects-hero) ---------- */
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-blue-900);
+  color: var(--color-white);
+  padding-block: calc(var(--nav-height) + var(--space-xl)) var(--space-2xl);
+}
+
+.page-hero__texture {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(700px 480px at 92% 105%, rgba(241, 103, 38, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.page-hero__inner {
+  position: relative;
+}
+
+.page-hero h1 {
+  max-width: 26ch;
+  margin-top: var(--space-sm);
+  color: var(--color-white);
+  font-size: clamp(2rem, 2vw + 1.4rem, 3.25rem);
+}
+
+.page-hero__lead {
+  max-width: 52ch;
+  margin-top: var(--space-md);
+  font-size: var(--fs-body-lg);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---------- Careers ---------- */
+
+.careers-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+
+.careers-point {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--color-blue-100);
+}
+
+.careers-point h3 {
+  font-size: var(--fs-h3);
+  margin-bottom: var(--space-2xs);
+}
+
+.careers-point p {
+  color: var(--color-ink-soft);
+}
+
+.page-hero__cta {
+  margin-top: var(--space-lg);
+}
+
+/* ---------- Application form ----------
+   Honeypot + .form-status come from contact.css; everything else for the
+   form is here, scoped to .apply so the Contact page is untouched. */
+
+.apply {
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-blue-100) 100%);
+  scroll-margin-top: var(--nav-height);
+}
+
+.apply__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+/* Left column stays in view while the visitor works down the form. */
+.apply__aside {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-lg));
+}
+
+.apply__lead {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-soft);
+}
+
+.apply__steps {
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.apply__steps li {
+  position: relative;
+  padding: 0 0 var(--space-md) 3rem;
+  counter-increment: step;
+}
+
+.apply__steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-blue-900);
+  color: var(--color-white);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* Thin rail joining the step numbers. */
+.apply__steps li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: calc(1rem - 1px);
+  top: 2.1rem;
+  bottom: 0.25rem;
+  width: 2px;
+  background: var(--color-blue-300);
+}
+
+.apply__steps strong {
+  display: block;
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.apply__steps span {
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.apply__privacy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+/* Section cards */
+
+.apply-card {
+  min-width: 0; /* fieldsets default to min-content, which can widen the page */
+  margin: 0 0 var(--space-md);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: 0 18px 40px -28px rgba(20, 33, 61, 0.35);
+}
+
+/* float + full width makes the legend behave like a normal heading block. */
+.apply-card legend {
+  float: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  color: var(--color-ink);
+}
+
+.apply-card legend + * {
+  clear: both;
+}
+
+.apply-card__num {
+  font-family: var(--font-body);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0.3em 0.7em;
+  border-radius: 999px;
+  background: var(--color-orange-100);
+  color: var(--color-orange-600);
+}
+
+.apply-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--space-md);
+}
+
+.apply-form__full {
+  grid-column: 1 / -1;
+}
+
+/* Fields */
+
+.apply .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-md);
+}
+
+.apply .form-field label,
+.apply .form-field__label {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.req {
+  color: var(--color-accent);
+}
+
+.apply input[type="text"],
+.apply input[type="email"],
+.apply input[type="tel"],
+.apply select,
+.apply textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  background: var(--color-off-white);
+  font: inherit;
+  font-size: var(--fs-body);
+  color: var(--color-ink);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.apply textarea {
+  min-height: 0;
+  resize: vertical;
+}
+
+.apply ::placeholder {
+  color: #9aa4b5;
+}
+
+.apply input:hover,
+.apply select:hover,
+.apply textarea:hover {
+  border-color: var(--color-blue-300);
+}
+
+.apply input:focus,
+.apply select:focus,
+.apply textarea:focus {
+  outline: none;
+  border-color: var(--color-blue-500);
+  background: var(--color-white);
+  box-shadow: 0 0 0 4px rgba(48, 85, 165, 0.14);
+}
+
+.apply select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='12' height='8'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23526078' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+}
+
+.apply select:invalid {
+  color: #9aa4b5; /* placeholder option still selected */
+}
+
+.apply select option {
+  color: var(--color-ink);
+}
+
+/* Unit shown inside the input, on the right. */
+.input-affix {
+  position: relative;
+}
+
+.input-affix input {
+  padding-right: 7.5rem;
+}
+
+.input-affix span {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  pointer-events: none;
+}
+
+/* Errors (set by js/main.js #initApplicationForm) */
+
+.apply .is-invalid input,
+.apply .is-invalid select,
+.apply .is-invalid textarea,
+.apply .is-invalid .dropzone {
+  border-color: #c4382c;
+  background: #fff7f6;
+}
+
+.form-field__error {
+  font-size: var(--fs-small);
+  color: #b3261e;
+}
+
+/* Choice pills (radio buttons) */
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.pill {
+  position: relative;
+  cursor: pointer;
+}
+
+.pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pill span {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-off-white);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--color-ink);
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.pill:hover span {
+  border-color: var(--color-blue-300);
+}
+
+.pill input:checked + span {
+  border-color: var(--color-blue-900);
+  background: var(--color-blue-900);
+  color: var(--color-white);
+}
+
+.pill input:focus-visible + span {
+  box-shadow: 0 0 0 4px rgba(48, 85, 165, 0.25);
+}
+
+/* Resume drop zone: the real file input covers it invisibly, so clicking and
+   dropping a file both work natively. */
+
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-lg) var(--space-md);
+  border: 2px dashed var(--color-blue-300);
+  border-radius: var(--radius-md);
+  background: var(--color-off-white);
+  text-align: center;
+  transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.dropzone__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzone:hover,
+.dropzone.is-dragover {
+  border-color: var(--color-blue-500);
+  background: var(--color-blue-100);
+}
+
+.dropzone:focus-within {
+  border-color: var(--color-blue-500);
+  box-shadow: 0 0 0 4px rgba(48, 85, 165, 0.14);
+}
+
+.dropzone.has-file {
+  border-style: solid;
+  border-color: #2e8b57;
+  background: #f1faf4;
+}
+
+.dropzone__icon {
+  color: var(--color-blue-500);
+}
+
+.dropzone.has-file .dropzone__icon {
+  color: #2e8b57;
+}
+
+.dropzone__title {
+  font-weight: 500;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.dropzone__title u {
+  color: var(--color-blue-500);
+  text-underline-offset: 3px;
+}
+
+.dropzone__hint {
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.apply-form__consent {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: flex-start;
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+
+.apply-form__consent input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--color-blue-900);
+}
+
+.apply-form__consent.is-invalid {
+  color: #b3261e;
+}
+
+/* Submit + result */
+
+.apply-form__submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.apply-form__submit .btn {
+  padding: 1.05em 2.2em;
+  font-size: var(--fs-body);
+}
+
+.apply-form__submit .btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+
+.apply-form__note {
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.apply-success {
+  padding: var(--space-xl) var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: 0 18px 40px -28px rgba(20, 33, 61, 0.35);
+  text-align: center;
+  color: #2e8b57;
+}
+
+.apply-success svg {
+  display: block;
+  margin-inline: auto;
+}
+
+.apply-success h3 {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-h3);
+  color: var(--color-ink);
+}
+
+.apply-success p {
+  max-width: 44ch;
+  margin: var(--space-xs) auto 0;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 960px) {
+  .apply__layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .apply__aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .apply-card {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+
+  .apply-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Gallery ---------- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.gallery-item {
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-blue-100);
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/* Stand-in until the real event photos arrive: same 4:3 box as an img. */
+.gallery-item__placeholder {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  border: 2px dashed var(--color-blue-300);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  color: var(--color-blue-500);
+  font-size: var(--fs-small);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+.gallery-item figcaption {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}

@@ -14,11 +14,12 @@
   "crons": [{ "path": "/api/cron", "schedule": "30 0 * * *" }],
   "redirects": [
     { "source": "/admin", "destination": "/admin/", "permanent": true },
-    { "source": "/:page(services|projects|about|contact)/", "destination": "/:page", "permanent": true }
+    { "source": "/:page(services|projects|about|gallery|careers|contact)/", "destination": "/:page", "permanent": true }
   ],
   "rewrites": [
     { "source": "/api/admin/:path*", "destination": "/api/server?__original=/api/admin/:path*" },
     { "source": "/api/cron", "destination": "/api/server?__original=/api/cron" },
+    { "source": "/api/applications", "destination": "/api/server?__original=/api/applications" },
     { "source": "/preview/:path*", "destination": "/api/server?__original=/preview/:path*" },
     { "source": "/uploads/:path*", "destination": "/api/server?__original=/uploads/:path*" }
   ],

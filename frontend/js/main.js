@@ -208,6 +208,142 @@
   }
 
   /**
+   * Careers page only: posts the job application (fields + resume) to
+   * /api/applications as multipart form data. Problems are shown next to
+   * the field they belong to; the server repeats every check regardless.
+   */
+  function initApplicationForm() {
+    var form = document.getElementById("applyForm");
+    if (!form) return;
+
+    var MAX_BYTES = 2 * 1024 * 1024;
+    var status = document.getElementById("applyStatus");
+    var success = document.getElementById("applySuccess");
+    var button = form.querySelector('button[type="submit"]');
+    var resume = form.elements.resume;
+    var zone = form.querySelector("[data-dropzone]");
+    var zoneTitle = zone.querySelector("[data-dropzone-title]");
+    var zoneHint = zone.querySelector("[data-dropzone-hint]");
+    var zoneTitleHtml = zoneTitle.innerHTML;
+    var zoneHintText = zoneHint.textContent;
+    if (form.elements.ts) form.elements.ts.value = String(Date.now());
+
+    function say(kind, text) {
+      status.hidden = !text;
+      status.className = "form-status form-status--" + kind;
+      status.textContent = text;
+    }
+
+    // The wrapper that shows the error: the field box, or the consent row.
+    function holder(el) {
+      return el.closest(".form-field") || el.closest(".apply-form__consent");
+    }
+
+    function setError(el, message) {
+      var box = holder(el);
+      var note = box.querySelector(".form-field__error");
+      box.classList.toggle("is-invalid", !!message);
+      el.setAttribute("aria-invalid", message ? "true" : "false");
+      if (!message) { if (note) note.remove(); return; }
+      if (!note) {
+        note = document.createElement("p");
+        note.className = "form-field__error";
+        note.id = (el.id || el.name) + "-error";
+        box.appendChild(note);
+        el.setAttribute("aria-describedby", note.id);
+      }
+      note.textContent = message;
+    }
+
+    function resumeProblem(file) {
+      if (!file) return "Please attach your resume.";
+      if (!/\.(pdf|docx?)$/i.test(file.name)) return "Please choose a PDF or Word file (.pdf, .doc, .docx).";
+      if (file.size > MAX_BYTES) return "This file is " + (file.size / 1048576).toFixed(1) + " MB. Please keep it to 2 MB or less.";
+      return "";
+    }
+
+    function problemFor(el) {
+      var value = el.value.trim();
+      if (el === resume) return resumeProblem(el.files[0]);
+      if (el.type === "checkbox") return el.checked ? "" : "Please tick this box so we can keep your application.";
+      if (el.required && !value) return el.tagName === "SELECT" ? "Please choose an option." : "This field is required.";
+      if (el.name === "email" && value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) return "Please enter a valid email address.";
+      if (el.name === "experience" && value && !/^\d{1,2}(\.\d)?$/.test(value)) return "Enter years as a number, e.g. 3 or 4.5.";
+      if (el.name === "passingYear" && value && !/^(19|20)\d\d$/.test(value)) return "Enter a four-digit year, e.g. 2018.";
+      return "";
+    }
+
+    var checked = Array.prototype.filter.call(form.elements, function (el) {
+      return el.required || el.name === "email" || el.name === "experience" || el.name === "passingYear";
+    });
+
+    // Re-check a field as soon as the visitor fixes it, but don't nag before they've tried to submit.
+    checked.forEach(function (el) {
+      el.addEventListener(el.type === "checkbox" || el.tagName === "SELECT" || el.type === "file" ? "change" : "input", function () {
+        if (holder(el).classList.contains("is-invalid")) setError(el, problemFor(el));
+      });
+    });
+
+    function showFile() {
+      var file = resume.files[0];
+      var problem = file ? resumeProblem(file) : "";
+      zone.classList.toggle("has-file", !!file && !problem);
+      if (file) {
+        zoneTitle.textContent = file.name;
+        zoneHint.textContent = (file.size / 1024 < 1024 ? Math.max(1, Math.round(file.size / 1024)) + " KB" : (file.size / 1048576).toFixed(1) + " MB") + " · click or drop to replace";
+      } else {
+        zoneTitle.innerHTML = zoneTitleHtml;
+        zoneHint.textContent = zoneHintText;
+      }
+      setError(resume, problem);
+    }
+    resume.addEventListener("change", showFile);
+    ["dragenter", "dragover"].forEach(function (t) { zone.addEventListener(t, function () { zone.classList.add("is-dragover"); }); });
+    ["dragleave", "drop"].forEach(function (t) { zone.addEventListener(t, function () { zone.classList.remove("is-dragover"); }); });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var firstBad = null;
+      checked.forEach(function (el) {
+        var problem = problemFor(el);
+        setError(el, problem);
+        if (problem && !firstBad) firstBad = el;
+      });
+      if (firstBad) {
+        say("error", "Please check the highlighted fields.");
+        holder(firstBad).scrollIntoView({ block: "center" });
+        firstBad.focus({ preventScroll: true });
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Sending…";
+      say("ok", "");
+      fetch("/api/applications", { method: "POST", body: new FormData(form) })
+        .then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (data) { return { r: r, data: data }; });
+        })
+        .then(function (res) {
+          if (res.r.ok) {
+            form.hidden = true;
+            success.hidden = false;
+            success.scrollIntoView({ block: "center" });
+            success.focus({ preventScroll: true });
+          } else {
+            say("error", res.data.error || "Sorry, that didn't go through. Please try again in a moment.");
+          }
+        })
+        .catch(function () {
+          say("error", "We couldn't reach the server. Please check your connection and try again.");
+        })
+        .then(function () {
+          button.disabled = false;
+          button.innerHTML = "Submit application &rarr;";
+        });
+    });
+  }
+  /**
    * Explicitly scrolls to the element matching location.hash, instead of
    * trusting the browser to do it natively. Browsers are inconsistent
    * about honoring a URL fragment on a *fresh* page load when html has
@@ -231,13 +367,18 @@
    * effect, even though it "worked" by every other measure.
    */
   function initHashScroll() {
-    if (!window.location.hash) return;
-    var target;
+    // The section to land on comes either from a real #hash (typed or
+    // shared link) or from initPageTransitions, which hands it over in
+    // sessionStorage so the address bar never shows the #.
+    var id = window.location.hash.slice(1);
     try {
-      target = document.querySelector(window.location.hash);
-    } catch (e) {
-      return;
+      if (!id) id = sessionStorage.getItem("kiplScrollTo") || "";
+      sessionStorage.removeItem("kiplScrollTo");
+    } catch (e) {}
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
     }
+    var target = id && document.getElementById(decodeURIComponent(id));
     if (!target) return;
 
     function scrollToTarget() {
@@ -288,17 +429,29 @@
         return;
       }
       if (url.origin !== window.location.origin) return;
-      // Same-page anchor jump (e.g. the services quick-nav) — let the
-      // browser handle it natively, no full navigation is happening.
-      if (url.pathname === window.location.pathname && url.hash) return;
+      var targetId = decodeURIComponent(url.hash.slice(1));
+      // Same-page section jump (e.g. the services quick-nav): scroll there
+      // ourselves so no #section is added to the address bar.
+      if (url.pathname === window.location.pathname && url.hash) {
+        var section = document.getElementById(targetId);
+        if (section) {
+          e.preventDefault();
+          section.scrollIntoView({ block: "start" }); // smooth via base.css scroll-behavior
+        }
+        return;
+      }
 
       e.preventDefault();
+      url.hash = "";
       panel.classList.add("page-transition--cover");
       window.setTimeout(function () {
         try {
           sessionStorage.setItem("kiplNavigating", "1");
-        } catch (err) {}
-        window.location.href = link.href;
+          if (targetId) sessionStorage.setItem("kiplScrollTo", targetId);
+        } catch (err) {
+          if (targetId) url.hash = targetId; // no storage: fall back to the plain #link
+        }
+        window.location.href = url.href;
       }, COVER_MS);
     });
   }
@@ -510,6 +663,7 @@
     initHashScroll();
     initPageTransitions();
     initContactForm();
+    initApplicationForm();
     initFeaturedCarousel();
     initProjectFilters();
     initServiceQuicknavSpy();

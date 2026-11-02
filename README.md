@@ -85,7 +85,8 @@ on the dashboard; accounts can be added/disabled by the Owner under
 | Site-wide | contact details, office hours, map, footer text, CIN/MSME, hero headline + slideshow photos |
 
 Also: media library (uploads are validated, resized and recompressed; built-in
-site images are browsable), contact-form enquiries inbox with spam filtering,
+site images are browsable), contact-form enquiries inbox with spam filtering, job applications from the
+Careers page (with resumes, PDF/Word up to 2 MB),
 accounts, audit log, backups/restore, CSV exports.
 
 ### Roles
@@ -94,7 +95,7 @@ accounts, audit log, backups/restore, CSV exports.
 | --- | --- |
 | Owner | everything, plus accounts, audit log, backups/restore |
 | Editor | edit + publish all website content, media, enquiries |
-| HR | team members and media only |
+| HR | team members, media and job applications |
 
 ### Draft → publish
 
@@ -124,8 +125,11 @@ protected by a conflict check.
 ### Data, backups and hosting
 
 Everything lives in `backend/data/` (git-ignored): `db.json` (content, users,
-audit log, enquiries), `uploads/` (images) and `backups/` (an automatic daily
-JSON backup, last 14 kept). Back up `db.json` **and** `uploads/`. Set
+audit log, enquiries, job applications), `uploads/` (images), `resumes/`
+(applicants' resumes — personal data, never committed to git) and `backups/` (an automatic daily
+JSON backup, last 14 kept). Back up `db.json`, `uploads/` **and** `resumes/`. When hosted on Vercel,
+resumes are stored in Upstash Redis (one key each), not in the public repo —
+watch the Redis storage limit and delete old applications from the admin. Set
 `KIPL_DATA_DIR` to keep data outside the code folder.
 
 On a normal Node host the admin keeps `data/` on disk (a VPS,

@@ -26,7 +26,8 @@ function snapshot() {
     docs: db.data.docs,
     media: db.data.media,
     enquiries: db.data.enquiries,
-    note: "Uploaded image files are not included in this JSON file — they live in data/uploads (or the repository's media/ folder when hosted); back them up too.",
+    applications: db.data.applications,
+    note: "Uploaded image files and job applicants' resumes are not included in this JSON file — images live in data/uploads (or the repository's media/ folder when hosted), resumes in data/resumes (or Redis when hosted); back them up too.",
   };
 }
 
@@ -141,6 +142,7 @@ async function restore(input) {
   db.data.docs = input.docs;
   db.data.media = Array.isArray(input.media) ? input.media : [];
   db.data.enquiries = Array.isArray(input.enquiries) ? input.enquiries : [];
+  db.data.applications = Array.isArray(input.applications) ? input.applications : [];
   db.save();
   content.hooks.onPublish();
   return { safetyBackup: safety, docs: input.docs.length };

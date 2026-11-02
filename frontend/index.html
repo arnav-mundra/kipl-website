@@ -65,10 +65,10 @@
     href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=44" />
-  <link rel="stylesheet" href="css/base.css?v=44" />
-  <link rel="stylesheet" href="css/components.css?v=44" />
-  <link rel="stylesheet" href="css/home.css?v=44" />
+  <link rel="stylesheet" href="css/variables.css?v=46" />
+  <link rel="stylesheet" href="css/base.css?v=46" />
+  <link rel="stylesheet" href="css/components.css?v=46" />
+  <link rel="stylesheet" href="css/home.css?v=46" />
 
   <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
@@ -151,16 +151,49 @@
 
       <nav class="nav__links" id="navLinks">
         <a href="/" class="nav__link is-active">Home</a>
-        <a href="/services" class="nav__link">Services</a>
-        <a href="/projects" class="nav__link">Projects</a>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="/services" class="nav__link">Services</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="servicesDropdown" aria-label="Show Services sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="servicesDropdown">
+            <div class="nav__dropdown-inner">
+              <a href="/services#operation-maintenance" class="nav__dropdown-link">Operation &amp; Maintenance</a>
+              <a href="/services#project-execution" class="nav__dropdown-link">Project Execution</a>
+              <a href="/services#material-handling" class="nav__dropdown-link">Material Handling</a>
+              <a href="/services#mining-logistics" class="nav__dropdown-link">Mining &amp; Logistics</a>
+              <a href="/services#mechanised-cleaning" class="nav__dropdown-link">Mechanised Cleaning</a>
+              <a href="/services#design-consultation" class="nav__dropdown-link">Design &amp; Consultation</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="/projects" class="nav__link">Projects</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="projectsDropdown" aria-label="Show Projects sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="projectsDropdown">
+            <div class="nav__dropdown-inner">
+              <a href="/projects#growth" class="nav__dropdown-link">Our Growth</a>
+              <a href="/projects#featured" class="nav__dropdown-link">Featured Projects</a>
+              <a href="/projects#by-domain" class="nav__dropdown-link">Projects by Domain</a>
+            </div>
+          </div>
+        </div>
         <div class="nav__item nav__item--dropdown">
           <div class="nav__item-row">
             <a href="/about" class="nav__link">About</a>
-            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown"
-              aria-label="Show About sections">
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown" aria-label="Show About sections">
               <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
-                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round" />
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
           </div>
@@ -172,6 +205,8 @@
             </div>
           </div>
         </div>
+        <a href="/gallery" class="nav__link">Gallery</a>
+        <a href="/careers" class="nav__link">Careers</a>
         <a href="/contact" class="nav__link">Contact</a>
       </nav>
 
@@ -929,6 +964,8 @@
           <li><a href="/services">Services</a></li>
           <li><a href="/projects">Projects</a></li>
           <li><a href="/about">About</a></li>
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/careers">Careers</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
       </div>
@@ -955,8 +992,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js" defer></script>
-  <script src="js/animations.js?v=44" defer></script>
-  <script src="js/main.js?v=44" defer></script>
+  <script src="js/animations.js?v=46" defer></script>
+  <script src="js/main.js?v=46" defer></script>
 </body>
 
 </html>

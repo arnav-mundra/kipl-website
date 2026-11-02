@@ -7,7 +7,9 @@ const express = require("express");
 const config = require("./config");
 const auth = require("./auth");
 const content = require("./content");
+const multer = require("multer");
 const enquiries = require("./enquiries");
+const applications = require("./applications");
 const { renderPage, isPage, pageFile, pagePath } = require("./render");
 const adminRouter = require("./routes/admin");
 const db = require("./db");
@@ -70,6 +72,33 @@ function createApp() {
     if (result.error) return res.status(result.status).json({ error: result.error });
     res.json({ ok: true });
   });
+
+  /* ---- public job application form (Careers page) ---- */
+  const resumeUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: applications.MAX_RESUME_BYTES, files: 1, fields: 40, fieldSize: 8 * 1024 },
+  }).single("resume");
+  app.post(
+    "/api/applications",
+    (req, res, next) => {
+      res.setHeader("Cache-Control", "no-store");
+      resumeUpload(req, res, (err) => {
+        if (!err) return next();
+        if (err.code === "LIMIT_FILE_SIZE") return res.status(413).json({ error: "Your resume must be 2 MB or smaller." });
+        return res.status(400).json({ error: "We couldn't read that form. Please try again." });
+      });
+    },
+    async (req, res) => {
+      try {
+        const result = await applications.submit(req.body, req.file, { ip: req.ip || "" });
+        if (result.error) return res.status(result.status).json({ error: result.error });
+        res.json({ ok: true });
+      } catch (err) {
+        console.error("[applications]", err);
+        res.status(500).json({ error: "Sorry, we couldn't save your application. Please try again." });
+      }
+    }
+  );
 
   /* ---- admin API ---- */
   app.use("/api/admin", adminRouter);

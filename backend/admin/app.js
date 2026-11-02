@@ -1,9 +1,9 @@
 import { api } from "./api.js";
 import { h, clear, spinner, toast } from "./ui.js";
-import { state, refreshPending, canMedia, canEnquiries, isOwner } from "./state.js";
+import { state, refreshPending, canMedia, canEnquiries, canApplications, isOwner } from "./state.js";
 import { collectionView } from "./collection.js";
 import { editorView } from "./editor.js";
-import { dashboardView, mediaView, enquiriesView, usersView, auditView, backupsView, profileView, publishAllDialog } from "./pages.js";
+import { dashboardView, mediaView, enquiriesView, applicationsView, usersView, auditView, backupsView, profileView, publishAllDialog } from "./pages.js";
 
 const app = document.getElementById("app");
 const CONTENT_ORDER = ["projects", "domains", "team", "people", "clients", "figures", "site"];
@@ -95,6 +95,7 @@ function renderShell() {
   const lib = [];
   if (canMedia()) lib.push(navLink("#/media", "Media library"));
   if (canEnquiries()) lib.push(navLink("#/enquiries", "Enquiries"));
+  if (canApplications()) lib.push(navLink("#/applications", "Job applications"));
   if (lib.length) sidebar.append(h("div", { class: "nav-group" }, h("div", { class: "nav-group__label" }, "Library & inbox"), lib));
 
   if (isOwner()) {
@@ -186,6 +187,7 @@ async function route() {
         break;
       case "media": mediaView(contentEl); break;
       case "enquiries": await enquiriesView(contentEl); break;
+      case "applications": await applicationsView(contentEl); break;
       case "users": await usersView(contentEl); break;
       case "audit": await auditView(contentEl); break;
       case "backups": await backupsView(contentEl); break;

@@ -46,6 +46,7 @@ function emptyData() {
     media: [],
     audit: [],
     enquiries: [],
+    applications: [],
     meta: {},
   };
 }

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- See index.html's <head> comment for why this is inline and first.
+       No intro-seen flag here — the preloader is Home-only, this page only
+       needs scroll-restoration and the nav-transition-cover handoff. -->
+  <script>
+    (function () {
+      if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
+      try {
+        if (sessionStorage.getItem("kiplNavigating")) {
+          sessionStorage.removeItem("kiplNavigating");
+          document.documentElement.classList.add("nav-transition-cover");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — KIPL | Life at KIPL, Events &amp; Celebrations</title>
+  <meta name="description" content="Moments from the KIPL family — annual day, festive celebrations, safety week, team outings, CSR activities and more." />
+
+  <link rel="canonical" href="https://kipl.co/gallery" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="KIPL" />
+  <meta property="og:title" content="Gallery — KIPL | Life at KIPL, Events &amp; Celebrations" />
+  <meta property="og:description" content="Moments from the KIPL family — annual day, festive celebrations, safety week, team outings, CSR activities and more." />
+  <meta property="og:url" content="https://kipl.co/gallery" />
+  <meta property="og:image" content="https://kipl.co/assets/images/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gallery — KIPL | Life at KIPL, Events &amp; Celebrations" />
+  <meta name="twitter:description" content="Moments from the KIPL family — annual day, festive celebrations, safety week, team outings, CSR activities and more." />
+  <meta name="twitter:image" content="https://kipl.co/assets/images/og-image.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css?v=46" />
+  <link rel="stylesheet" href="css/base.css?v=46" />
+  <link rel="stylesheet" href="css/components.css?v=46" />
+  <link rel="stylesheet" href="css/pages.css?v=46" />
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+</head>
+<body>
+
+  <!-- ============ PAGE TRANSITION ============
+       Shared full-viewport fade flash for in-site navigation (see
+       css/components.css .page-transition and js/main.js
+       #initPageTransitions). Present on every page, identical markup. -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <!-- No preloader here on purpose — it's Home-only. See services.html. -->
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo">
+        <img src="assets/images/kipl-logo.jpeg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">KIPL</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="/" class="nav__link">Home</a>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="/services" class="nav__link">Services</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="servicesDropdown" aria-label="Show Services sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="servicesDropdown">
+            <div class="nav__dropdown-inner">
+              <a href="/services#operation-maintenance" class="nav__dropdown-link">Operation &amp; Maintenance</a>
+              <a href="/services#project-execution" class="nav__dropdown-link">Project Execution</a>
+              <a href="/services#material-handling" class="nav__dropdown-link">Material Handling</a>
+              <a href="/services#mining-logistics" class="nav__dropdown-link">Mining &amp; Logistics</a>
+              <a href="/services#mechanised-cleaning" class="nav__dropdown-link">Mechanised Cleaning</a>
+              <a href="/services#design-consultation" class="nav__dropdown-link">Design &amp; Consultation</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="/projects" class="nav__link">Projects</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="projectsDropdown" aria-label="Show Projects sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="projectsDropdown">
+            <div class="nav__dropdown-inner">
+              <a href="/projects#growth" class="nav__dropdown-link">Our Growth</a>
+              <a href="/projects#featured" class="nav__dropdown-link">Featured Projects</a>
+              <a href="/projects#by-domain" class="nav__dropdown-link">Projects by Domain</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item nav__item--dropdown">
+          <div class="nav__item-row">
+            <a href="/about" class="nav__link">About</a>
+            <button type="button" class="nav__dropdown-toggle" aria-expanded="false" aria-controls="aboutDropdown" aria-label="Show About sections">
+              <svg class="nav__caret" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="nav__dropdown" id="aboutDropdown">
+            <div class="nav__dropdown-inner">
+              <a href="/about#mission-vision" class="nav__dropdown-link">Mission &amp; Vision</a>
+              <a href="/about#md-desk" class="nav__dropdown-link">MD's Desk</a>
+              <a href="/about#our-team" class="nav__dropdown-link">Our Team</a>
+            </div>
+          </div>
+        </div>
+        <a href="/gallery" class="nav__link is-active">Gallery</a>
+        <a href="/careers" class="nav__link">Careers</a>
+        <a href="/contact" class="nav__link">Contact</a>
+      </nav>
+
+      <a href="/contact" class="btn btn--primary nav__cta">Get in Touch</a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============
+         Plain navy band like the Services/Projects heroes — the photo
+         slideshow hero stays on Home, About and Contact. -->
+    <section class="page-hero">
+      <div class="page-hero__texture" aria-hidden="true"></div>
+      <div class="container page-hero__inner" data-reveal-hero>
+        <p class="eyebrow">Gallery</p>
+        <h1>Life at KIPL.</h1>
+        <p class="page-hero__lead">Celebrations, milestones and moments from the KIPL family.</p>
+      </div>
+    </section>
+
+    <!-- ============ PHOTO GRID ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="gallery-grid">
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Annual Day" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Annual Day</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Foundation Day" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Foundation Day</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Safety Week" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Safety Week</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Festive Celebrations" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Festive Celebrations</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Team Outing" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Team Outing</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="CSR Activity" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>CSR Activity</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Awards &amp; Recognition" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Awards &amp; Recognition</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Training Sessions" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Training Sessions</figcaption>
+          </figure>
+          <!-- Placeholder: replace the div with <img src="assets/images/gallery/..." alt="Sports Day" loading="lazy" /> -->
+          <figure class="gallery-item" data-reveal>
+            <div class="gallery-item__placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4" /></svg><span>Photo coming soon</span></div>
+            <figcaption>Sports Day</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="/" class="footer__logo">
+          <img src="assets/images/kipl-logo.jpeg" alt="" class="footer__logo-mark" />
+          KIPL
+        </a>
+        <p class="footer__tagline">Kainsara Infraprojects Pvt Ltd — your partner in people, processes &amp; performance since 2009.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Site</h4>
+        <ul class="footer__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/gallery">Gallery</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul class="footer__contact">
+          <li>Plot No. 100, Boxi Chowk,<br />Beherapat, Jharsuguda,<br />Odisha – 768202</li>
+          <li><a href="tel:+919178470789">+91 91784 70789</a></li>
+          <li><a href="mailto:info@kipl.co">info@kipl.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <span>© <span id="year"></span> Kainsara Infraprojects Pvt Ltd. All rights reserved.</span>
+      <span>CIN: U63000OR2009PTC011167 · MSME: UDYAM-OD-14-0000152</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger (CDN, no build step) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="js/animations.js?v=46" defer></script>
+  <script src="js/main.js?v=46" defer></script>
+</body>
+</html>

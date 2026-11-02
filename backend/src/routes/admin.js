@@ -9,6 +9,7 @@ const audit = require("../audit");
 const content = require("../content");
 const media = require("../media");
 const enquiries = require("../enquiries");
+const applications = require("../applications");
 const backup = require("../backup");
 const sitePublish = require("../sitepublish");
 const { RESOURCES } = require("../schemas");
@@ -116,6 +117,7 @@ router.get("/dashboard", (req, res) => {
     if (canContent(u, t)) counts[t] = content.docsOf(t).filter((d) => !d.deleted).length;
   }
   if (can(u, "enquiries")) counts.enquiries = enquiries.counts();
+  if (can(u, "applications")) counts.applications = applications.counts();
   if (can(u, "media")) counts.media = { files: db.data.media.length, bytes: media.diskUsage() };
 
   const scheduled = db.data.docs
@@ -304,6 +306,49 @@ router.get("/export/enquiries.csv", auth.requireCapability("enquiries"), (req, r
   res.setHeader("Content-Type", "text/csv; charset=utf-8");
   res.setHeader("Content-Disposition", 'attachment; filename="kipl-enquiries.csv"');
   res.send("﻿" + enquiries.exportCsv());
+});
+
+/* ------------------------------------------------------------------ */
+/* Job applications (Careers page)                                     */
+/* ------------------------------------------------------------------ */
+
+router.get("/applications", auth.requireCapability("applications"), (req, res) => {
+  res.json({
+    items: applications.list({ status: String(req.query.status || ""), q: String(req.query.q || "") }),
+    counts: applications.counts(),
+    fields: applications.FIELDS.map(([key, label]) => ({ key, label })),
+  });
+});
+
+router.patch("/applications/:id", auth.requireCapability("applications"), (req, res) => {
+  const a = applications.update(req.params.id, req.body || {});
+  if (!a) return res.status(404).json({ error: "Not found" });
+  audit.log(req.user, "update", "applications", a.id, `Marked application from ${a.name} as ${a.status}`, ip(req));
+  res.json({ item: a });
+});
+
+router.delete("/applications/:id", auth.requireCapability("applications"), wrap(async (req, res) => {
+  if (!(await applications.remove(req.params.id))) return res.status(404).json({ error: "Not found" });
+  audit.log(req.user, "delete", "applications", req.params.id, "Deleted a job application", ip(req));
+  res.json({ ok: true });
+}));
+
+router.get("/applications/:id/resume", auth.requireCapability("applications"), wrap(async (req, res) => {
+  const a = applications.find(req.params.id);
+  const data = a && (await applications.getResume(a.id));
+  if (!data) return res.status(404).json({ error: "That resume isn't available any more." });
+  const file = `${a.name.replace(/[^\w ]+/g, "").trim().replace(/\s+/g, "-") || "applicant"}-resume.${a.resume.ext}`;
+  res.setHeader("Content-Type", a.resume.mime);
+  res.setHeader("Content-Disposition", `attachment; filename="${file}"`);
+  res.setHeader("Cache-Control", "no-store");
+  res.send(data);
+}));
+
+router.get("/export/applications.csv", auth.requireCapability("applications"), (req, res) => {
+  audit.log(req.user, "export", "applications", "", "Exported job applications (CSV)", ip(req));
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader("Content-Disposition", 'attachment; filename="kipl-applications.csv"');
+  res.send("﻿" + applications.exportCsv());
 });
 
 router.get("/export/projects.csv", auth.requireCapability("admin"), (req, res) => {

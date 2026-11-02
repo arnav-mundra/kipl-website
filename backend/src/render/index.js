@@ -24,6 +24,8 @@ const PAGES = {
   "projects.html": patchProjects,
   "about.html": patchAbout,
   "contact.html": patchContact,
+  "gallery.html": () => {}, // no CMS content yet: rendered as authored
+  "careers.html": () => {}, // no CMS content yet: rendered as authored
 };
 
 const source = new Map(); // file -> { mtimeMs, html }

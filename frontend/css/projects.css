@@ -815,3 +815,11 @@
     align-items: flex-start;
   }
 }
+
+/* Keeps the fixed nav off each section's top when the Projects dropdown
+   jumps straight to it. */
+#growth,
+#featured,
+#by-domain {
+  scroll-margin-top: var(--nav-height);
+}

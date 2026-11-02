@@ -267,7 +267,7 @@ test("site-wide settings update the footer on every page, the contact page and J
   assert.equal(r.status, 200);
   await owner.post(`${A}/publish-all`);
 
-  for (const f of ["", "services", "projects", "about", "contact"]) {
+  for (const f of ["", "services", "projects", "about", "gallery", "careers", "contact"]) {
     const html = await page(f);
     assert.match(html, /tel:\+919999911111/, f);
     assert.match(html, /mailto:hello@kipl\.co/, f);
@@ -345,3 +345,4 @@ test("rendering survives deleting everything optional", async () => {
   lacks(about, /hod-grid/);
   lacks(about, /Heads of Department/);
 });
+

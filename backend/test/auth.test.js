@@ -48,7 +48,7 @@ test("nothing is reachable without signing in", async () => {
   assert.equal((await anon.post(A + "/publish-all")).status, 401);
 });
 
-test("role permissions: HR sees only team + media; editor edits content but not accounts", async () => {
+test("role permissions: HR sees only team, media and job applications; editor edits content but not accounts", async () => {
   const hr = client(ctx.base); await hr.login("hr");
   const schemas = (await hr.get(A + "/schemas")).data.resources;
   assert.deepEqual(Object.keys(schemas), ["team"]);
@@ -64,7 +64,7 @@ test("role permissions: HR sees only team + media; editor edits content but not 
   assert.equal(made.status, 201);
   assert.equal((await hr.post(`${A}/content/team/${made.data.item.id}/publish`)).status, 200);
   const dash = (await hr.get(A + "/dashboard")).data;
-  assert.deepEqual(Object.keys(dash.counts).sort(), ["media", "team"]);
+  assert.deepEqual(Object.keys(dash.counts).sort(), ["applications", "media", "team"]);
 
   const editor = client(ctx.base); await editor.login("editor");
   assert.equal((await editor.get(A + "/content/projects")).status, 200);

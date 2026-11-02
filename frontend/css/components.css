@@ -992,11 +992,14 @@ html.nav-transition-cover .page-transition {
   font-size: var(--fs-small);
 }
 
-@media (max-width: 860px) {
+/* Seven nav items + the CTA stop fitting on one row below ~1080px. */
+@media (max-width: 1080px) {
   .nav__links {
     position: fixed;
     inset-block-start: var(--nav-height);
     inset-inline: 0;
+    max-height: calc(100dvh - var(--nav-height));
+    overflow-y: auto;
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
@@ -1089,6 +1092,13 @@ html.nav-transition-cover .page-transition {
     grid-template-rows: 1fr;
   }
 
+  /* Undo the desktop flyout's centring shift (translate -50%), which both
+     the open and hover rules above re-apply with higher specificity. */
+  .nav__item--dropdown.is-open .nav__dropdown,
+  .nav__item--dropdown:hover .nav__dropdown {
+    transform: none;
+  }
+
   .nav__item--dropdown.is-open .nav__dropdown-inner {
     padding-block-end: var(--space-2xs);
   }
@@ -1118,7 +1128,9 @@ html.nav-transition-cover .page-transition {
   .nav__toggle.is-active::after {
     transform: translateY(-3.5px) rotate(-45deg);
   }
+}
 
+@media (max-width: 860px) {
   .footer__grid {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
