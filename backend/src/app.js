@@ -122,6 +122,8 @@ function createApp() {
     }
     const file = pageFile(name);
     if (!file) return next();
+    // /projects/ would break the page's relative css/ and assets/ links.
+    if (name && req.path.endsWith("/")) return res.redirect(301, pagePath(file));
     try {
       const { html, etag } = renderPublished(file);
       res.setHeader("Cache-Control", "no-cache");

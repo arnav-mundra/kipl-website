@@ -40,7 +40,7 @@ test("public pages render from the seeded content", async () => {
 });
 
 test("pages live at clean addresses; old .html links redirect there", async () => {
-  for (const [from, to] of [["/projects.html", "/projects"], ["/index.html", "/"], ["/about.html?x=1", "/about?x=1"]]) {
+  for (const [from, to] of [["/projects.html", "/projects"], ["/index.html", "/"], ["/about.html?x=1", "/about?x=1"], ["/projects/", "/projects"]]) {
     const r = await site.raw("GET", from);
     assert.equal(r.status, 301, from);
     assert.equal(r.headers.get("location"), to, from);
