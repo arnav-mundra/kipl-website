@@ -21,9 +21,6 @@
   if (hasGsap && window.ScrollTrigger) {
     window.gsap.registerPlugin(window.ScrollTrigger);
   }
-  if (hasGsap && window.Draggable) {
-    window.gsap.registerPlugin(window.Draggable);
-  }
 
   // Shared by initMosaicReveal's cell tween and initMosaicRowFade's detail
   // fade — both live on the same .mosaic-row, so they need the identical
@@ -398,17 +395,14 @@
   }
 
   /**
-   * Continuously loops the client-logo marquee track (its HTML content is
-   * duplicated once so a full-width translate is seamless). Runs
-   * continuously, including under the cursor — deliberately no
-   * pause-on-hover. Also draggable (js/animations.js#initMarqueeDrag below)
-   * — the auto-scroll only ever pauses while a drag is actively in
-   * progress, resuming the instant the pointer is released.
+   * Endlessly loops the client-logo marquee, by itself and under a mouse
+   * drag, in either direction. One `position` drives everything: auto-scroll
+   * and dragging both just add to it, and it wraps by the width of one set
+   * of logos. Since the logos repeat exactly at that width, the wrap can't be
+   * seen and there is no end of the track to reach.
    *
-   * Uses a plain pixel `x` tween now (was `xPercent: -50`) rather than
-   * percent-based translation — Draggable's `type: "x"` reads/writes the
-   * same `x` property GSAP tweens use, so keeping both on `x` means they
-   * can hand off to each other directly without any unit conversion.
+   * Runs under the cursor too (deliberately no pause-on-hover); it only stops
+   * while the track is held. Dragging is mouse/trackpad only (see below).
    *
    * Logos load eagerly on purpose (no loading="lazy") — the track is a
    * `width: max-content` row far wider than the viewport, and the browser's
@@ -418,9 +412,7 @@
    * trigger margin and would load inconsistently — sometimes not at all —
    * which is exactly what made the marquee stall. Still waits for every
    * logo to finish loading (or error out) before measuring and starting,
-   * since even eager images take a moment: starting off track.scrollWidth
-   * before they arrive would measure a near-collapsed track (just the flex
-   * gaps) and produce a tween that jumps once the real images pop in.
+   * since measuring before they arrive would give a near-collapsed track.
    */
   function initMarquee() {
     var track = document.getElementById("marqueeTrack");
@@ -431,16 +423,34 @@
 
     function start() {
       var pxPerSecond = 65;
-      var distance = track.scrollWidth / 2; // width of one (non-duplicated) copy of the logos
+      var logos = track.querySelectorAll("img");
+      var setSize = logos.length / 2; // the markup holds the logos twice
 
-      var tween = window.gsap.to(track, {
-        x: -distance,
-        duration: distance / pxPerSecond,
-        ease: "none",
-        repeat: -1,
+      // Start of the second set minus start of the first: one set plus its
+      // gap, unrounded, so the wrap doesn't nudge the logos by a fraction.
+      var distance = logos[setSize].getBoundingClientRect().left - logos[0].getBoundingClientRect().left;
+      if (!(distance > 0)) return;
+
+      // Just before wrapping, one full set has scrolled off and the screen
+      // still needs filling. Two sets don't cover that on a wide monitor if
+      // only a few logos are switched on in the admin, so add more as needed.
+      var needed = distance + Math.max(window.screen.width, window.innerWidth);
+      while (track.scrollWidth < needed) {
+        for (var i = 0; i < setSize; i++) track.appendChild(logos[setSize + i].cloneNode());
+      }
+
+      var wrap = window.gsap.utils.wrap(-distance, 0);
+      var setX = window.gsap.quickSetter(track, "x", "px");
+      var position = 0;
+      var held = false;
+
+      window.gsap.ticker.add(function (_time, deltaMs) {
+        if (!held) position -= (pxPerSecond * deltaMs) / 1000;
+        position = wrap(position);
+        setX(position);
       });
 
-      initMarqueeDrag(track, wrapper, distance, pxPerSecond, tween);
+      initMarqueeDrag(track, function (dx) { position += dx; }, function (isHeld) { held = isHeld; });
     }
 
     var pending = Array.prototype.filter.call(track.querySelectorAll("img"), function (img) {
@@ -464,74 +474,44 @@
   }
 
   /**
-   * Lets a visitor grab the marquee track and drag it by hand — the
-   * auto-scroll pauses only for the duration of an actual press-and-drag,
-   * never merely on hover, and resumes on release from wherever the
-   * visitor left it rather than snapping back.
+   * Lets a visitor grab the marquee with the mouse and drag it as far as they
+   * like. Pointer capture keeps the drag going when the cursor leaves the
+   * track, and any way the press can end releases it, so auto-scroll can't
+   * get stuck off.
    *
-   * Bounded, not infinitely wrapping: the track's own content is only
-   * duplicated once (for the auto-scroll loop), so there isn't a third
-   * copy to reveal if a visitor dragged further than that — bounding drag
-   * to the track's real scrollable range (0 to -(scrollWidth - wrapper
-   * width)) means they can always drag through every logo at least once
-   * in either direction without ever exposing blank space past the end.
-   *
-   * On release, a brand-new tween is created — rather than resuming the
-   * original — targeting one more `distance` of travel from wherever the
-   * drag left off, then repeating from there (repeat: -1 restarts a tween
-   * from its own recorded "from" value each cycle, and since the content
-   * repeats visually every `distance` px, snapping back to *any* absolute
-   * x looks identical to continuing, so there's no need to fold the
-   * dragged position back into a single canonical cycle first).
-   *
-   * This turned out to be load-bearing, not just simpler: resuming the
-   * original tween via .progress(p).play() silently failed to animate at
-   * all after a drag — confirmed with gsap.ticker.tick() called manually
-   * (bypassing rAF/real-time entirely) still not moving x, so it wasn't a
-   * throttled-tab false alarm either. Draggable's own internal renders
-   * during the drag itself compete for ownership of the same `x`
-   * property the tween drives (GSAP's default overwrite management lets
-   * the more recent assignment win), leaving the original tween's render
-   * function disconnected even though .paused()/.progress() still
-   * reported plausible-looking values. A freshly created tween has no
-   * such stale state to inherit.
+   * Mouse/trackpad only: on a touchscreen, taking over a touch on the track
+   * would fight an incidental brush of it while a visitor is just scrolling
+   * the page past this section, so touch devices keep plain auto-scroll.
    */
-  function initMarqueeDrag(track, wrapper, distance, pxPerSecond, tween) {
-    if (!window.Draggable) return;
-
-    // Mouse/trackpad only — on a touch-only device, allowNativeTouchScrolling:
-    // false below means Draggable claims every touch that starts on the
-    // track, including an incidental brush of it while a visitor is just
-    // trying to scroll the page past this section. onPress pauses the
-    // auto-scroll for that gesture; if the touch sequence doesn't resolve
-    // to a clean release (easy on mobile, where the OS's own scroll
-    // gesture is fighting the same touch), onRelease never fires to
-    // restart it, and the marquee is stuck for good — reported as "not
-    // working" on mobile. (hover: hover) and (pointer: fine) is true only
-    // for a real mouse/trackpad, so touchscreens (including touch-capable
-    // laptops) skip Draggable entirely and just keep auto-scrolling.
+  function initMarqueeDrag(track, moveBy, setHeld) {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
-    var maxDrag = track.scrollWidth - wrapper.clientWidth;
+    var lastX = null;
 
-    window.Draggable.create(track, {
-      type: "x",
-      bounds: { minX: -maxDrag, maxX: 0 },
-      allowNativeTouchScrolling: false,
-      onPress: function () {
-        tween.pause();
-      },
-      onRelease: function () {
-        tween.kill();
-        var currentX = window.gsap.getProperty(track, "x");
-        tween = window.gsap.to(track, {
-          x: currentX - distance,
-          duration: distance / pxPerSecond,
-          ease: "none",
-          repeat: -1,
-        });
-      },
+    function release() {
+      if (lastX === null) return;
+      lastX = null;
+      setHeld(false);
+      track.classList.remove("is-dragging");
+    }
+
+    track.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0) return;
+      lastX = e.clientX;
+      setHeld(true);
+      track.classList.add("is-dragging");
+      track.setPointerCapture(e.pointerId);
     });
+    track.addEventListener("pointermove", function (e) {
+      if (lastX === null) return;
+      moveBy(e.clientX - lastX);
+      lastX = e.clientX;
+    });
+    track.addEventListener("pointerup", release);
+    track.addEventListener("pointercancel", release);
+    track.addEventListener("lostpointercapture", release);
+    // Otherwise the browser starts dragging the logo image itself.
+    track.addEventListener("dragstart", function (e) { e.preventDefault(); });
   }
 
   /**
